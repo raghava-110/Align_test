@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master.master" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Master.master" %>
 
 <%@ OutputCache CacheProfile="Page" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MasterContent" runat="server">
