@@ -1,0 +1,655 @@
+<%@ Master Language="C#" MasterPageFile="~/Master.Master" %>
+
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MasterContent" runat="server">
+    <style>
+        .icon.ico-table-grid::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='9' y1='3' x2='9' y2='21'/%3E%3Cline x1='15' y1='3' x2='15' y2='21'/%3E%3Cline x1='3' y1='9' x2='21' y2='9'/%3E%3Cline x1='3' y1='15' x2='21' y2='15'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 2025-10-13 Vikas: Force Data Tables locked item to render on its own line - but allow Kendo bindings to control visibility */
+#nav-data-tables-locked {
+    width: 100% !important;
+    clear: both !important;
+    position: relative !important;
+    float: none !important;
+}
+
+#nav-data-tables-locked > span {
+    display: block !important;
+    width: 100% !important;
+}
+
+#nav-data-tables-locked .menu-item {
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* 2025-10-13 Vikas: Gray color for Data Table icon when locked */
+#nav-data-tables-locked .icon.ico-table-grid {
+    color: #999 !important;
+    opacity: 0.6 !important;
+}
+
+/* 2025-10-13 Vikas: Gray color for Data Table text label when locked */
+#nav-data-tables-locked .navigation-menu-list-title {
+    color: #999 !important;
+}
+
+/* 2025-10-13 Vikas: Gray color for lock icon when Data Tables is locked - inline alignment for dropdown menu */
+#nav-data-tables-locked .icon.ico-lock {
+    color: #b9b9b9 !important;
+    opacity: 0.6 !important;
+    font-size: 10px !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+}
+    </style>
+    <div class="masterContainer">
+        <div class="topNavWrapper">
+            <div id="sandboxCompanyAlertHeader" data-bind="visible: showSandboxHeader, html: sandboxHeaderText">
+                Welcome to Align! You are currently logged into a sandbox company. Your sandbox account will disappear 24 hours from the time of creation.
+            </div>
+
+            <nav class="nav navigation-header">
+                <div id="newMenuHeader" class="nav-top" data-bind="showProgress: loading, visible: showNewNavHeader">
+                    <div class="nav-list-wrapper flex">
+                        <div class="logo-wrapper">
+                            <div class="app-logos">
+                                <div class="logo-main align-logo align-logo-desktop" data-bind="style: { backgroundImage: brandLogo }, events: { click: clickAlignLogo }, invisible: showWhiteLabelLogo"></div>
+                                <div class="logo-main-small" data-bind="events: { click: clickAlignLogo }, visible: showSmallLogo, css: {precon-playbook: showPreconPlaybookLogo, scalingup: showScalingUpLogo}"></div>
+                                <div class="logo-main" style="display: none;" data-bind="style: { backgroundImage: brandLogo }, events: { click: clickAlignLogo }, visible: showWhiteLabelLogo"></div>
+                                <div class="logo-main coach-logo" data-bind="style: { backgroundImage: coachLogo }, events: { click: clickCoachesLogo }, visible: coachLogo"></div>
+                            </div>
+                            <span class="icon ico-chevron-left collapseIcon" data-bind="events: { click: clickMenuLogo }, display: currentPerson.IsSystemAdministrator" ></span>
+                        </div>
+                        <ul id="menu" class="navigation-list border-left" data-role="menu" data-open-on-click="true" data-bind="events: { select: menuSelected }">
+                            <li class="dropdownTitle" data-align-feature-flag="Strategy.Web" data-align-feature-flag-behavior="visible">   
+                                <span class="margin-left-less navigation-link">Strategy</span>
+                                <ul>
+                                    <li data-href="/Application/OnePagePlan.aspx">One Page Strategic Plan
+                                    </li>
+                                    <li data-href="/Application/Checklist.aspx">Alignment Checklist
+                                    </li>
+                                    <li data-href="/Application/OnePageTool4DVisionSummary.aspx">4D Vision Summary
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/OnePageToolFunctionalAccountability.aspx">Functional Accountability
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/OnePageToolProcessAccountability.aspx">Process Accountability
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/OnePageTool7Strata.aspx">7 Strata
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/OnePageToolCashAccelerationStrategies.aspx">Cash Acceleration Strategies
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/OnePageToolCashPowerOfOne.aspx">Cash: Power of One
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="dropdownTitle" data-align-feature-flag="Culture.Web" data-align-feature-flag-behavior="visible">        
+                                <span class="margin-left-less navigation-link">Culture</span>
+                                <ul>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/ManageENPS.aspx" title="Employee Net Promoter Score: A Measure of Employee Engagement">
+                                        <span class="icon icon-smile"></span>
+                                        <span class="margin-left-less">eNPS</span>
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/ManageSurveys.aspx">
+                                        <span class="icon ico-clipboard"></span>
+                                        <span class="margin-left-less">Surveys</span>
+                                    </li>
+                                    <li data-bind="display: currentPerson.IsAdministrator" data-href="/Application/ManageAnnouncements.aspx">
+                                        <span class="icon ico-megaphone"></span>
+                                        <span class="margin-left-less">Announcements</span>
+                                    </li>
+                                    <li data-href="/Application/SuggestionsForMyCompany.aspx">
+                                        <span class="icon ico-comment"></span>
+                                        <span class="margin-left-less">Suggestions</span>
+                                    </li>
+                                    <li id="nav-performance-new-ui" data-align-feature-flag="Performance.Navigation.Web" data-align-feature-flag-behavior="visible">
+                                        <span class="icon ion-ios-pulse" style="font-size: 20px !important;"></span>
+                                        <span class="margin-left-less">Performance</span>
+                                        <ul>
+                                            <li data-href="/Application/PerformanceIndividual.aspx" data-align-feature-flag="Performance.Individual.Web" data-align-feature-flag-behavior="visible">
+                                                <span class="margin-left-less">Individual Performance</span>
+                                            </li>
+                                            <li data-align-feature-flag="Performance.Team.Web" data-align-feature-flag-behavior="visible">
+                                                <span class="margin-left-less">Team Performance</span>
+                                            </li>
+                                            <li data-align-feature-flag="Performance.Company.Web" data-align-feature-flag-behavior="visible">
+                                                <span class="margin-left-less">Company Performance</span>
+                                            </li>
+                                        </ul>
+                                    </li>                                
+                                </ul>
+                            </li>
+                            
+                            <li id="nav-reports-new-ui" data-href="/Application/Reports.aspx" class="margin-left-less navigation-link">Reports</li>
+
+                            <li id="nav-admin-new-ui" class="dropdownTitle" data-bind="display: currentPerson.IsAdministrator">   
+                                <span class="margin-left-less navigation-link">Administration</span>
+                                <ul>
+                                    <li id="nav-admin-new-ui-manage-users" data-href="/Application/ManageUsers.aspx">Manage Users
+                                    </li>
+                                    <li data-bind="visible: bIsAddOnsHuddlesEnabled" id="nav-admin-new-ui-manage-huddles" 
+										data-href="/Application/ManageHuddleGroups.aspx"
+										data-align-feature-flag="Huddles.Web" 
+                                        data-align-feature-flag-behavior="unlocked">Manage Huddles
+                                    </li>
+                                    <li class="align-locked gray" data-bind="events: { click: showHuddlesAddOnPopup }, invisible: bIsAddOnsHuddlesEnabled" id="nav-admin-new-ui-manage-huddles-align-locked <%--do NOT add the second quote here, will break grey text--%>
+										data-align-feature-flag="Huddles.Web" 
+                                        data-align-feature-flag-behavior="locked">Manage Huddles
+                                        <span class="icon ico-lock align-data padding-left-more"></span>
+                                    </li>
+                                    <li id="nav-admin-new-ui-manage-company-settings" data-href="/Application/AlignSettings.aspx">Company Settings
+                                    </li>      
+                                    <li id="nav-admin-new-ui-company-profile" data-href="/Application/CompanyProfile.aspx">Company Profile
+                                    </li>
+                                    <li id="nav-admin-new-ui-manage-kpi-listings" 
+                                        data-href="/Application/ManageKpiList.aspx"
+                                        data-align-feature-flag="Administration.KPIListings.Web"
+                                        data-align-feature-flag-behavior="visible">KPI Listing
+                                    </li>
+                                    <li id="nav-admin-new-ui-manage-subscription" 
+                                        data-href="/Application/ManageSubscription.aspx"
+                                        data-align-feature-flag="Administration.ManageSubscription.Hide" 
+                                        data-align-feature-flag-behavior="invisible">Manage Subscription
+                                    </li>
+                                    <li id="nav-admin-new-ui-manage-api-keys" 
+                                        data-href="/Application/ManageAPIKeys.aspx"
+                                        data-align-feature-flag="Integrations.API"
+                                        data-align-feature-flag-behavior="visible"
+                                        >Manage API Keys
+                                    </li>
+                                </ul>
+                            </li>
+
+                             <li id="nav-coach-new-ui" class="dropdownTitle" data-bind="display: showCoach">   
+     <span class="margin-left-less navigation-link">Coach</span>
+     <ul>
+         <li id="nav-admin-new-ui-schedule-meeting" data-href="/Application/ScheduleMeeting.aspx">Schedule Meeting</li>
+         <li id="nav-admin-new-ui-resources"
+             data-href="/Application/CoachResources.aspx" 
+             data-bind="visible: showCoachResources"
+             >Resources</li>
+         
+     </ul>
+ </li>
+
+                            <li id="nav-advisor-new-ui" class="dropdownTitle navigation-link" data-bind="display: currentPerson.IsAlignAdvisor" style="display: none;">Advisor
+                                <ul>
+                                    <li data-href="/Application/ViewAdvisor.aspx">Advisor Portal
+                                    </li>
+                                    <li data-href="/Application/AdvisorMessaging.aspx">Advisor Messaging
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li id="nav-system-admin-new-ui" class="dropdownTitle" data-bind="display: currentPerson.IsSystemAdministrator">   
+                                <span class="margin-left-less navigation-link">System Admin</span>
+                                <ul class="dropdown">
+                                    <li data-href="/Application/SystemManageAdvisors.aspx">Advisor Overview
+                                    </li>
+                                    <li data-href="/Application/SystemManageCompanies.aspx">Companies Overview
+                                    </li>
+                                    <li data-href="/Application/DailyAlignKeyCompanyMetrics.aspx">Daily Align Key Company Metrics
+                                    </li>
+                                    <li data-href="/Application/SystemManageCoaches.aspx">Coach Information
+                                    </li>
+                                    <li data-href="/Application/SystemManageHelpContexts.aspx">Help Contexts
+                                    </li>
+                                    <li data-href="/Application/SystemManageHelpPages.aspx">Help Pages
+                                    </li>
+                                    <li data-href="/Application/SystemAdministratorMessageUsers.aspx">System Messaging
+                                    </li>
+                                    <li data-href="/Application/SupportCenter.aspx">Support Center
+                                    </li>
+                                    <li data-href="/Application/SystemViewAlignFinancialScoreboard.aspx">Financial Scoreboard
+                                    </li>
+                                    <li><a target="_blank" href="/Application/Data.html">Align Data <span class="icon ico-priorities-feather align-data"></span></a>
+                                    </li>
+                                    <li data-href="/Application/SystemAdministratorExceptionLog.aspx">Exception Log
+                                    </li>
+                                    <li style="display: none;">AI Features<span class="icon icon ai-feature-icon-teal"></span>
+                                        <ul class="">
+                                            <li>AI Providers</li>
+                                            <li>AI Operations</li>
+                                        </ul>
+                                    </li>
+                                    <li data-href="/Application/InteractiveStyleGuide.aspx">Style Guide
+                                    </li>
+                                </ul>
+                            </li>
+                           
+                            <li id="action-button-new-ui" class="dropdownTitle hide-arrow menu-dropdown" data-bind="visible:showActionButton"> 
+                                <span class="icon ion-android-add-circle brand-color"></span>
+                                <ul >
+                                    <li data-bind="click: clickUpdatePriorities" data-align-feature-flag="Priorities.UpdatePriorityValues" data-align-feature-flag-behavior="visible">
+                                        <span class="icon ico-update-priorities align-data"></span>
+                                        <span data-bind="text: actionButtonUpdatePrioritiesMenuText">Update Priority Values</span>
+                                    </li>
+                                    <li data-bind="click: clickCreatePriority">
+                                        <span class="icon ico-priorities-feather align-data"></span>
+                                        <span data-bind="text: actionButtonCreatePriorityMenuText">Priority</span>
+                                    </li>
+                                    <li data-bind="click: clickCreateTask">
+                                        <span class="icon ico-tasks-feather align-data"></span>Task
+                                    </li>
+                                    <li data-bind="click: clickCreateStuck"><span class="icon ico-stucks-feather align-data"></span>Stuck
+                                    </li>
+                                    <li data-bind="visible: canShowHuddlesInActionButton, events: { click: clickCreateHuddle}"
+										data-align-feature-flag="Huddles.Web" 
+                                        data-align-feature-flag-behavior="unlocked">
+                                        <span data-bind="visible: canShowHuddleTemplateDrawer">
+                                            <span class="icon ico-weekly-huddle-feather align-data"></span>Huddle
+                                        </span>
+                                    </li>
+                                    <li class="align-locked gray" data-bind="events: { click: showHuddlesAddOnPopup }, invisible: bIsAddOnsHuddlesEnabled" id="nav-admin-new-ui-manage-huddles-align-locked <%--do NOT add the second quote here, will break grey text--%>
+										data-align-feature-flag="Huddles.Web" 
+                                        data-align-feature-flag-behavior="locked">
+                                        <span class="gray icon ico-weekly-huddle-feather align-data"></span> Huddle
+                                        <span class="icon ico-lock align-data padding-left-more"></span>
+                                    </li>
+                                    <li data-bind="click: clickCreateCompanySuggestion"
+                                        data-align-feature-flag="Company Suggestions.Web" 
+                                        data-align-feature-flag-behavior="visible">
+                                        <span class="icon ico-comment align-data"></span>Suggestion
+                                    </li>
+                                    <li data-bind="click: clickAddCompanyMetric">
+                                        <span class="icon icon-hash align-data"></span>Metric
+                                    </li>
+                                    <li data-bind="click: clickAddUser, display: hasJoinedOrDoesntRequireDemo">
+                                        <span class="icon ico-invite-team-feather align-data"></span>Invite Users
+                                    </li>
+                                    <li data-bind="click: clickInviteViewers, display: showInviteViewers">
+                                        <span class="icon ico-eye align-data"></span>Invite Viewers
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-list-wrapper">
+                        <ul class="navigation-list right" data-role="menu" data-open-on-click="true" data-bind="events: { select: menuSelected }" style="background: white">
+                            <li class="dropdownTitle nav-bg"> 
+                                <input id="manageCompaniesDropDownList" class="manage-drop"
+                                    data-role="dropdownlist"
+                                    data-auto-bind="false"
+                                    data-text-field="Name"
+                                    data-template="manageCompaniesTemplate"
+                                    data-value-template="manageCompaniesTemplate"
+                                    data-option-label='{ "ID": -1, "Name": "Manage Companies", "href": "/Application/ManageCompanies.aspx", "Picture": "/img/defaultCompany.gif" }'
+                                    data-value-field="ID"
+                                    data-bind="value: currentCompany, source: dsCompanies, events: { change: onSelectCompany, open: openManageCompanies }" />
+                            </li>
+                            <li id="newNavAnnouncements" class="no-hover first-icon" title="Announcements">
+
+                                <button class="no-style" data-bind="click: clickShowAnnouncements">
+                                    <span class="icon ion-android-notifications light-yellow"></span>
+                                </button>
+                                <span class="announcement-count" id="newAnnouncementCount" data-bind="visible: announcementCount, text: announcementCount" style="display: none;">0</span>
+                            </li>
+                            <li id="newNavSettings" class="no-hover" data-href="/Application/Help.aspx" title="Help & Frequently Asked Questions (FAQ)">
+                                <span class="icon ion-help light-yellow" data-href="/Application/Help.aspx"></span>
+                                <!--<ul>
+                                    <li data-href="/Application/Help.aspx">Help &amp; FAQs
+                                    </li>
+                                </ul>-->
+                            </li>
+                            <li id="newNavProfile" class="no-hover dropdownTitle hide-arrow" >
+                                <img class="icon avatar" src="" data-bind="attr: { src: currentPerson.Picture }" data-open-on-click="true"  />
+                                <ul>
+                                    <!--<li data-name="requestADemo">Request a Demo
+                                    </li>-->
+                                    <!--<li><a href="https://aligntoday.com/product/request-demo/">Request a Demo</a>
+                                    </li>-->
+                                    <li data-name="manageProfile"> Profile</li>
+                                    <li data-href="/Application/ContactUs.aspx">Contact your Advisor
+                                    </li>
+                                    <li data-name="sharealign">Share!
+                                    </li>
+                                    <li data-href="/Application/AffiliateInfo.aspx">Become an Affiliate
+                                    </li>
+                                    <li data-name="signOut">Sign Out
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <!--2018-04-17:  Added support for showBackToClassic -->
+            <div class="alerts-header" id="alertsHeader" data-bind="visible: IsAlertsHeaderVisible">
+                <!--TRIAL-->
+                <div id="nav-float-trial"class="alert alertCard trial" data-bind="events: { click: clickSubscribe }, visible: companyInTrial">
+                    <span class="alertText" data-bind="text: trialAlertMessage"></span>    
+                    &nbsp;<span class="button small">SUBSCRIBE</span>
+                </div>
+                <!--STUCK-->
+                <div class="alert nav-float-stuck" data-bind="display: showStucksAlert">
+                    <div class="button small orange" data-bind="click: clickViewStucks">
+                        STUCKS <span class="stuck-count" data-bind="text: stuckAlertText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="applicationContainerOuter" data-bind="class: { alerts: IsAlertsHeaderVisible, sandboxCompany: currentCompany.IsSandboxCompany }">
+            <nav id="menuSideCollapsable"class="nav navSide" data-bind="invisible: isNavSideHidden">
+                <%--2024-12-17 RJK: Simplified Navigation is the only supported navigation at this time. Removed the earlier version of the left navigation menu.
+                <%--Simplified Navigation--%>
+                <ul id="newMenuSideSimplified" data-role="menu" data-orientation="vertical" data-align-feature-flag="SimplifiedNavigation.Web" data-align-feature-flag-behavior="visible" data-bind="events: { select: menuSelected, open: subMenuOpened }" data-open-on-click="true">
+                    <li class="popover-menu-hover navLink" 
+                            data-align-feature-flag="Navigation.Dashboards.Web" 
+                            data-align-feature-flag-behavior="visible">
+                        <span class="icon ico-my-dashboard-feather nav-tooltip"></span>
+                        <span class="nav-text">Dashboards</span>
+                        <span class="nav-tooltip-text">Dashboards</span>
+                        <ul class="popover-menu-background padding-right">
+                            <div class="navigation-menu-list-item navigation-menu-list-item-dark" id="dashboards-navigation-group-menu">
+                                <li data-bind="visible: showMyDashboardNavigationItem">
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/Dashboard.aspx">
+                                            <span class="icon ico-my-dashboard-feather"></span>
+                                            <span class="navigation-menu-list-title bold">My Dashboard</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <li data-align-feature-flag="Dashboards.Company.Web" 
+                                    data-align-feature-flag-behavior="visible">
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/CompanyDashboard.aspx">
+                                            <span class="icon ico-company-dashboard-feather"></span>
+                                            <span class="navigation-menu-list-title bold">Company Dashboard</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <li data-bind="visible: showAnnualInitiative">
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/ManageAnnualInitiatives.aspx">
+                                            <span class="icon ico-pie-chart"></span>
+                                            <span class="navigation-menu-list-title bold">Annual Initiatives</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <%-- 2025-10-13 Vikas: Data Tables Unlocked - Standard package feature --%>
+                                <li data-bind="visible: bIsAddOnsDataTablesEnabled"
+                                    data-align-feature-flag="Data Tables.Page.Web"
+                                    data-align-feature-flag-behavior="unlocked">
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/DataTable.aspx">
+                                            <span class="icon ico-table-grid"></span>
+                                            <span class="navigation-menu-list-title bold">Data Table</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <%-- 2025-10-13 Vikas: Data Tables Locked - Shows popup for Basic users --%>
+                                <li class="align-locked"
+                                    id="nav-data-tables-locked"
+                                    data-bind="events: { click: showDataTablesAddOnPopup }, invisible: bIsAddOnsDataTablesEnabled"
+                                    data-align-feature-flag="Data Tables.Page.Web"
+                                    data-align-feature-flag-behavior="locked">
+			                        <span>
+                                        <div class="menu-item">
+                                            <span class="icon ico-table-grid"></span>
+                                            <span class="navigation-menu-list-title bold">Data Table</span>
+                                            <span class="icon ico-lock align-data padding-left-more"></span>
+                                        </div>
+			                        </span>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li id="nav-priorities-new-ui-simplified" class="navLink" data-href="/Application/ManagePriorities.aspx">
+                        <span class="icon ico-priorities-feather nav-tooltip"></span>
+                        <span class="nav-text" data-bind="visible: showOtherBrandsNavText">Priorities</span>
+                        <span class="nav-text" data-bind="visible: showPreconPlaybookNavText">Projects & Phases</span>
+                        <span class="nav-text" data-align-feature-flag="Methodologies.OKR.Web" data-align-feature-flag-behavior="visible" style="display:none;">OKR Tree</span>
+                        <span class="nav-tooltip-text" data-bind="visible: showOtherBrandsNavText">Priorities</span>
+                        <span class="nav-tooltip-text" data-bind="visible: showPreconPlaybookNavText">Projects & Phases</span>
+                        <span class="nav-tooltip-text" data-align-feature-flag="Methodologies.OKR.Web" data-align-feature-flag-behavior="visible" style="display:none;">OKRs</span>
+                    </li>       
+                    <%-- Huddles Locked --%>
+                    <li data-bind="invisible: bIsAddOnsHuddlesEnabled" 
+                        class="navLink align-locked" id="nav-huddle-dropdown-locked" 
+                        data-align-feature-flag="Huddles.Web" 
+                        data-align-feature-flag-behavior="locked">
+                        <span class="icon ico-daily-huddle-feather nav-tooltip align-locked"></span>
+                        <span class="nav-text align-locked">Huddles</span><span class="nav-tooltip-text">Huddles</span>
+                        <span class="icon ico-lock daily"></span>
+                    </li>
+                    <%-- Huddles Unlocked --%>
+                    <li data-bind="attr: {data-href: dailyHuddleUrlSource}, visible: bIsAddOnsHuddlesEnabled" 
+                        class="popover-menu-hover navLink" 
+                        id="nav-huddle-dropdown" 
+                        data-align-feature-flag="Huddles.Web" 
+                        data-align-feature-flag-behavior="unlocked">
+                        <span class="icon ico-daily-huddle-feather nav-tooltip"></span>
+                        <span class="nav-text">Huddles</span>
+                        <span class="nav-tooltip-text">Huddles</span>
+                        <ul class="popover-menu-background padding-right">
+                            <li data-bind="invisible: isMemberOfAnyHuddle">
+                                <div class="menu-header darkblue">You are not a member of a Huddle</div>
+                                <div class="menu-header clickable" data-bind="click: clickCreateHuddle, visible: canCreateHuddle">
+                                    <h4 class="empty-state menu-item">
+                                        Click here to create a new Huddle
+                                    </h4>
+                                </div>
+                                <div class="center padding" data-bind="visible: currentPerson.IsCoach">
+                                    <button class="button btn-ghost--m" data-bind="invisible: noHuddlesExist, click: launchDefaultHuddleForCoachUser">
+                                        As a Coach, you can view all Huddles. <br />Click for access.
+                                    </button>
+                                </div>
+                                <div class="menu-header" data-bind="invisible: canCreateHuddle">
+                                    <h4 class="empty-state">
+                                        Ask an Admin to add you to a Huddle
+                                    </h4>
+                                </div>
+                            </li>
+                            <li data-bind="visible: isMemberOfAnyHuddle">
+                                <div>
+                                    <div class="menu-header darkblue">Today</div>
+                                    <div
+                                        id="upcoming-daily-huddles-list-simplified"
+                                        class="huddles-menu-list-item"
+                                        data-role="listview"
+                                        data-bind="source: dsUpcomingHuddles"
+                                        data-auto-bind="false"
+                                        data-template="huddle-menu-item-template">
+                                    </div>
+                                    <div class="menu-header" data-bind="visible: noUpcomingHuddles">
+                                        <h4 class="empty-state">
+                                            You do not have any Huddles meeting today
+                                        </h4>
+                                        <div class="center padding" data-bind="visible: currentPerson.IsCoach">
+                                            <button class="button btn-ghost--m" data-bind="invisible: noHuddlesExist, click: launchDefaultHuddleForCoachUser">
+                                                As a Coach, you can view all Huddles. <br />Click for access.
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="menu-header darkblue">
+                                        Future
+                                    </div>
+                                    <div class="menu-header" data-bind="visible: noOtherHuddles">
+                                        <h4 class="empty-state">
+                                            None
+                                        </h4>
+                                        <div class="margin-top-less" data-bind="visible: currentPerson.IsCoach">
+                                            <button class="button btn-ghost--m" data-bind="click: launchDefaultHuddleForCoachUser">
+                                                As a Coach, you can view all Huddles. <br />Click for access.
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div
+                                        id="other-daily-huddles-list-simplified"
+                                        class="huddles-menu-list-item"
+                                        data-role="listview"
+                                        data-bind="source: dsOtherHuddles"
+                                        data-auto-bind="false"
+                                        data-template="huddle-menu-item-template">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="popover-menu-hover navLink">
+                        <span class="icon ico-tasks-feather nav-tooltip"></span>
+                        <span class="nav-text">Action Items</span>
+                        <span class="nav-tooltip-text">Action Items</span>
+                        <ul class="popover-menu-background padding-right">
+                            <div class="navigation-menu-list-item navigation-menu-list-item-dark" id="actionitems-navigation-group-menu">
+                                <li>
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/ManageTasks.aspx">
+                                            <span class="icon ico-tasks-feather"></span>
+                                            <span class="navigation-menu-list-title bold">Tasks</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <li data-align-feature-flag="Top Priorities.Web" 
+                                    data-align-feature-flag-behavior="visible">
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/TopPriorityCalendar.aspx">
+                                            <span class="icon ico-top-priority-calendar-feather"></span>
+                                            <span class="navigation-menu-list-title bold">Top Priority Calendar</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <li>
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/ManageStucks.aspx">
+                                            <span class="icon ico-stucks-feather"></span>
+                                            <span class="navigation-menu-list-title bold">Stucks</span>
+                                        </div>
+			                        </span>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    <li id="nav-company-metrics-new-ui-simplified" class="navLink" data-href="/Application/ManageCompanyMetrics.aspx" 
+    data-bind="display: showMetrics">
+                        <span class="icon icon-hash nav-tooltip"></span>
+                        <span class="nav-text">Metrics</span>
+                        <span class="nav-tooltip-text">Metrics</span>
+                    </li>
+                    <li id="nav-visualizations-new-ui-simplified" class="navLink" data-href="/Application/Visualizations.aspx" data-align-feature-flag="Labs.DataVisualizations.Web" data-align-feature-flag-behavior="visible" style="display: none">
+                        <span class="icon ico-eye nav-tooltip"></span>
+                        <span class="nav-text">Visualizations (Labs)</span>
+                        <span class="nav-tooltip-text">Visualizations</span>
+                    </li>
+                    <li class="popover-menu-hover navLink"
+                        data-align-feature-flag="Navigation.Learn.Web" 
+                        data-align-feature-flag-behavior="visible" 
+                        style="display: none">
+                        <span class="icon icon-school nav-tooltip"></span>
+                        <span class="nav-text">Learn</span>
+                        <span class="nav-tooltip-text">Learn</span>
+                        <ul class="popover-menu-background padding-right">
+                            <div class="navigation-menu-list-item huddles-menu-list-item-dark" id="learn-navigation-group-menu">
+                                <li>
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="/Application/Help.aspx">
+                                            <span class="icon ion-help"></span>
+                                            <span class="navigation-menu-list-title bold">Help and FAQs</span>
+                                        </div>
+			                        </span>
+                                </li>
+                                <li>
+			                        <span>
+                                        <div data-bind="click: navigationGroupItemSelected" class="menu-item" data-href="https://aligntoday.com/align-academy/welcome/">
+                                            <span class="icon icon-school"></span>
+                                            <span class="huddle-group-name bold">Align Academy</span>
+                                        </div>
+			                        </span>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <main id="applicationContainerMain" class="applicationContainerMain">
+                <div class="main-inner swappableContent" id="swappableContentMasterApplication">
+                    <script src="/js/Generated/SecurityCheck.js"></script>
+                    <asp:ContentPlaceHolder ID="MasterApplicationContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </main>
+        </div>
+        <div id="zenSupport" class="zen-container" data-bind="invisible: isNavSideHidden">
+            <div class="alignZenWidget" data-bind="invisible: showTourMenuOption, click: clickOpenSupport">
+                <span class="icon ion-help-circled"></span>
+                <span class="hide">Contact Us</span>
+            </div>       
+            <div class="alignZenWidget" data-bind= "visible: showTourMenuOption">
+                <a onclick="window.parent.Appcues.show('2b41fadc-09fb-4808-851a-68f342bffaec')" >
+                    <button class="button white-text margin-half"> Tour Menu   
+                    </button>
+                </a> 
+            </div>
+            <div class="logo-main" title="Powered by Align" data-bind="visible: showPoweredByAlign" style="background-image: url(/img/align-logo-white-with-orange-dots.svg); color: white;">powered by</div>
+        </div>
+    </div>
+
+    <script id="manageCompaniesTemplate" type="text/x-kendo-template">
+        <div>
+            <img src="#=Picture#"/>
+            <span>#=Name#</span>
+        </div>
+    </script>
+
+    <%--<script id="upcomingHuddlesMeetingTodayTemplate" type="text/x-kendo-template">
+        <li id="huddleDropDownn">
+			<span>
+                <div data-bind="click: huddleClicked" class="menu-item">
+                    <span class="huddleGroup bold #=HuddleColorClass#" data-bind="text: Name" />
+                </div>
+			</span>
+        </li>
+    </script>
+
+    <script id="upcomingHuddlesMeetingOtherDaysTemplate" type="text/x-kendo-template">
+        <li id="huddleDropDownn">
+			<span>
+                <div data-bind="click: huddleClicked" class="menu-item">
+                    <span class="huddleGroup bold #=HuddleColorClass#" data-bind="text: Name" />
+                    <div class="margin-left note italic" data-bind="text: MeetingCadenceText" />
+                </div>
+			</span>
+        </li>
+    </script>--%>
+
+    <script id="huddle-menu-item-template" type="text/html">
+        <li>
+			<span>
+                <div data-bind="click: huddleClicked" class="menu-item">
+                    <span class="huddle-group-name bold" data-bind="text: Name" />
+                    <span data-bind="visible: IsViewer" title="Viewer" class="margin-left-less icon ico-eye brand-color" style="vertical-align: text-bottom;"></span>
+                    <div class="margin-left note italic meeting-cadence-description" data-bind="text: MeetingCadenceText" />
+                </div>
+			</span>
+        </li>
+    </script>
+
+    <script id="navigation-group-menu-item-template" type="text/html">
+        <li>
+			<span>
+                <div data-bind="click: navigationGroupItemSelected" class="menu-item">
+                    <span class="icon #=iconClass#"></span>
+                    <span class="huddle-group-name bold" data-bind="text: name"/>
+                </div>
+			</span>
+        </li>
+    </script>
+  
+    <script src="/js/Generated/MasterApplication.js"></script>
+    
+</asp:Content>
