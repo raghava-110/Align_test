@@ -1,0 +1,46 @@
+{
+  "test_categories": [
+    "Authentication and Authorization",
+    "Metric Management (Creation & Editing)",
+    "Formula Builder Functionality",
+    "Dashboard & KPI Customization",
+    "Target Configuration (Custom & Time-Based)"
+  ],
+  "test_types": [
+    "End-to-End (E2E) Testing: The test case describes a complete user journey from login to final verification on the dashboard.",
+    "Integration Testing: Verifies the interaction between multiple modules: Authentication, Metrics, Formula Builder, and Dashboards.",
+    "Functional Testing: Each step validates specific application functions like creating a record, saving data, and configuring settings.",
+    "UI/UX Testing: The test includes checks for the visibility, state (enabled/disabled), and behavior of UI components like buttons, modals, and dropdowns."
+  ],
+  "test_data": {
+    "Email": "[User email address]",
+    "Password": "[User password]",
+    "Company Name": "[Company to be selected]",
+    "Metric Name": "[Name of the metric to be created]",
+    "Value Source": "Formula",
+    "Format": "Number",
+    "First Metric": "[Name of first metric to use in formula]",
+    "Operator": "[+, -, /, *, (, )]",
+    "Second Metric": "[Name of second metric to use in formula]",
+    "Target Type": "[Custom or Time-Based]",
+    "Custom Target Values": "[4 values from highest to lowest - Level 1, Level 2, Level 3, Level 4]",
+    "Time-Based Start Value": "[Starting value]",
+    "Time-Based Target Value": "[Target value to achieve]"
+  },
+  "priorities": [
+    "High: Successful user login, company selection, and navigation to the Metrics page.",
+    "High: Core functionality of creating a new metric using the Formula Builder with two existing metrics and an operator.",
+    "High: Ability to add the newly created metric to 'My Dashboard KPIs'.",
+    "High: Successfully configuring and saving both 'Custom' and 'Time-Based' targets for the metric.",
+    "Medium: Verification of specific UI elements and interactions, such as the visibility of the 3-dot menu on hover, modal behavior, and dynamic field appearance.",
+    "Medium: Correct display of the configured target on the dashboard metric card after saving."
+  ],
+  "risk_areas": [
+    "Formula Builder Logic: The combination of searching for metrics, selecting operators, and validating the formula is complex. Potential for incorrect formula construction, validation errors, or calculation issues.",
+    "Dynamic UI Interactions: The test relies on elements that appear dynamically (password field, formula builder, target fields, hover-activated menus). These are common points of failure or flakiness in automated tests.",
+    "State Management: The workflow spans multiple pages and modals (Login -> Dashboard -> Metrics -> Edit Metric -> Dashboard). A failure to persist the state of the created/edited metric across these views is a significant risk.",
+    "Data Dependency: The test is critically dependent on the pre-existence of a specific user, company, and at least two source metrics for the formula. Missing or incorrect test data will cause a complete test failure.",
+    "DOM Complexity: The steps for locating the correct metric card and active dropdown menu indicate a complex DOM structure where multiple similar elements may exist. This increases the risk of interacting with the wrong element, especially after repeated test runs create duplicate data."
+  ],
+  "recommendations": "The provided test case is a comprehensive end-to-end 'happy path' scenario. To build a robust test suite, it is recommended to also develop: 1. Negative Test Cases: Test the system's response to invalid inputs, such as an invalid formula (e.g., division by zero, incorrect syntax), non-descending custom target values, or saving without required fields. 2. Atomic/Component-Level Tests: Create smaller, focused tests for individual components like the Formula Builder or the Target Configuration UI to isolate bugs more effectively. 3. Data-Driven Tests: Expand the formula test to cover all operators (+, -, /, *) and more complex formulas with parentheses to ensure the parser is robust. 4. Test Data Management Strategy: Implement a reliable setup and teardown process to manage test data (users, companies, source metrics) to prevent test failures due to environmental issues and avoid pollution from repeated test runs."
+}
