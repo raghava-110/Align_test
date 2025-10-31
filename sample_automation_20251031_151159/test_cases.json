@@ -1,0 +1,403 @@
+{
+  "test_cases": [
+    {
+      "id": "TC001",
+      "scenario_id": "TS001",
+      "name": "End-to-End Workflow: Create Formula Metric and Set Custom Target",
+      "preconditions": [
+        "A valid user account with appropriate permissions must exist.",
+        "The user must have access to the specified company.",
+        "The two metrics used in the formula ('[Name of first metric to use in formula]' and '[Name of second metric to use in formula]') must exist in the system prior to test execution."
+      ],
+      "test_data": {
+        "Email": "[User email address]",
+        "Password": "[User password]",
+        "Company Name": "[Company to be selected]",
+        "Metric Name": "[Name of the metric to be created]",
+        "Value Source": "Formula",
+        "First Metric": "[Name of first metric to use in formula]",
+        "Operator": "[+, -, /, *, (, )]",
+        "Second Metric": "[Name of second metric to use in formula]",
+        "Target Type": "Custom",
+        "Custom Target Values": "[4 values from highest to lowest - Level 1, Level 2, Level 3, Level 4]"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application URL.",
+          "expected_result": "The login page is displayed correctly."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid email address into the email input field and click 'Continue'.",
+          "expected_result": "The password input field is displayed."
+        },
+        {
+          "step": 3,
+          "action": "Enter the correct password into the password input field and click 'Login'.",
+          "expected_result": "The company selection page is displayed."
+        },
+        {
+          "step": 4,
+          "action": "Locate and click on the specified company from the list.",
+          "expected_result": "The main dashboard page is displayed, confirming successful login."
+        },
+        {
+          "step": 5,
+          "action": "From the navigation menu, click on 'Metrics'.",
+          "expected_result": "The 'Metrics' page is loaded and displayed."
+        },
+        {
+          "step": 6,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 7,
+          "action": "Enter the 'Metric Name' into the name input field.",
+          "expected_result": "The metric name is correctly entered in the field."
+        },
+        {
+          "step": 8,
+          "action": "Click the 'Value Source' dropdown and select 'Formula'.",
+          "expected_result": "The 'Formula Builder' interface appears, showing a search field and operator buttons."
+        },
+        {
+          "step": 9,
+          "action": "In the 'Search Metric' field, search for and select the 'First Metric'.",
+          "expected_result": "The first metric is added to the formula display area."
+        },
+        {
+          "step": 10,
+          "action": "Click the desired 'Operator' button.",
+          "expected_result": "The selected operator is added to the formula display area."
+        },
+        {
+          "step": 11,
+          "action": "In the 'Search Metric' field, search for and select the 'Second Metric'.",
+          "expected_result": "The second metric is added to the formula display area, completing the formula."
+        },
+        {
+          "step": 12,
+          "action": "Verify the formula is correct and click the green checkmark button to confirm.",
+          "expected_result": "The formula is accepted by the system."
+        },
+        {
+          "step": 13,
+          "action": "Click the 'Save' button on the metric creation form.",
+          "expected_result": "A confirmation message is displayed indicating the metric was created successfully."
+        },
+        {
+          "step": 14,
+          "action": "Navigate to 'My Dashboard' from the 'Dashboards' menu.",
+          "expected_result": "The 'My Dashboard' page is displayed."
+        },
+        {
+          "step": 15,
+          "action": "Click the 'Edit KPI' icon to open the KPI selection modal.",
+          "expected_result": "The KPI selection modal opens, showing available and selected metrics."
+        },
+        {
+          "step": 16,
+          "action": "In the left panel of available metrics, locate and click the newly created metric.",
+          "expected_result": "The metric moves from the left panel (available) to the right panel (selected)."
+        },
+        {
+          "step": 17,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes and the dashboard refreshes to show the newly added metric card."
+        },
+        {
+          "step": 18,
+          "action": "Hover over the newly added metric card, click the three-dot menu button, and select the 'Edit' option.",
+          "expected_result": "The user is navigated to the 'Edit' page for the metric."
+        },
+        {
+          "step": 19,
+          "action": "On the Edit page, select the 'Target' tab.",
+          "expected_result": "The target configuration options are displayed."
+        },
+        {
+          "step": 20,
+          "action": "Click the 'Custom' radio button.",
+          "expected_result": "Four input fields for custom target levels (Level 1, 2, 3, 4) appear."
+        },
+        {
+          "step": 21,
+          "action": "Enter the four 'Custom Target Values' into the corresponding input fields in descending order.",
+          "expected_result": "All four fields are populated with the correct numeric values."
+        },
+        {
+          "step": 22,
+          "action": "Click the 'Save' button.",
+          "expected_result": "The target configuration is saved, and the page navigates back to 'My Dashboard'."
+        },
+        {
+          "step": 23,
+          "action": "On 'My Dashboard', locate the metric card.",
+          "expected_result": "The metric card correctly displays the visual indicators for the four-level custom target."
+        }
+      ]
+    },
+    {
+      "id": "TC002",
+      "scenario_id": "TS002",
+      "name": "End-to-End Workflow: Create Formula Metric and Set Time-Based Target",
+      "preconditions": [
+        "A valid user account with appropriate permissions must exist.",
+        "The user must have access to the specified company.",
+        "The two metrics used in the formula ('[Name of first metric to use in formula]' and '[Name of second metric to use in formula]') must exist in the system prior to test execution."
+      ],
+      "test_data": {
+        "Email": "[User email address]",
+        "Password": "[User password]",
+        "Company Name": "[Company to be selected]",
+        "Metric Name": "[Name of the metric to be created]",
+        "Value Source": "Formula",
+        "First Metric": "[Name of first metric to use in formula]",
+        "Operator": "[+, -, /, *, (, )]",
+        "Second Metric": "[Name of second metric to use in formula]",
+        "Target Type": "Time-Based",
+        "Time-Based Start Value": "[Starting value]",
+        "Time-Based Target Value": "[Target value to achieve]"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application URL.",
+          "expected_result": "The login page is displayed correctly."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid email address into the email input field and click 'Continue'.",
+          "expected_result": "The password input field is displayed."
+        },
+        {
+          "step": 3,
+          "action": "Enter the correct password into the password input field and click 'Login'.",
+          "expected_result": "The company selection page is displayed."
+        },
+        {
+          "step": 4,
+          "action": "Locate and click on the specified company from the list.",
+          "expected_result": "The main dashboard page is displayed, confirming successful login."
+        },
+        {
+          "step": 5,
+          "action": "From the navigation menu, click on 'Metrics'.",
+          "expected_result": "The 'Metrics' page is loaded and displayed."
+        },
+        {
+          "step": 6,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 7,
+          "action": "Enter the 'Metric Name' into the name input field.",
+          "expected_result": "The metric name is correctly entered in the field."
+        },
+        {
+          "step": 8,
+          "action": "Click the 'Value Source' dropdown and select 'Formula'.",
+          "expected_result": "The 'Formula Builder' interface appears."
+        },
+        {
+          "step": 9,
+          "action": "In the 'Search Metric' field, search for and select the 'First Metric'.",
+          "expected_result": "The first metric is added to the formula display area."
+        },
+        {
+          "step": 10,
+          "action": "Click the desired 'Operator' button.",
+          "expected_result": "The selected operator is added to the formula display area."
+        },
+        {
+          "step": 11,
+          "action": "In the 'Search Metric' field, search for and select the 'Second Metric'.",
+          "expected_result": "The second metric is added to the formula display area."
+        },
+        {
+          "step": 12,
+          "action": "Verify the formula is correct and click the green checkmark button to confirm.",
+          "expected_result": "The formula is accepted by the system."
+        },
+        {
+          "step": 13,
+          "action": "Click the 'Save' button on the metric creation form.",
+          "expected_result": "A confirmation message is displayed indicating the metric was created successfully."
+        },
+        {
+          "step": 14,
+          "action": "Navigate to 'My Dashboard' from the 'Dashboards' menu.",
+          "expected_result": "The 'My Dashboard' page is displayed."
+        },
+        {
+          "step": 15,
+          "action": "Click the 'Edit KPI' icon to open the KPI selection modal.",
+          "expected_result": "The KPI selection modal opens, showing available and selected metrics."
+        },
+        {
+          "step": 16,
+          "action": "In the left panel of available metrics, locate and click the newly created metric.",
+          "expected_result": "The metric moves from the left panel (available) to the right panel (selected)."
+        },
+        {
+          "step": 17,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes and the dashboard refreshes to show the newly added metric card."
+        },
+        {
+          "step": 18,
+          "action": "Hover over the newly added metric card, click the three-dot menu button, and select the 'Edit' option.",
+          "expected_result": "The user is navigated to the 'Edit' page for the metric."
+        },
+        {
+          "step": 19,
+          "action": "On the Edit page, select the 'Target' tab.",
+          "expected_result": "The target configuration options are displayed."
+        },
+        {
+          "step": 20,
+          "action": "Click the 'Time-Based' radio button.",
+          "expected_result": "Input fields for 'Start Value' and 'Target Value' appear."
+        },
+        {
+          "step": 21,
+          "action": "Enter the 'Time-Based Start Value' and 'Time-Based Target Value' into the respective input fields.",
+          "expected_result": "Both fields are populated with the correct numeric values."
+        },
+        {
+          "step": 22,
+          "action": "Click the 'Save' button.",
+          "expected_result": "The target configuration is saved, and the page navigates back to 'My Dashboard'."
+        },
+        {
+          "step": 23,
+          "action": "On 'My Dashboard', locate the metric card.",
+          "expected_result": "The metric card correctly displays the progress indicator for the configured time-based target."
+        }
+      ]
+    },
+    {
+      "id": "TC003",
+      "scenario_id": "TS003",
+      "name": "Metric Management: Successful Creation of a Metric Using the Formula Builder",
+      "preconditions": [
+        "A valid user account with appropriate permissions must exist.",
+        "The user must have access to the specified company.",
+        "The two metrics used in the formula ('[Name of first metric to use in formula]' and '[Name of second metric to use in formula]') must exist in the system prior to test execution."
+      ],
+      "test_data": {
+        "Email": "[User email address]",
+        "Password": "[User password]",
+        "Company Name": "[Company to be selected]",
+        "Metric Name": "[Name of the metric to be created]",
+        "Value Source": "Formula",
+        "First Metric": "[Name of first metric to use in formula]",
+        "Operator": "[+, -, /, *, (, )]",
+        "Second Metric": "[Name of second metric to use in formula]"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Log in to the application and navigate to the 'Metrics' page.",
+          "expected_result": "The user is successfully on the 'Metrics' page."
+        },
+        {
+          "step": 2,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form is displayed."
+        },
+        {
+          "step": 3,
+          "action": "Enter a unique 'Metric Name' into the name input field.",
+          "expected_result": "The name is correctly entered in the field."
+        },
+        {
+          "step": 4,
+          "action": "Select 'Formula' from the 'Value Source' dropdown.",
+          "expected_result": "The 'Formula Builder' interface is displayed."
+        },
+        {
+          "step": 5,
+          "action": "In the 'Search Metric' input field, enter the name of the 'First Metric' and select it from the results.",
+          "expected_result": "The first metric appears correctly in the formula display area."
+        },
+        {
+          "step": 6,
+          "action": "Click on an 'Operator' button (e.g., '+').",
+          "expected_result": "The operator appears correctly in the formula display area next to the first metric."
+        },
+        {
+          "step": 7,
+          "action": "In the 'Search Metric' input field, enter the name of the 'Second Metric' and select it from the results.",
+          "expected_result": "The second metric appears correctly in the formula display area."
+        },
+        {
+          "step": 8,
+          "action": "Verify the complete formula is displayed in the format: (Metric) [Operator] (Metric).",
+          "expected_result": "The formula is constructed and displayed correctly."
+        },
+        {
+          "step": 9,
+          "action": "Click the green checkmark button to confirm the formula.",
+          "expected_result": "The formula is validated and accepted by the system."
+        },
+        {
+          "step": 10,
+          "action": "Click the 'Save' button on the metric creation form.",
+          "expected_result": "A confirmation message is displayed, indicating the metric has been created successfully."
+        }
+      ]
+    },
+    {
+      "id": "TC004",
+      "scenario_id": "TS004",
+      "name": "Dashboard & KPI Customization: Add a Pre-existing Metric to 'My Dashboard'",
+      "preconditions": [
+        "A valid user account with appropriate permissions must exist.",
+        "The user must have access to the specified company.",
+        "The metric to be added must exist in the system and not already be on 'My Dashboard'."
+      ],
+      "test_data": {
+        "Email": "[User email address]",
+        "Password": "[User password]",
+        "Company Name": "[Company to be selected]",
+        "Metric Name": "[Name of first metric to use in formula]"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Log in to the application and navigate to 'My Dashboard'.",
+          "expected_result": "The 'My Dashboard' page is displayed with the 'My KPIs' section visible."
+        },
+        {
+          "step": 2,
+          "action": "Locate and click the 'Edit KPI' icon/button.",
+          "expected_result": "The modal for selecting KPIs opens, displaying a list of available metrics on the left and selected metrics on the right."
+        },
+        {
+          "step": 3,
+          "action": "In the left panel (available metrics), locate the desired pre-existing metric.",
+          "expected_result": "The metric is found and is not present in the right panel (selected KPIs)."
+        },
+        {
+          "step": 4,
+          "action": "Click the metric in the left panel.",
+          "expected_result": "The metric automatically moves from the left panel to the right panel."
+        },
+        {
+          "step": 5,
+          "action": "Locate and click the 'Save' button in the modal.",
+          "expected_result": "The modal closes, and the dashboard page begins to refresh."
+        },
+        {
+          "step": 6,
+          "action": "Verify the dashboard has refreshed.",
+          "expected_result": "The newly added metric card is now visible in the 'My KPIs' section on the dashboard."
+        }
+      ]
+    }
+  ]
+}

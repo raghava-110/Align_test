@@ -1,0 +1,47 @@
+{
+  "test_categories": [
+    "Authentication and Authorization",
+    "Metric Management (Creation & Configuration)",
+    "Formula Builder Functionality",
+    "Dashboard & KPI Customization",
+    "Target Setting (Custom & Time-Based)",
+    "End-to-End User Workflow"
+  ],
+  "test_types": [
+    "End-to-End (E2E) Testing",
+    "Integration Testing",
+    "Functional Testing",
+    "UI/UX Validation"
+  ],
+  "test_data": {
+    "Email": "[User email address]",
+    "Password": "[User password]",
+    "Company Name": "[Company to be selected]",
+    "Metric Name": "[Name of the metric to be created]",
+    "Value Source": "Formula",
+    "Format": "Number",
+    "First Metric": "[Name of first metric to use in formula]",
+    "Operator": "[+, -, /, *, (, )]",
+    "Second Metric": "[Name of second metric to use in formula]",
+    "Target Type": "[Custom or Time-Based]",
+    "Custom Target Values": "[4 values from highest to lowest - Level 1, Level 2, Level 3, Level 4]",
+    "Time-Based Start Value": "[Starting value]",
+    "Time-Based Target Value": "[Target value to achieve]"
+  },
+  "priorities": [
+    "High: Successful creation of a metric using the Formula Builder.",
+    "High: Correctly adding the newly created metric as a KPI to 'My Dashboard'.",
+    "High: Successful configuration and saving of both 'Custom' and 'Time-Based' targets.",
+    "High: Verification that the configured target is correctly displayed on the metric card on the dashboard.",
+    "Medium: UI/UX validation of the Formula Builder interface and dynamic elements (e.g., hover menus, conditional fields).",
+    "Medium: Robustness of the user flow from login to final verification without errors."
+  ],
+  "risk_areas": [
+    "Formula Validation Logic: The backend and frontend validation for the formula `(Metric) [Operator] (Metric)` could be a point of failure, especially with complex or invalid combinations not covered in this test case.",
+    "Dynamic UI Element Interaction: Steps 25-28 highlight a significant risk for automation flakiness. Identifying the correct metric card and its associated 'three-dot menu' when duplicates exist can lead to tests interacting with the wrong element.",
+    "State Management: The application relies heavily on UI state changes (e.g., formula builder appearing, target fields appearing based on radio selection). A failure in state management could block the test flow.",
+    "Data Persistence and Caching: There is a risk that after saving the metric or the target, the dashboard does not reflect the changes immediately due to caching, leading to false negatives during verification steps.",
+    "Test Data Dependency: The test's success is dependent on the pre-existence of the two metrics used in the formula. If '[Name of first metric to use in formula]' or '[Name of second metric to use in formula]' do not exist, the test will fail early."
+  ],
+  "recommendations": "To improve test robustness, it is recommended to implement unique identifiers (e.g., 'data-testid' attributes) for dynamic elements like KPI cards and their action menus. This will mitigate the risk of automation scripts selecting the wrong element when duplicates exist. Additionally, consider creating separate, more granular tests for the Formula Builder to cover edge cases such as division by zero, incorrect syntax, and use of parentheses. A dedicated test data setup and teardown strategy should be implemented to ensure the prerequisite metrics exist before the test run and the created metric is removed afterward, preventing test pollution."
+}
