@@ -1,0 +1,45 @@
+{
+  "test_categories": [
+    "Authentication and Navigation",
+    "Metric Creation and Formula Builder",
+    "Dashboard KPI Management",
+    "Metric Target Configuration",
+    "Dynamic UI Interaction and State Management"
+  ],
+  "test_types": [
+    "End-to-End (E2E) Testing: The test case outlines a complete user journey, verifying the integration of multiple features from login to final configuration.",
+    "Integration Testing: This test inherently validates the integration between the Metrics, Formula Engine, Dashboard, and User Profile (Company Selection) modules.",
+    "Functional Testing: The core objective is to verify the specific functionality of creating a formula metric and applying a target.",
+    "UI/UX Testing: Numerous steps involve verifying the visibility, state, and correct behavior of UI components, confirming the user interface works as designed."
+  ],
+  "test_data": {
+    "email": "[User email address]",
+    "password": "[User password]",
+    "company_name": "[Company to be selected]",
+    "metric_name": "[Name of the metric to be created]",
+    "value_source": "Formula",
+    "format": "Number",
+    "first_metric": "[Name of first metric to use in formula]",
+    "operator": "[+, -, /, *, (, )]",
+    "second_metric": "[Name of second metric to use in formula]",
+    "target_type": "[Custom or Time-Based]",
+    "custom_target_values": "[4 values from highest to lowest - Level 1, Level 2, Level 3, Level 4]",
+    "time_based_start_value": "[Starting value]",
+    "time_based_target_value": "[Target value to achieve]"
+  },
+  "priorities": [
+    "High: Successful end-to-end creation of a formula-based metric, adding it to the dashboard, and configuring a target.",
+    "High: Correct calculation and validation of the formula within the Formula Builder.",
+    "High: Persistence of the configured target and its accurate visual representation on the dashboard metric card.",
+    "Medium: Robustness of identifying and interacting with the correct UI elements, especially with potentially duplicate metric cards and hover-dependent menus.",
+    "Medium: Correct conditional rendering of UI components, such as the Formula Builder interface and the specific fields for Custom vs. Time-Based targets."
+  ],
+  "risk_areas": [
+    "Test Data Pollution: The note about multiple metric cards with similar names from previous runs highlights a significant risk. Tests may fail by interacting with the wrong element if the identification strategy is not precise.",
+    "Dynamic UI Elements: The workflow relies heavily on dynamic and context-sensitive UI elements (hover-to-reveal menus, modals, conditionally displayed form fields). These are common sources of timing issues and flakiness in automated tests.",
+    "State Management: The multi-page workflow (Metrics -> Dashboard -> Edit Metric -> Dashboard) requires that the application state is correctly managed and persisted after each major action (save metric, save KPI list, save target). A failure in state persistence at any step will invalidate the entire test.",
+    "Formula Builder Complexity: The current test covers a simple 'Metric-Operator-Metric' formula. The builder's ability to handle more complex formulas, operator precedence, or invalid syntax is a potential risk area not covered by this specific test case.",
+    "Complex DOM for Automation: The requirements explicitly mention non-standard interactive elements (e.g., a 'span' acting as a button) and state-dependent class names ('clicked'). This suggests a DOM that may be challenging to automate reliably, increasing the risk of brittle test scripts."
+  ],
+  "recommendations": "To complement this E2E test, it is recommended to create more granular, atomic tests for the Formula Builder, covering edge cases like invalid formulas, division by zero, and multiple operators. Negative test cases should be designed for the Target Configuration, such as entering non-descending values for a Custom target. A robust data cleanup strategy (e.g., a teardown script to delete created metrics) should be implemented to mitigate the risk of test data pollution. For automation, prioritize using stable, unique identifiers (like 'data-testid' attributes) over CSS classes or text to handle dynamic elements and duplicate data reliably."
+}
