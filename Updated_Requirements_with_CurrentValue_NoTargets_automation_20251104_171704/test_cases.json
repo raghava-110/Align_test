@@ -1,0 +1,410 @@
+{
+  "test_cases": [
+    {
+      "id": "TC001",
+      "scenario_id": "TS001",
+      "name": "End-to-End Creation of Three Metrics and Dashboard Addition in a Single Session",
+      "preconditions": [
+        "The user has valid credentials and has permissions to create metrics and customize the dashboard.",
+        "The user has access to the specified company.",
+        "A stable application environment with a persistent user session is available.",
+        "An Excel file named 'test_metrics.xlsx' is available and contains exactly 3 valid data rows for metric creation.",
+        "Pre-existing metrics required for 'Formula' or 'Metric' value sources exist in the system."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "user_email": "sudhirbd@gmail.com",
+        "user_password": "Mindlinks2025#",
+        "company_name": "[Your company name]",
+        "excel_file_path": "path/to/test_metrics.xlsx",
+        "metric1_data": {
+          "Metric_Name": "Weekly Sales Growth",
+          "Current_Value": 150,
+          "Value_Source": "Formula",
+          "First_Metric": "Total Sales",
+          "Operator": "-",
+          "Second_Metric": "Sales Last Week",
+          "Cadence": "Weekly",
+          "Resets_On": "Sunday"
+        },
+        "metric2_data": {
+          "Metric_Name": "Monthly Active Users",
+          "Current_Value": 25000,
+          "Value_Source": "Metric",
+          "Selected_Metric": "Daily Logins",
+          "Cadence": "Monthly"
+        },
+        "metric3_data": {
+          "Metric_Name": "Quarterly Revenue",
+          "Current_Value": 500000,
+          "Value_Source": "Formula",
+          "First_Metric": "Total Bookings",
+          "Operator": "*",
+          "Second_Metric": "Conversion Rate",
+          "Cadence": "Quarterly"
+        }
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the Application URL: https://alignwebdev.aligntoday.com/",
+          "expected_result": "The application login page is displayed."
+        },
+        {
+          "step": 2,
+          "action": "Enter the user's email address 'sudhirbd@gmail.com' and click the 'Continue' button.",
+          "expected_result": "The password input field is displayed."
+        },
+        {
+          "step": 3,
+          "action": "Enter the user's password 'Mindlinks2025#' and click the 'Login' button.",
+          "expected_result": "The user is authenticated and the company selection page is displayed."
+        },
+        {
+          "step": 4,
+          "action": "Locate and click on the specified company name from the list.",
+          "expected_result": "The main application dashboard is displayed for the selected company."
+        },
+        {
+          "step": 5,
+          "action": "--- BEGIN METRIC 1 CREATION (Formula, Weekly) --- Navigate to the 'Metrics' page from the navigation menu.",
+          "expected_result": "The Metrics page loads, displaying a list of existing metrics."
+        },
+        {
+          "step": 6,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 7,
+          "action": "Enter the 'Metric Name' from the first Excel record (e.g., 'Weekly Sales Growth').",
+          "expected_result": "The metric name is entered into the 'Name' field."
+        },
+        {
+          "step": 8,
+          "action": "Enter the 'Current Value' from the first Excel record (e.g., '150').",
+          "expected_result": "The current value is entered into the 'Current Value' field."
+        },
+        {
+          "step": 9,
+          "action": "Select 'Formula' from the 'Value Source' dropdown.",
+          "expected_result": "The 'Formula Builder' interface becomes visible."
+        },
+        {
+          "step": 10,
+          "action": "In the Formula Builder, search for and select the 'First Metric' from the first Excel record.",
+          "expected_result": "The first metric appears in the formula display area."
+        },
+        {
+          "step": 11,
+          "action": "Click the operator button specified in the first Excel record (e.g., '-').",
+          "expected_result": "The operator appears in the formula display area next to the first metric."
+        },
+        {
+          "step": 12,
+          "action": "Search for and select the 'Second Metric' from the first Excel record.",
+          "expected_result": "The complete formula is displayed correctly."
+        },
+        {
+          "step": 13,
+          "action": "Select 'Weekly' from the 'Cadence' dropdown.",
+          "expected_result": "The 'Resets On' dropdown field appears."
+        },
+        {
+          "step": 14,
+          "action": "Select the 'Resets On' day from the first Excel record (e.g., 'Sunday').",
+          "expected_result": "The selected day is displayed in the 'Resets On' field."
+        },
+        {
+          "step": 15,
+          "action": "Click the 'Save' button to create the metric.",
+          "expected_result": "A success message is displayed, and the user is returned to the metrics list."
+        },
+        {
+          "step": 16,
+          "action": "Navigate to 'My Dashboard'.",
+          "expected_result": "The main dashboard page loads."
+        },
+        {
+          "step": 17,
+          "action": "Click the 'Edit KPI' icon in the 'My KPIs' section.",
+          "expected_result": "The 'Edit My KPIs' modal opens with available metrics on the left and selected on the right."
+        },
+        {
+          "step": 18,
+          "action": "Locate the newly created metric ('Weekly Sales Growth') in the left panel and click on it.",
+          "expected_result": "The metric moves from the left panel to the right panel."
+        },
+        {
+          "step": 19,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes, the dashboard refreshes, and 'Weekly Sales Growth' is visible in 'My KPIs'."
+        },
+        {
+          "step": 20,
+          "action": "--- BEGIN METRIC 2 CREATION (Metric, Monthly) --- Navigate to the 'Metrics' page from the navigation menu.",
+          "expected_result": "The Metrics page loads."
+        },
+        {
+          "step": 21,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 22,
+          "action": "Enter the 'Metric Name' from the second Excel record (e.g., 'Monthly Active Users').",
+          "expected_result": "The metric name is entered into the 'Name' field."
+        },
+        {
+          "step": 23,
+          "action": "Enter the 'Current Value' from the second Excel record (e.g., '25000').",
+          "expected_result": "The current value is entered into the 'Current Value' field."
+        },
+        {
+          "step": 24,
+          "action": "Select 'Metric' from the 'Value Source' dropdown.",
+          "expected_result": "The metric selection search/dropdown field becomes visible."
+        },
+        {
+          "step": 25,
+          "action": "Search for and select the existing metric specified in the second Excel record.",
+          "expected_result": "The selected metric is displayed as the source."
+        },
+        {
+          "step": 26,
+          "action": "Select 'Monthly' from the 'Cadence' dropdown.",
+          "expected_result": "The 'Resets On' dropdown does not appear."
+        },
+        {
+          "step": 27,
+          "action": "Click the 'Save' button.",
+          "expected_result": "A success message is displayed."
+        },
+        {
+          "step": 28,
+          "action": "Navigate to 'My Dashboard' and click the 'Edit KPI' icon.",
+          "expected_result": "The 'Edit My KPIs' modal opens."
+        },
+        {
+          "step": 29,
+          "action": "Locate 'Monthly Active Users' in the left panel and click it.",
+          "expected_result": "The metric moves to the right panel."
+        },
+        {
+          "step": 30,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes, and 'Monthly Active Users' is visible in 'My KPIs'."
+        },
+        {
+          "step": 31,
+          "action": "--- BEGIN METRIC 3 CREATION (Formula, Quarterly) --- Navigate to the 'Metrics' page and click 'Add Metric'.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 32,
+          "action": "Enter details for the third metric from the Excel record (Name, Current Value, Value Source='Formula', Formula components).",
+          "expected_result": "All fields are populated correctly."
+        },
+        {
+          "step": 33,
+          "action": "Select 'Quarterly' from the 'Cadence' dropdown.",
+          "expected_result": "The 'Resets On' dropdown does not appear."
+        },
+        {
+          "step": 34,
+          "action": "Click the 'Save' button.",
+          "expected_result": "A success message is displayed."
+        },
+        {
+          "step": 35,
+          "action": "Navigate to 'My Dashboard', open the 'Edit KPI' modal, add the third metric, and save.",
+          "expected_result": "The modal closes, and the third metric is visible in 'My KPIs'."
+        },
+        {
+          "step": 36,
+          "action": "Verify the 'My KPIs' section on the main dashboard.",
+          "expected_result": "All three newly created metrics ('Weekly Sales Growth', 'Monthly Active Users', and the third metric) are simultaneously visible and correctly displayed."
+        }
+      ]
+    },
+    {
+      "id": "TC002",
+      "scenario_id": "TS002",
+      "name": "Create a Formula-Based Metric with Weekly Cadence and Verify Conditional UI",
+      "preconditions": [
+        "The user is logged in and has selected a company.",
+        "The user is on the 'Metrics' page.",
+        "At least two other metrics exist in the system to be used in the formula (e.g., 'Total Revenue' and 'Operating Costs')."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "user_email": "sudhirbd@gmail.com",
+        "user_password": "Mindlinks2025#",
+        "company_name": "[Your company name]",
+        "metric_name": "Net Profit",
+        "current_value": 50000,
+        "value_source": "Formula",
+        "first_metric": "Total Revenue",
+        "operator": "-",
+        "second_metric": "Operating Costs",
+        "cadence": "Weekly",
+        "resets_on": "Monday"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'Add Metric' button on the Metrics page.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid metric name (e.g., 'Net Profit').",
+          "expected_result": "The name 'Net Profit' is displayed in the 'Name' field."
+        },
+        {
+          "step": 3,
+          "action": "Enter a valid numeric 'Current Value' (e.g., '50000').",
+          "expected_result": "The value '50000' is displayed in the 'Current Value' field."
+        },
+        {
+          "step": 4,
+          "action": "Select 'Formula' from the 'Value Source' dropdown.",
+          "expected_result": "The 'Formula Builder' interface with metric search and operator buttons becomes visible."
+        },
+        {
+          "step": 5,
+          "action": "In the Formula Builder, search for and select the 'First Metric' (e.g., 'Total Revenue').",
+          "expected_result": "'Total Revenue' appears in the formula display area."
+        },
+        {
+          "step": 6,
+          "action": "Click the '-' operator button.",
+          "expected_result": "The '-' operator appears next to the first metric in the formula display."
+        },
+        {
+          "step": 7,
+          "action": "Search for and select the 'Second Metric' (e.g., 'Operating Costs').",
+          "expected_result": "The complete formula '(Total Revenue) - (Operating Costs)' is displayed correctly."
+        },
+        {
+          "step": 8,
+          "action": "Click the green checkmark button to confirm the formula.",
+          "expected_result": "The formula is accepted and locked in."
+        },
+        {
+          "step": 9,
+          "action": "Select 'Weekly' from the 'Cadence' dropdown.",
+          "expected_result": "The 'Resets On' dropdown field is displayed."
+        },
+        {
+          "step": 10,
+          "action": "Select 'Monday' from the 'Resets On' dropdown.",
+          "expected_result": "'Monday' is selected and displayed."
+        },
+        {
+          "step": 11,
+          "action": "Click the 'Save' button.",
+          "expected_result": "A confirmation message 'Metric saved successfully' is shown, and the user is redirected to the metrics list."
+        },
+        {
+          "step": 12,
+          "action": "Navigate to 'My Dashboard'.",
+          "expected_result": "The dashboard page is displayed."
+        },
+        {
+          "step": 13,
+          "action": "Click the 'Edit KPI' icon.",
+          "expected_result": "The 'Edit My KPIs' modal opens."
+        },
+        {
+          "step": 14,
+          "action": "Locate the 'Net Profit' metric in the left panel and click it.",
+          "expected_result": "The 'Net Profit' metric moves to the right panel."
+        },
+        {
+          "step": 15,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes and the 'Net Profit' metric is now visible in the 'My KPIs' section."
+        }
+      ]
+    },
+    {
+      "id": "TC003",
+      "scenario_id": "TS003",
+      "name": "Create a Metric-Based Metric with Monthly Cadence and Verify Conditional UI",
+      "preconditions": [
+        "The user is logged in and has selected a company.",
+        "The user is on the 'Metrics' page.",
+        "A pre-existing metric (e.g., 'Total Leads') is available to be used as the source."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "user_email": "sudhirbd@gmail.com",
+        "user_password": "Mindlinks2025#",
+        "company_name": "[Your company name]",
+        "metric_name": "Lead Count Snapshot",
+        "current_value": 450,
+        "value_source": "Metric",
+        "selected_metric": "Total Leads",
+        "cadence": "Monthly"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'Add Metric' button on the Metrics page.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid metric name (e.g., 'Lead Count Snapshot').",
+          "expected_result": "The name 'Lead Count Snapshot' is displayed in the 'Name' field."
+        },
+        {
+          "step": 3,
+          "action": "Enter a valid numeric 'Current Value' (e.g., '450').",
+          "expected_result": "The value '450' is displayed in the 'Current Value' field."
+        },
+        {
+          "step": 4,
+          "action": "Select 'Metric' from the 'Value Source' dropdown.",
+          "expected_result": "The metric selection search/dropdown field becomes visible."
+        },
+        {
+          "step": 5,
+          "action": "Search for and select the existing metric 'Total Leads' from the dropdown/search results.",
+          "expected_result": "The selected metric 'Total Leads' is displayed as the value source."
+        },
+        {
+          "step": 6,
+          "action": "Select 'Monthly' from the 'Cadence' dropdown.",
+          "expected_result": "The 'Resets On' dropdown field remains hidden."
+        },
+        {
+          "step": 7,
+          "action": "Click the 'Save' button.",
+          "expected_result": "A confirmation message 'Metric saved successfully' is shown, and the user is redirected to the metrics list."
+        },
+        {
+          "step": 8,
+          "action": "Navigate to 'My Dashboard'.",
+          "expected_result": "The dashboard page is displayed."
+        },
+        {
+          "step": 9,
+          "action": "Click the 'Edit KPI' icon.",
+          "expected_result": "The 'Edit My KPIs' modal opens."
+        },
+        {
+          "step": 10,
+          "action": "Locate the 'Lead Count Snapshot' metric in the left panel and click it.",
+          "expected_result": "The 'Lead Count Snapshot' metric moves to the right panel."
+        },
+        {
+          "step": 11,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes and the 'Lead Count Snapshot' metric is now visible in the 'My KPIs' section."
+        }
+      ]
+    }
+  ]
+}
