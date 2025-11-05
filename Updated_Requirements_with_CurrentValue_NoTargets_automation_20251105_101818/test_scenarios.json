@@ -1,0 +1,180 @@
+{
+  "scenarios": [
+    {
+      "id": "TS001",
+      "name": "Create and Add a Formula-Based Metric with Weekly Cadence to Dashboard",
+      "description": "This scenario verifies the successful creation of a single metric using a formula as its value source and a weekly cadence. It confirms that the conditional 'Resets On' field appears and can be set. The test concludes by successfully adding the newly created metric to the 'My KPIs' section on the dashboard.",
+      "category": "Functional Testing",
+      "priority": "High",
+      "user_journey": [
+        "Step 1: Navigate to the Application URL and verify the login page is displayed.",
+        "Step 2: Enter the user's email address and click the 'Continue' button.",
+        "Step 3: Enter the user's password and click the 'Login' button.",
+        "Step 4: Select the specified company from the list.",
+        "Step 5: Verify the dashboard page is displayed after company selection.",
+        "Step 6: Navigate to the 'Metrics' page via the navigation menu.",
+        "Step 7: Click the 'Add Metric' button to open the creation form.",
+        "Step 8: Enter the metric name from the test data.",
+        "Step 9: Enter the current value for the metric.",
+        "Step 10: Select 'Formula' from the 'Value Source' dropdown.",
+        "Step 11: Verify the 'Formula Builder' interface is visible.",
+        "Step 12: Search for and select the first metric for the formula.",
+        "Step 13: Click the operator button specified in the test data.",
+        "Step 14: Search for and select the second metric for the formula.",
+        "Step 15: Verify the complete formula is displayed correctly.",
+        "Step 16: Select 'Weekly' from the 'Cadence' dropdown.",
+        "Step 17: Verify the 'Resets On' dropdown appears and select the specified day.",
+        "Step 18: Click the green checkmark button to confirm the formula.",
+        "Step 19: Click the 'Save' button to create the metric.",
+        "Step 20: Navigate to 'My Dashboard'.",
+        "Step 21: Click the 'Edit KPI' icon to open the modal.",
+        "Step 22: Search for the newly created metric name in the modal.",
+        "Step 23: Locate the metric in the left panel of available metrics.",
+        "Step 24: Click the metric in the left panel to move it to the right panel.",
+        "Step 25: Click the 'Save' button in the modal to confirm the KPI configuration.",
+        "Step 26: Verify the modal closes and the new metric is visible in the 'My KPIs' section on the dashboard."
+      ],
+      "acceptance_criteria": [
+        "The user successfully logs in and selects a company.",
+        "The 'Resets On' field correctly appears only when 'Weekly' cadence is selected.",
+        "The formula-based metric is created successfully without any errors.",
+        "The newly created metric can be found in the 'Edit KPI' modal.",
+        "The metric is successfully added to the 'My KPIs' section and displays its name and current value."
+      ],
+      "test_data_requirements": [
+        "A valid user account with access to the specified company.",
+        "An Excel record with Value_Source = 'Formula', Cadence = 'Weekly', and a specified day for Resets_On.",
+        "Two pre-existing metrics in the system to be used in the formula (First_Metric, Second_Metric)."
+      ]
+    },
+    {
+      "id": "TS002",
+      "name": "Create and Add a Metric-Based Metric with Monthly Cadence to Dashboard",
+      "description": "This scenario verifies the successful creation of a single metric that uses another existing metric as its value source. It confirms that for a 'Monthly' cadence, the 'Resets On' field does not appear. The test concludes by successfully adding the new metric to the 'My KPIs' section.",
+      "category": "UI Workflow Testing",
+      "priority": "Medium",
+      "user_journey": [
+        "Step 1: User is already logged in and on the dashboard page.",
+        "Step 2: Navigate to the 'Metrics' page via the navigation menu.",
+        "Step 3: Click the 'Add Metric' button.",
+        "Step 4: Enter the metric name from the test data.",
+        "Step 5: Enter the current value for the metric.",
+        "Step 6: Select 'Metric' from the 'Value Source' dropdown.",
+        "Step 7: Verify the metric selection interface is visible.",
+        "Step 8: Search for and select the existing metric specified in the test data.",
+        "Step 9: Select 'Monthly' from the 'Cadence' dropdown.",
+        "Step 10: Verify that the 'Resets On' dropdown field is not visible.",
+        "Step 11: Click the 'Save' button to create the metric.",
+        "Step 12: Navigate to 'My Dashboard'.",
+        "Step 13: Click the 'Edit KPI' icon to open the modal.",
+        "Step 14: Search for the newly created metric name.",
+        "Step 15: Locate the metric in the left panel.",
+        "Step 16: Click the metric to add it to the selected KPIs in the right panel.",
+        "Step 17: Click the 'Save' button in the modal.",
+        "Step 18: Verify the new metric is visible in the 'My KPIs' section on the dashboard."
+      ],
+      "acceptance_criteria": [
+        "The user can successfully create a metric using another metric as its source.",
+        "The 'Resets On' field is correctly hidden when the cadence is not 'Weekly'.",
+        "The metric is saved successfully and a confirmation is received.",
+        "The new metric is successfully located and added to the 'My KPIs' section.",
+        "The dashboard correctly displays the newly added metric with its name and current value."
+      ],
+      "test_data_requirements": [
+        "A valid user session (user is already logged in).",
+        "An Excel record with Value_Source = 'Metric' and Cadence = 'Monthly'.",
+        "A pre-existing metric in the system to be selected as the source (Selected_Metric)."
+      ]
+    },
+    {
+      "id": "TS003",
+      "name": "End-to-End Multi-Record Workflow for Creating and Adding 3 Metrics to Dashboard",
+      "description": "This end-to-end scenario validates the entire process of logging in once, selecting a company, and then sequentially creating three different metrics based on data from an Excel file. Each metric is created and added to the dashboard before proceeding to the next. The final verification confirms all three metrics are present on the dashboard in a single user session.",
+      "category": "End-to-End Testing",
+      "priority": "High",
+      "user_journey": [
+        "Step 1: Navigate to the Application URL.",
+        "Step 2: Enter the user's email and password to log in.",
+        "Step 3: Select the specified company.",
+        "Step 4: Verify successful navigation to the dashboard.",
+        "Step 5: FOR the first record in the Excel file, execute the metric creation and dashboard addition flow (Steps 6-25 from original requirements).",
+        "Step 6: Verify the first metric is created and added to 'My KPIs'.",
+        "Step 7: WITHOUT logging out, FOR the second record in the Excel file, repeat the metric creation and dashboard addition flow.",
+        "Step 8: Verify the second metric is also visible in 'My KPIs' alongside the first.",
+        "Step 9: WITHOUT logging out, FOR the third record in the Excel file, repeat the metric creation and dashboard addition flow.",
+        "Step 10: Verify the third metric is also visible in 'My KPIs' alongside the first two.",
+        "Step 11: Perform a final verification of the 'My KPIs' section on the dashboard."
+      ],
+      "acceptance_criteria": [
+        "The user session remains active throughout the creation of all three metrics.",
+        "The metric creation form correctly resets between each iteration, with no data leakage from the previous metric.",
+        "Each of the three metrics is created successfully according to its specific data (Value Source, Cadence, etc.).",
+        "Each of the three metrics is successfully added to the 'My KPIs' section on the dashboard.",
+        "The final dashboard view correctly displays all three newly created metrics with their respective names and current values."
+      ],
+      "test_data_requirements": [
+        "A single valid user account (email, password).",
+        "An Excel file (.xlsx or .xls) containing exactly 3 valid data rows for metric creation.",
+        "The Excel data should cover a mix of scenarios, such as 'Formula' and 'Metric' value sources, and different cadences ('Weekly', 'Monthly', etc.).",
+        "Any pre-existing metrics required for the 'Formula' or 'Metric' value sources must exist in the application."
+      ]
+    }
+  ],
+  "dependencies": [
+    "The application at the specified base_url must be available and stable.",
+    "The test user account must exist, be active, and have the necessary permissions to create metrics and edit dashboards.",
+    "For scenarios involving 'Formula' or 'Metric' value sources, the dependent metrics must already exist in the target company's account.",
+    "A correctly formatted Excel file with valid test data must be accessible to the test execution environment."
+  ],
+  "edge_cases": [
+    "Edge cases and negative test scenarios (e.g., invalid data, session timeouts, error handling) are considered out of scope for this happy path generation."
+  ],
+  "test_data": {
+    "base_url": "https://alignwebdev.aligntoday.com/",
+    "test_user_email": "sudhirbd@gmail.com",
+    "test_user_password": "Mindlinks2025#",
+    "company_name_placeholder": "[Your company name]",
+    "excel_required_headers": [
+      "Email",
+      "Password",
+      "Company_Name",
+      "Metric_Name",
+      "Value_Source",
+      "Format",
+      "Current_Value",
+      "Cadence",
+      "Resets_On",
+      "First_Metric",
+      "Operator",
+      "Second_Metric",
+      "Selected_Metric"
+    ],
+    "value_source_options": [
+      "Formula",
+      "Metric"
+    ],
+    "cadence_options": [
+      "Weekly",
+      "Monthly",
+      "Quarterly",
+      "Yearly"
+    ],
+    "resets_on_options": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "operator_options": [
+      "+",
+      "-",
+      "/",
+      "*",
+      "(",
+      ")"
+    ]
+  }
+}
