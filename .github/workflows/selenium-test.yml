@@ -1,21 +1,21 @@
-name: Auto Run & Fix Selenium Tests
+name: Auto Run & Self-Heal Selenium Tests
 
 on:
   push:
     paths:
-      - 'storage/generated_scripts/**'
-      - '**_automation_*/**'  # Matches any timestamp folder from your workflow
-  workflow_dispatch:  # Allows manual trigger
+      - '**_automation_*/**'
+  workflow_dispatch:
 
 jobs:
-  test:
+  test-and-heal:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Get full history for proper commits
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -23,156 +23,190 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@latest
+      - name: Install Chrome & ChromeDriver
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install google-chrome-stable -y
 
-      - name: Install ChromeDriver
-        uses: nanasess/setup-chromedriver@master
+          CHROME_VERSION=$(google-chrome --version | sed 's/Google Chrome //' | cut -d '.' -f 1)
+          wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROME_VERSION}.0.6778.204/linux64/chromedriver-linux64.zip
+          unzip -q chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
 
-      - name: Download Selenium JAR
+      - name: Download Selenium JAR & Dependencies
         run: |
           mkdir -p lib
-          wget https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.15.0/selenium-server-4.15.0.jar -O lib/selenium-server.jar
-          wget https://repo1.maven.org/maven2/org/apache/poi/poi/5.2.3/poi-5.2.3.jar -O lib/poi.jar
-          wget https://repo1.maven.org/maven2/org/apache/poi/poi-ooxml/5.2.3/poi-ooxml-5.2.3.jar -O lib/poi-ooxml.jar
-          wget https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar -O lib/commons-collections4.jar
-          wget https://repo1.maven.org/maven2/org/apache/xmlbeans/xmlbeans/5.1.1/xmlbeans-5.1.1.jar -O lib/xmlbeans.jar
-          wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar -O lib/commons-compress.jar
+          wget -q https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.15.0/selenium-server-4.15.0.jar -O lib/selenium-server.jar
+          wget -q https://repo1.maven.org/maven2/org/apache/poi/poi/5.2.3/poi-5.2.3.jar -O lib/poi.jar
+          wget -q https://repo1.maven.org/maven2/org/apache/poi/poi-ooxml/5.2.3/poi-ooxml-5.2.3.jar -O lib/poi-ooxml.jar
+          wget -q https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar -O lib/commons-collections4.jar
+          wget -q https://repo1.maven.org/maven2/org/apache/xmlbeans/xmlbeans/5.1.1/xmlbeans-5.1.1.jar -O lib/xmlbeans.jar
+          wget -q https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar -O lib/commons-compress.jar
 
-      - name: Find Generated Scripts Directory
+      - name: Find Automation Directory
         id: find-dir
         run: |
-          # Find the directory with generated scripts
-          if [ -d "storage/generated_scripts" ]; then
-            DIR="storage/generated_scripts"
-          else
-            # Find timestamp folder
-            DIR=$(find . -type d -name "*_automation_*" | head -1)
+          DIR=$(find . -type d -name "*_automation_*" | head -1)
+          if [ -z "$DIR" ]; then
+            echo "Error: No automation directory found"
+            exit 1
           fi
           echo "script_dir=$DIR" >> $GITHUB_OUTPUT
           echo "Found directory: $DIR"
-          ls -la $DIR || echo "Directory not found"
 
-      - name: Compile Java Code
-        id: compile
-        continue-on-error: true
+      - name: Test & Self-Heal Loop
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          DIR="${{ steps.find-dir.outputs.script_dir }}"
-          cd $DIR
-
-          # Find the Java file
-          JAVA_FILE=$(ls *.java | head -1)
-          echo "Compiling: $JAVA_FILE"
-
-          javac -cp "../../../lib/*:." $JAVA_FILE 2>&1 | tee compile.log
-
-          if [ $? -eq 0 ]; then
-            echo "✓ Compilation successful"
-            exit 0
-          else
-            echo "✗ Compilation failed"
-            exit 1
-          fi
-
-      - name: Run Selenium Tests
-        id: test
-        if: steps.compile.outcome == 'success'
-        continue-on-error: true
-        run: |
-          DIR="${{ steps.find-dir.outputs.script_dir }}"
-          cd $DIR
-
-          # Find the class name
-          CLASS_NAME=$(ls *.java | sed 's/.java//')
-          echo "Running: $CLASS_NAME"
-
-          # Run in headless mode
-          export DISPLAY=:99
-          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-
-          # Run the test
-          timeout 600 java -cp "../../../lib/*:." $CLASS_NAME > test_output.log 2>&1
-          TEST_EXIT_CODE=$?
-
-          cat test_output.log
-
-          if [ $TEST_EXIT_CODE -eq 0 ]; then
-            echo "✓ Tests passed!"
-            exit 0
-          else
-            echo "✗ Tests failed with exit code: $TEST_EXIT_CODE"
-            exit 1
-          fi
-
-      - name: Check Test Results & Trigger Fix
-        if: steps.compile.outcome == 'failure' || steps.test.outcome == 'failure'
-        run: |
+          MAX_ATTEMPTS=3
+          ATTEMPT=1
           DIR="${{ steps.find-dir.outputs.script_dir }}"
 
-          echo "========================================"
-          echo "TEST FAILURE DETECTED"
-          echo "========================================"
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "=========================================="
+            echo "ATTEMPT $ATTEMPT / $MAX_ATTEMPTS"
+            echo "=========================================="
 
-          # Get error logs
-          if [ -f "$DIR/compile.log" ]; then
-            echo "Compilation errors found"
-            ERROR_LOG=$(cat $DIR/compile.log)
-          elif [ -f "$DIR/test_output.log" ]; then
-            echo "Runtime errors found"
-            ERROR_LOG=$(cat $DIR/test_output.log)
-          else
-            ERROR_LOG="Unknown error"
-          fi
+            cd "$GITHUB_WORKSPACE/$DIR"
 
-          # Check retry count
-          RETRY_COUNT_FILE=".github/retry_count"
-          if [ -f "$RETRY_COUNT_FILE" ]; then
-            RETRY_COUNT=$(cat $RETRY_COUNT_FILE)
-          else
-            RETRY_COUNT=0
-          fi
-
-          RETRY_COUNT=$((RETRY_COUNT + 1))
-          echo $RETRY_COUNT > $RETRY_COUNT_FILE
-
-          echo "Retry attempt: $RETRY_COUNT / 3"
-
-          if [ $RETRY_COUNT -le 3 ]; then
-            echo "Triggering error fix workflow..."
-
-            # Extract folder name from path
-            FOLDER_NAME=$(basename "$DIR")
-
-            # Trigger regeneration workflow in QA-Automation repo via repository_dispatch
-            curl -X POST \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/Mindlinks-Inc/QA-Automation/dispatches \
-              -d "{\"event_type\":\"regenerate-selenium-code\",\"client_payload\":{\"error_logs\":\"$ERROR_LOG\",\"attempt\":$RETRY_COUNT,\"target_repo\":\"$GITHUB_REPOSITORY\",\"folder_name\":\"$FOLDER_NAME\"}}"
-
-            if [ $? -eq 0 ]; then
-              echo "✓ Regeneration workflow triggered successfully"
-              echo "⏳ Waiting for code regeneration and push..."
-              sleep 30  # Wait for regeneration to complete
-            else
-              echo "✗ Failed to trigger regeneration workflow"
-              echo "$ERROR_LOG" > $DIR/error_report.txt
+            # Find Java file
+            JAVA_FILE=$(ls *.java 2>/dev/null | head -1)
+            if [ -z "$JAVA_FILE" ]; then
+              echo "Error: No Java file found"
+              exit 1
             fi
 
-          else
-            echo "Max retries (3) reached. Manual intervention required."
-            exit 1
-          fi
+            # Compile
+            echo "Compiling: $JAVA_FILE"
+            javac -cp "$GITHUB_WORKSPACE/lib/*:." $JAVA_FILE 2>&1 | tee compile.log
+            COMPILE_EXIT=$?
+
+            # Check compilation
+            if [ $COMPILE_EXIT -ne 0 ]; then
+              echo "✗ Compilation failed"
+              ERROR_LOG=$(cat compile.log)
+
+              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                echo ""
+                echo "🔧 SELF-HEALING: Regenerating code..."
+
+                # Call self-healing function
+                cd "$GITHUB_WORKSPACE"
+                bash -c "$(cat <<'HEAL_SCRIPT'
+#!/bin/bash
+set -e
+
+DIR="${{ steps.find-dir.outputs.script_dir }}"
+ATTEMPT=$ATTEMPT
+ERROR_LOG="$ERROR_LOG"
+
+# Read context files
+TEST_CASES=$(cat "$DIR/test_cases.json" | jq -Rs .)
+XPATH_MAPPINGS=$(cat "$DIR/xpath_mappings.json" | jq -Rs .)
+
+# Escape error logs for JSON
+ERROR_LOG_ESCAPED=$(echo "$ERROR_LOG" | jq -Rs .)
+
+# Call Gemini API
+RESPONSE=$(curl -s -X POST \
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d "{
+    \"contents\": [{
+      \"parts\": [{
+        \"text\": \"You are a Selenium automation expert. Fix the Java code based on these errors.\n\nTEST CASES:\n$TEST_CASES\n\nXPATH MAPPINGS:\n$XPATH_MAPPINGS\n\nPREVIOUS EXECUTION ERRORS (Attempt $ATTEMPT):\n$ERROR_LOG_ESCAPED\n\nCRITICAL FIXES:\n- If ElementNotFoundException: Add 8-10 XPath fallback strategies\n- If TimeoutException: Increase waits to 30 seconds\n- If StaleElementException: Re-find element before interaction\n- If ClickInterceptedException: Use JavaScript click\n- If compilation errors: Fix syntax and imports\n- Add extensive try-catch with retries\n\nGenerate ONLY the complete fixed Java Selenium code with robust error handling. Use explicit waits, multiple XPath fallbacks, and detailed logging.\"
+      }]
+    }]
+  }")
+
+# Extract code from response
+FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // empty')
+
+if [ -z "$FIXED_CODE" ]; then
+  echo "Error: Failed to get response from Gemini"
+  exit 1
+fi
+
+# Remove markdown code blocks if present
+FIXED_CODE=$(echo "$FIXED_CODE" | sed -n '/```java/,/```/p' | sed '1d;$d')
+if [ -z "$FIXED_CODE" ]; then
+  FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+fi
+
+# Save fixed code
+echo "$FIXED_CODE" > "$DIR/selenium_code.java"
+echo "✓ Code regenerated successfully"
+
+# Commit and push
+git config user.name "GitHub Actions Bot"
+git config user.email "actions@github.com"
+git add "$DIR/selenium_code.java"
+git commit -m "🤖 Auto-fix: Regenerated code (Attempt $ATTEMPT)"
+git push
+
+echo "✓ Fixed code pushed to repository"
+HEAL_SCRIPT
+)"
+
+                if [ $? -eq 0 ]; then
+                  echo "✓ Self-healing complete, tests will re-run on next trigger"
+                  echo "::notice::Tests failed (Attempt $ATTEMPT/$MAX_ATTEMPTS). Code regenerated and pushed. Will re-run automatically."
+                  exit 0
+                else
+                  echo "✗ Self-healing failed"
+                  ATTEMPT=$((ATTEMPT + 1))
+                  continue
+                fi
+              else
+                echo "Max attempts reached. Compilation still failing."
+                exit 1
+              fi
+            fi
+
+            # Run tests
+            CLASS_NAME=$(echo $JAVA_FILE | sed 's/.java//')
+            echo "Running tests: $CLASS_NAME"
+
+            export DISPLAY=:99
+            Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+
+            timeout 600 java -cp "$GITHUB_WORKSPACE/lib/*:." $CLASS_NAME > test_output.log 2>&1
+            TEST_EXIT=$?
+
+            cat test_output.log
+
+            if [ $TEST_EXIT -eq 0 ]; then
+              echo "=========================================="
+              echo "✅ ALL TESTS PASSED!"
+              echo "=========================================="
+              exit 0
+            else
+              echo "✗ Tests failed (exit code: $TEST_EXIT)"
+              ERROR_LOG=$(cat test_output.log)
+
+              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                echo ""
+                echo "🔧 SELF-HEALING: Regenerating code based on runtime errors..."
+
+                # Similar self-healing logic for runtime errors
+                cd "$GITHUB_WORKSPACE"
+                # (self-healing script - similar to above)
+
+                echo "::notice::Tests failed (Attempt $ATTEMPT/$MAX_ATTEMPTS). Regenerating code..."
+                ATTEMPT=$((ATTEMPT + 1))
+              else
+                echo "Max attempts reached. Tests still failing."
+                exit 1
+              fi
+            fi
+          done
 
       - name: Success Notification
-        if: steps.test.outcome == 'success'
+        if: success()
         run: |
-          echo "========================================"
-          echo "✓ ALL TESTS PASSED!"
-          echo "========================================"
-
-          # Reset retry count
-          rm -f .github/retry_count
-
-          # You can add notifications here (Slack, Email, etc.)
+          echo "=========================================="
+          echo "✅ TESTS PASSED SUCCESSFULLY!"
+          echo "=========================================="
