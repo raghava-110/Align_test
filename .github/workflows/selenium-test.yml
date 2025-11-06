@@ -1,0 +1,168 @@
+name: Auto Run & Fix Selenium Tests
+
+on:
+  push:
+    paths:
+      - 'storage/generated_scripts/**'
+      - '**_automation_*/**'  # Matches any timestamp folder from your workflow
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Get full history for proper commits
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Install ChromeDriver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Download Selenium JAR
+        run: |
+          mkdir -p lib
+          wget https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.15.0/selenium-server-4.15.0.jar -O lib/selenium-server.jar
+          wget https://repo1.maven.org/maven2/org/apache/poi/poi/5.2.3/poi-5.2.3.jar -O lib/poi.jar
+          wget https://repo1.maven.org/maven2/org/apache/poi/poi-ooxml/5.2.3/poi-ooxml-5.2.3.jar -O lib/poi-ooxml.jar
+          wget https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar -O lib/commons-collections4.jar
+          wget https://repo1.maven.org/maven2/org/apache/xmlbeans/xmlbeans/5.1.1/xmlbeans-5.1.1.jar -O lib/xmlbeans.jar
+          wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar -O lib/commons-compress.jar
+
+      - name: Find Generated Scripts Directory
+        id: find-dir
+        run: |
+          # Find the directory with generated scripts
+          if [ -d "storage/generated_scripts" ]; then
+            DIR="storage/generated_scripts"
+          else
+            # Find timestamp folder
+            DIR=$(find . -type d -name "*_automation_*" | head -1)
+          fi
+          echo "script_dir=$DIR" >> $GITHUB_OUTPUT
+          echo "Found directory: $DIR"
+          ls -la $DIR || echo "Directory not found"
+
+      - name: Compile Java Code
+        id: compile
+        continue-on-error: true
+        run: |
+          DIR="${{ steps.find-dir.outputs.script_dir }}"
+          cd $DIR
+
+          # Find the Java file
+          JAVA_FILE=$(ls *.java | head -1)
+          echo "Compiling: $JAVA_FILE"
+
+          javac -cp "../../../lib/*:." $JAVA_FILE 2>&1 | tee compile.log
+
+          if [ $? -eq 0 ]; then
+            echo "✓ Compilation successful"
+            exit 0
+          else
+            echo "✗ Compilation failed"
+            exit 1
+          fi
+
+      - name: Run Selenium Tests
+        id: test
+        if: steps.compile.outcome == 'success'
+        continue-on-error: true
+        run: |
+          DIR="${{ steps.find-dir.outputs.script_dir }}"
+          cd $DIR
+
+          # Find the class name
+          CLASS_NAME=$(ls *.java | sed 's/.java//')
+          echo "Running: $CLASS_NAME"
+
+          # Run in headless mode
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+
+          # Run the test
+          timeout 600 java -cp "../../../lib/*:." $CLASS_NAME > test_output.log 2>&1
+          TEST_EXIT_CODE=$?
+
+          cat test_output.log
+
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "✓ Tests passed!"
+            exit 0
+          else
+            echo "✗ Tests failed with exit code: $TEST_EXIT_CODE"
+            exit 1
+          fi
+
+      - name: Check Test Results & Trigger Fix
+        if: steps.compile.outcome == 'failure' || steps.test.outcome == 'failure'
+        run: |
+          DIR="${{ steps.find-dir.outputs.script_dir }}"
+
+          echo "========================================"
+          echo "TEST FAILURE DETECTED"
+          echo "========================================"
+
+          # Get error logs
+          if [ -f "$DIR/compile.log" ]; then
+            echo "Compilation errors found"
+            ERROR_LOG=$(cat $DIR/compile.log)
+          elif [ -f "$DIR/test_output.log" ]; then
+            echo "Runtime errors found"
+            ERROR_LOG=$(cat $DIR/test_output.log)
+          else
+            ERROR_LOG="Unknown error"
+          fi
+
+          # Check retry count
+          RETRY_COUNT_FILE=".github/retry_count"
+          if [ -f "$RETRY_COUNT_FILE" ]; then
+            RETRY_COUNT=$(cat $RETRY_COUNT_FILE)
+          else
+            RETRY_COUNT=0
+          fi
+
+          RETRY_COUNT=$((RETRY_COUNT + 1))
+          echo $RETRY_COUNT > $RETRY_COUNT_FILE
+
+          echo "Retry attempt: $RETRY_COUNT / 3"
+
+          if [ $RETRY_COUNT -le 3 ]; then
+            echo "Triggering error fix workflow..."
+
+            # Here you would call your Python API or trigger repository dispatch
+            # For now, we'll create an issue to track the error
+            echo "Error logs saved for manual review"
+            echo "$ERROR_LOG" > $DIR/error_report.txt
+
+            # In production, you'd call your Python API:
+            # curl -X POST https://your-server.com/api/fix-selenium \
+            #   -H "Content-Type: application/json" \
+            #   -d "{\"error_logs\": \"$ERROR_LOG\", \"attempt\": $RETRY_COUNT}"
+
+          else
+            echo "Max retries (3) reached. Manual intervention required."
+            exit 1
+          fi
+
+      - name: Success Notification
+        if: steps.test.outcome == 'success'
+        run: |
+          echo "========================================"
+          echo "✓ ALL TESTS PASSED!"
+          echo "========================================"
+
+          # Reset retry count
+          rm -f .github/retry_count
+
+          # You can add notifications here (Slack, Email, etc.)
