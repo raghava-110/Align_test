@@ -30,8 +30,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install google-chrome-stable -y
 
-          CHROME_VERSION=$(google-chrome --version | sed 's/Google Chrome //' | cut -d '.' -f 1)
-          wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROME_VERSION}.0.6778.204/linux64/chromedriver-linux64.zip
+          wget -q https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.87/linux64/chromedriver-linux64.zip
           unzip -q chromedriver-linux64.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
@@ -57,156 +56,139 @@ jobs:
           echo "script_dir=$DIR" >> $GITHUB_OUTPUT
           echo "Found directory: $DIR"
 
-      - name: Test & Self-Heal Loop
+      - name: Compile Java Code
+        id: compile
+        continue-on-error: true
+        run: |
+          DIR="${{ steps.find-dir.outputs.script_dir }}"
+          cd "$DIR"
+          JAVA_FILE=$(ls *.java 2>/dev/null | head -1)
+          echo "Compiling: $JAVA_FILE"
+          javac -cp "$GITHUB_WORKSPACE/lib/*:." $JAVA_FILE 2>&1 | tee compile.log
+
+      - name: Run Selenium Tests
+        id: test
+        if: steps.compile.outcome == 'success'
+        continue-on-error: true
+        run: |
+          DIR="${{ steps.find-dir.outputs.script_dir }}"
+          cd "$DIR"
+
+          CLASS_NAME=$(ls *.java | sed 's/.java//')
+          echo "Running: $CLASS_NAME"
+
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+
+          timeout 600 java -cp "$GITHUB_WORKSPACE/lib/*:." $CLASS_NAME > test_output.log 2>&1
+          TEST_EXIT=$?
+
+          cat test_output.log
+          exit $TEST_EXIT
+
+      - name: Check Results & Self-Heal
+        if: steps.compile.outcome == 'failure' || steps.test.outcome == 'failure'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          MAX_ATTEMPTS=3
-          ATTEMPT=1
           DIR="${{ steps.find-dir.outputs.script_dir }}"
 
-          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-            echo "=========================================="
-            echo "ATTEMPT $ATTEMPT / $MAX_ATTEMPTS"
-            echo "=========================================="
+          echo "=========================================="
+          echo "TEST FAILURE DETECTED"
+          echo "=========================================="
 
-            cd "$GITHUB_WORKSPACE/$DIR"
+          # Get error logs
+          if [ -f "$DIR/compile.log" ]; then
+            ERROR_LOG=$(cat "$DIR/compile.log")
+          elif [ -f "$DIR/test_output.log" ]; then
+            ERROR_LOG=$(cat "$DIR/test_output.log")
+          else
+            ERROR_LOG="Unknown error"
+          fi
 
-            # Find Java file
-            JAVA_FILE=$(ls *.java 2>/dev/null | head -1)
-            if [ -z "$JAVA_FILE" ]; then
-              echo "Error: No Java file found"
+          # Check retry count
+          RETRY_COUNT_FILE=".github/retry_count"
+          if [ -f "$RETRY_COUNT_FILE" ]; then
+            RETRY_COUNT=$(cat "$RETRY_COUNT_FILE")
+          else
+            RETRY_COUNT=0
+          fi
+
+          RETRY_COUNT=$((RETRY_COUNT + 1))
+          echo $RETRY_COUNT > $RETRY_COUNT_FILE
+
+          echo "Retry attempt: $RETRY_COUNT / 3"
+
+          if [ $RETRY_COUNT -le 3 ] && [ -n "$GEMINI_API_KEY" ]; then
+            echo "🔧 Self-healing: Regenerating code..."
+
+            # Read context files
+            TEST_CASES=$(cat "$DIR/test_cases.json")
+            XPATH_MAPPINGS=$(cat "$DIR/xpath_mappings.json")
+
+            # Create prompt for Gemini
+            PROMPT="You are a Selenium automation expert. Fix this Java code based on errors.
+
+          TEST CASES:
+          $TEST_CASES
+
+          XPATH MAPPINGS:
+          $XPATH_MAPPINGS
+
+          ERRORS (Attempt $RETRY_COUNT):
+          $ERROR_LOG
+
+          FIXES NEEDED:
+          - If ElementNotFoundException: Add 8-10 XPath fallback strategies
+          - If TimeoutException: Increase waits to 30 seconds
+          - If StaleElementException: Re-find element before interaction
+          - If ClickInterceptedException: Use JavaScript click
+          - If compilation errors: Fix syntax and imports
+          - Add extensive try-catch with retries
+
+          Generate ONLY the complete fixed Java Selenium code. No explanations, just code."
+
+            # Call Gemini API
+            RESPONSE=$(curl -s -X POST \
+              "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" \
+              -H 'Content-Type: application/json' \
+              -d "{\"contents\":[{\"parts\":[{\"text\":$(echo "$PROMPT" | jq -Rs .)}]}]}")
+
+            # Extract code
+            FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // empty')
+
+            if [ -n "$FIXED_CODE" ]; then
+              # Remove markdown if present
+              echo "$FIXED_CODE" | sed -n '/```java/,/```/p' | sed '1d;$d' > "$DIR/selenium_code.java" || \
+              echo "$FIXED_CODE" > "$DIR/selenium_code.java"
+
+              echo "✓ Code regenerated"
+
+              # Commit and push
+              git config user.name "GitHub Actions Bot"
+              git config user.email "actions@github.com"
+              git add "$DIR/selenium_code.java"
+              git commit -m "🤖 Auto-fix: Regenerated code (Attempt $RETRY_COUNT)"
+              git push
+
+              echo "✓ Fixed code pushed. Tests will re-run automatically."
+            else
+              echo "✗ Failed to regenerate code"
               exit 1
             fi
-
-            # Compile
-            echo "Compiling: $JAVA_FILE"
-            javac -cp "$GITHUB_WORKSPACE/lib/*:." $JAVA_FILE 2>&1 | tee compile.log
-            COMPILE_EXIT=$?
-
-            # Check compilation
-            if [ $COMPILE_EXIT -ne 0 ]; then
-              echo "✗ Compilation failed"
-              ERROR_LOG=$(cat compile.log)
-
-              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                echo ""
-                echo "🔧 SELF-HEALING: Regenerating code..."
-
-                # Call self-healing function
-                cd "$GITHUB_WORKSPACE"
-                bash -c "$(cat <<'HEAL_SCRIPT'
-#!/bin/bash
-set -e
-
-DIR="${{ steps.find-dir.outputs.script_dir }}"
-ATTEMPT=$ATTEMPT
-ERROR_LOG="$ERROR_LOG"
-
-# Read context files
-TEST_CASES=$(cat "$DIR/test_cases.json" | jq -Rs .)
-XPATH_MAPPINGS=$(cat "$DIR/xpath_mappings.json" | jq -Rs .)
-
-# Escape error logs for JSON
-ERROR_LOG_ESCAPED=$(echo "$ERROR_LOG" | jq -Rs .)
-
-# Call Gemini API
-RESPONSE=$(curl -s -X POST \
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d "{
-    \"contents\": [{
-      \"parts\": [{
-        \"text\": \"You are a Selenium automation expert. Fix the Java code based on these errors.\n\nTEST CASES:\n$TEST_CASES\n\nXPATH MAPPINGS:\n$XPATH_MAPPINGS\n\nPREVIOUS EXECUTION ERRORS (Attempt $ATTEMPT):\n$ERROR_LOG_ESCAPED\n\nCRITICAL FIXES:\n- If ElementNotFoundException: Add 8-10 XPath fallback strategies\n- If TimeoutException: Increase waits to 30 seconds\n- If StaleElementException: Re-find element before interaction\n- If ClickInterceptedException: Use JavaScript click\n- If compilation errors: Fix syntax and imports\n- Add extensive try-catch with retries\n\nGenerate ONLY the complete fixed Java Selenium code with robust error handling. Use explicit waits, multiple XPath fallbacks, and detailed logging.\"
-      }]
-    }]
-  }")
-
-# Extract code from response
-FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // empty')
-
-if [ -z "$FIXED_CODE" ]; then
-  echo "Error: Failed to get response from Gemini"
-  exit 1
-fi
-
-# Remove markdown code blocks if present
-FIXED_CODE=$(echo "$FIXED_CODE" | sed -n '/```java/,/```/p' | sed '1d;$d')
-if [ -z "$FIXED_CODE" ]; then
-  FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
-fi
-
-# Save fixed code
-echo "$FIXED_CODE" > "$DIR/selenium_code.java"
-echo "✓ Code regenerated successfully"
-
-# Commit and push
-git config user.name "GitHub Actions Bot"
-git config user.email "actions@github.com"
-git add "$DIR/selenium_code.java"
-git commit -m "🤖 Auto-fix: Regenerated code (Attempt $ATTEMPT)"
-git push
-
-echo "✓ Fixed code pushed to repository"
-HEAL_SCRIPT
-)"
-
-                if [ $? -eq 0 ]; then
-                  echo "✓ Self-healing complete, tests will re-run on next trigger"
-                  echo "::notice::Tests failed (Attempt $ATTEMPT/$MAX_ATTEMPTS). Code regenerated and pushed. Will re-run automatically."
-                  exit 0
-                else
-                  echo "✗ Self-healing failed"
-                  ATTEMPT=$((ATTEMPT + 1))
-                  continue
-                fi
-              else
-                echo "Max attempts reached. Compilation still failing."
-                exit 1
-              fi
-            fi
-
-            # Run tests
-            CLASS_NAME=$(echo $JAVA_FILE | sed 's/.java//')
-            echo "Running tests: $CLASS_NAME"
-
-            export DISPLAY=:99
-            Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-
-            timeout 600 java -cp "$GITHUB_WORKSPACE/lib/*:." $CLASS_NAME > test_output.log 2>&1
-            TEST_EXIT=$?
-
-            cat test_output.log
-
-            if [ $TEST_EXIT -eq 0 ]; then
-              echo "=========================================="
-              echo "✅ ALL TESTS PASSED!"
-              echo "=========================================="
-              exit 0
+          else
+            if [ -z "$GEMINI_API_KEY" ]; then
+              echo "⚠ GEMINI_API_KEY secret not set - cannot self-heal"
             else
-              echo "✗ Tests failed (exit code: $TEST_EXIT)"
-              ERROR_LOG=$(cat test_output.log)
-
-              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                echo ""
-                echo "🔧 SELF-HEALING: Regenerating code based on runtime errors..."
-
-                # Similar self-healing logic for runtime errors
-                cd "$GITHUB_WORKSPACE"
-                # (self-healing script - similar to above)
-
-                echo "::notice::Tests failed (Attempt $ATTEMPT/$MAX_ATTEMPTS). Regenerating code..."
-                ATTEMPT=$((ATTEMPT + 1))
-              else
-                echo "Max attempts reached. Tests still failing."
-                exit 1
-              fi
+              echo "⚠ Max retries (3) reached"
             fi
-          done
+            exit 1
+          fi
 
       - name: Success Notification
-        if: success()
+        if: steps.test.outcome == 'success'
         run: |
           echo "=========================================="
-          echo "✅ TESTS PASSED SUCCESSFULLY!"
+          echo "✅ ALL TESTS PASSED!"
           echo "=========================================="
+          rm -f .github/retry_count
