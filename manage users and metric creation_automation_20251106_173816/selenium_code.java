@@ -26,13 +26,13 @@ public class AlignTestDataDriven {
         "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']", "//input[contains(@data-bind,'value: username')]", "//input[@id='usernameField']", "//span[contains(@class,'k-widget')]//input[@id='usernameField']", "//input[@name='username']", "//input[@type='email']", "//input[@placeholder='Email Address']", "//input[contains(@aria-label, 'Email')]"
     };
     private static final String[] continue_button = {
-        "//button[contains(text(),'Continue')]", "//button[@id='continueButton']", "//button[@type='submit']"
+        "//button[normalize-space()='Continue']", "//button[@id='continueButton']", "//button[@type='submit'][contains(.,'Continue')]"
     };
     private static final String[] password_input = {
         "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']", "//input[contains(@data-bind,'value: password')]", "//input[@id='passwordField']", "//span[contains(@class,'k-widget')]//input[@id='passwordField']", "//input[@name='password']", "//input[@type='password']", "//input[@placeholder='Password']", "//input[contains(@aria-label, 'Password')]"
     };
     private static final String[] login_button = {
-        "//button[contains(text(),'Login')]", "//button[@id='loginButton']", "//button[@type='submit']"
+        "//button[normalize-space()='Login']", "//button[@id='loginButton']", "//button[@type='submit'][contains(.,'Login')]"
     };
     private static final String[] administration_link = {
         "//div[@id='header-navigation']//a[normalize-space()='Administration']", "//a[contains(., 'Administration') and contains(@class, 'nav-link')]", "//li/a[normalize-space()='Administration']"
@@ -50,7 +50,7 @@ public class AlignTestDataDriven {
         "//label[normalize-space()='Admin']/preceding-sibling::input[@type='checkbox']", "//input[@id='inviteUserContentPopup_input_isAdmin']"
     };
     private static final String[] send_invite_button = {
-        "//button[normalize-space()='Send Invite']", "//div[@class='modal-footer']//button[contains(.,'Send Invite')]"
+        "//div[contains(@class,'modal-footer')]//button[normalize-space()='Send Invite']", "//button[normalize-space()='Send Invite']"
     };
     private static final String[] first_name_input = {
         "//input[@id='firstName']", "//input[@name='firstName']", "//input[@placeholder='First Name']"
@@ -89,7 +89,7 @@ public class AlignTestDataDriven {
         "//label[normalize-space()='Resets On']/following-sibling::span//span[@class='k-select']", "//span[@aria-owns='selectedResetWeekDay_listbox']"
     };
     private static final String[] save_button = {
-        "//button[@id='saveButton']", "//button[normalize-space()='Save']", "//button[contains(., 'Save') and not(@style='display: none;')]"
+        "//button[@id='saveButton']", "//button[normalize-space()='Save']", "//button[contains(., 'Save') and not(@style='display: none;') and not(@disabled)]"
     };
     private static final String[] dashboards_link = {
         "//div[@id='header-navigation']//a[normalize-space()='Dashboards']", "//a[contains(., 'Dashboards') and contains(@class, 'nav-link')]", "//li/a[normalize-space()='Dashboards']"
@@ -203,11 +203,16 @@ public class AlignTestDataDriven {
                         return cell.getStringCellValue().trim();
                     } catch (IllegalStateException e) {
                         // Fallback for formula resulting in a number
-                        double formulaValue = cell.getNumericCellValue();
-                        if (formulaValue == Math.floor(formulaValue)) {
-                            return new DecimalFormat("#").format(formulaValue);
+                        try {
+                            double formulaValue = cell.getNumericCellValue();
+                            if (formulaValue == Math.floor(formulaValue)) {
+                                return new DecimalFormat("#").format(formulaValue);
+                            }
+                            return String.valueOf(formulaValue);
+                        } catch (IllegalStateException ex) {
+                            // Fallback for formula resulting in an error
+                            return cell.getCellFormula();
                         }
-                        return String.valueOf(formulaValue);
                     }
                 case BLANK:
                 default:
@@ -241,27 +246,39 @@ public class AlignTestDataDriven {
         for (String xpath : xpaths) {
             try {
                 return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-            } catch (Exception e) {
+            } catch (TimeoutException e) {
                 // Ignore and try next xpath
             }
         }
-        throw new NoSuchElementException("Element not found with any of the provided XPaths.");
+        throw new NoSuchElementException("Element not found with any of the provided XPaths: " + String.join(", ", xpaths));
     }
 
     private void clickElement(String[] xpaths) {
-        WebElement element = findElementWithFallbacks(xpaths);
-        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        try {
+            WebElement element = findElementWithFallbacks(xpaths);
+            wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (ElementClickInterceptedException e) {
+            log("Click intercepted, attempting JavaScript click...");
+            WebElement element = findElementWithFallbacks(xpaths); // Re-find element
+            jsClick(element);
+        }
     }
     
     private void jsClick(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
-        js.executeScript("arguments[0].click();", element);
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
+            js.executeScript("arguments[0].click();", element);
+        } catch (Exception e) {
+             throw new WebDriverException("Failed to click element with JavaScript.", e);
+        }
     }
 
     private void sendKeysToElement(String[] xpaths, String text) {
         if (text == null || text.isEmpty()) return;
         WebElement element = findElementWithFallbacks(xpaths);
-        wait.until(ExpectedConditions.visibilityOf(element)).clear();
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
         element.sendKeys(text);
     }
 
@@ -342,7 +359,9 @@ public class AlignTestDataDriven {
                 log("!!!!!!!!!! ERROR in record " + (i + 1) + ": " + e.getMessage() + " !!!!!!!!!!");
                 e.printStackTrace();
             } finally {
-                isFirstRecord = false;
+                if (i < testData.size() - 1) { // If not the last record
+                    isFirstRecord = false;
+                }
             }
         }
     }
@@ -351,7 +370,7 @@ public class AlignTestDataDriven {
         // Extract data from map
         String testUserEmail = data.getOrDefault("test_user_email", "");
         String testUserPassword = data.getOrDefault("test_user_password", "");
-        String metricName = data.getOrDefault("Metric_Name", "") + " " + System.currentTimeMillis();
+        String metricName = data.getOrDefault("Metric_Name", "Metric") + " " + System.currentTimeMillis();
         String valueSource = data.getOrDefault("Value_Source", "");
         String firstMetric = data.getOrDefault("First_Metric", "");
         String operator = data.getOrDefault("Operator", "");
@@ -383,11 +402,14 @@ public class AlignTestDataDriven {
             selectCompanyByName("Mindlinks QA"); // Company name from analysis
             waitForPageLoad();
             logPass("Login and company selection complete.");
+        } else {
+            driver.get(BASE_URL + "Dashboard"); // Navigate to a known starting point for subsequent tests
+            waitForPageLoad();
         }
 
         if (!inviteUserEmail.isEmpty()) {
             logStart("Step 5-10: Invite and Accept New User");
-            new Actions(driver).moveToElement(findElementWithFallbacks(administration_link)).perform();
+            clickElement(administration_link);
             clickElement(manage_users_link);
             waitForPageLoad();
             clickElement(invite_users_button);
@@ -441,7 +463,7 @@ public class AlignTestDataDriven {
         logPass("Metric '" + metricName + "' created successfully.");
 
         logStart("Step 23-26: Add Metric to Dashboard");
-        new Actions(driver).moveToElement(findElementWithFallbacks(dashboards_link)).perform();
+        clickElement(dashboards_link);
         clickElement(my_dashboard_link);
         waitForPageLoad();
         clickElement(edit_kpi_icon);
@@ -458,12 +480,15 @@ public class AlignTestDataDriven {
             String cardXpath = String.format("//div[contains(@class,'kpi-card-container')]//span[normalize-space()='%s']/ancestor::div[contains(@class,'kpi-card-container')]", metricName);
             WebElement metricCard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cardXpath)));
             new Actions(driver).moveToElement(metricCard).perform();
-            
-            WebElement threeDotMenu = metricCard.findElement(By.xpath(".//span[contains(@class,'ico-threeDots')]"));
-            jsClick(threeDotMenu);
-            sleep(1000);
+            sleep(500); // Wait for hover effects
 
-            WebElement editOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[contains(@class,'k-menu-vertical')]//li//span[normalize-space()='Edit']")));
+            String threeDotMenuXpath = cardXpath + "//span[contains(@class,'ico-threeDots')]";
+            WebElement threeDotMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(threeDotMenuXpath)));
+            jsClick(threeDotMenu);
+            sleep(ACTION_PAUSE_MS);
+
+            String editOptionXpath = "//ul[contains(@class,'k-menu-vertical') and not(contains(@style,'display: none'))]//span[normalize-space()='Edit']";
+            WebElement editOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(editOptionXpath)));
             jsClick(editOption);
             waitForPageLoad();
 
