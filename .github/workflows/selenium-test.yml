@@ -149,13 +149,20 @@ jobs:
           Generate ONLY the complete fixed Java Selenium code. No explanations, just code."
 
             # Call Gemini API
+            echo "Calling Gemini API..."
             RESPONSE=$(curl -s -X POST \
               "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" \
               -H 'Content-Type: application/json' \
               -d "{\"contents\":[{\"parts\":[{\"text\":$(echo "$PROMPT" | jq -Rs .)}]}]}")
 
+            # Debug: Show API response
+            echo "Gemini API Response:"
+            echo "$RESPONSE" | jq '.' || echo "$RESPONSE"
+
             # Extract code
             FIXED_CODE=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // empty')
+
+            echo "Extracted code length: ${#FIXED_CODE}"
 
             if [ -n "$FIXED_CODE" ]; then
               # Remove markdown if present
