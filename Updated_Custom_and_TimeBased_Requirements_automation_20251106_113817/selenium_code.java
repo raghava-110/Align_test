@@ -600,3 +600,4 @@ public class AlignTestDataDriven {
 }// Trigger workflow - testing fixed YAML
 // Debug test
 // Model fix test
+// Testing gemini-2.5-pro model
