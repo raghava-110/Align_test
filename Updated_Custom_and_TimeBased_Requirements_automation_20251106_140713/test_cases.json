@@ -1,0 +1,420 @@
+{
+  "test_cases": [
+    {
+      "id": "TC001",
+      "scenario_id": "TS001",
+      "name": "Create Formula Metric with Weekly Cadence and Custom Target",
+      "preconditions": [
+        "User has a valid account with credentials (sudhirbd@gmail.com).",
+        "The test user has permissions to create metrics and edit dashboards within the specified company.",
+        "The test environment has at least two pre-existing metrics to be used in a formula.",
+        "The application and its backend services are available and functioning correctly."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "test_user_email": "sudhirbd@gmail.com",
+        "test_user_password": "Mindlinks2025#",
+        "company_name": "Mindlinks",
+        "metric_name": "Weekly Formula Metric TC001",
+        "value_source": "Formula",
+        "format": "Number",
+        "cadence": "Weekly",
+        "resets_on": "Monday",
+        "first_metric": "Existing Metric A",
+        "operator": "+",
+        "second_metric": "Existing Metric B",
+        "metric_to_select": null,
+        "target_type": "Custom",
+        "custom_target_values": [
+          400,
+          300,
+          200,
+          100
+        ],
+        "time_based_start_value": null,
+        "time_based_target_value": null
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application URL.",
+          "expected_result": "The login page is displayed successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter the user's email address in the email input field and click the 'Continue' button.",
+          "expected_result": "The password field appears."
+        },
+        {
+          "step": 3,
+          "action": "Enter the user's password in the password input field and click the 'Login' button.",
+          "expected_result": "The user is authenticated and the company selection page loads."
+        },
+        {
+          "step": 4,
+          "action": "Locate and click on the specified company from the list.",
+          "expected_result": "The company is selected and the user is redirected to the dashboard."
+        },
+        {
+          "step": 5,
+          "action": "Verify the dashboard page is displayed after successful login.",
+          "expected_result": "The main dashboard page, including the navigation menu, is visible."
+        },
+        {
+          "step": 6,
+          "action": "Click on 'Metrics' in the navigation menu.",
+          "expected_result": "The Metrics page loads, displaying a list of existing metrics."
+        },
+        {
+          "step": 7,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 8,
+          "action": "Enter the metric name in the 'Name' input field.",
+          "expected_result": "The specified metric name is entered in the field."
+        },
+        {
+          "step": 9,
+          "action": "Click the 'Value Source' dropdown and select 'Formula'.",
+          "expected_result": "The 'Formula' option is selected."
+        },
+        {
+          "step": 10,
+          "action": "Verify the 'Formula Builder' interface is visible.",
+          "expected_result": "The 'Formula Builder' section with a 'Search Metric' input field and operator buttons is displayed."
+        },
+        {
+          "step": 11,
+          "action": "In the 'Search Metric' input field, search for and select the first metric for the formula.",
+          "expected_result": "The selected metric appears in the formula display area."
+        },
+        {
+          "step": 12,
+          "action": "Click on a mathematical operator button (e.g., '+').",
+          "expected_result": "The selected operator appears in the formula display area next to the first metric."
+        },
+        {
+          "step": 13,
+          "action": "In the 'Search Metric' input field, search for and select the second metric for the formula.",
+          "expected_result": "The second metric appears in the formula display area, completing the formula."
+        },
+        {
+          "step": 14,
+          "action": "Verify the complete formula is displayed correctly in the format: (Metric) [Operator] (Metric).",
+          "expected_result": "The formula is displayed correctly and a green checkmark button is visible."
+        },
+        {
+          "step": 15,
+          "action": "Click the 'Cadence' dropdown and select 'Weekly'.",
+          "expected_result": "The cadence is set to 'Weekly'."
+        },
+        {
+          "step": 16,
+          "action": "Verify the 'Resets On' dropdown appears and select a day of the week (e.g., 'Monday').",
+          "expected_result": "The 'Resets On' dropdown is visible and the selected day is displayed."
+        },
+        {
+          "step": 17,
+          "action": "Click the green checkmark button to confirm the formula.",
+          "expected_result": "The formula is accepted by the system."
+        },
+        {
+          "step": 18,
+          "action": "Click the 'Save' button on the metric creation form.",
+          "expected_result": "The metric is created successfully and the user is returned to the Metrics page."
+        },
+        {
+          "step": 19,
+          "action": "Navigate to 'My Dashboard' via the navigation menu.",
+          "expected_result": "The 'My Dashboard' page loads with the 'My KPIs' section visible."
+        },
+        {
+          "step": 20,
+          "action": "Click the 'Edit KPI' icon in the 'My KPIs' section.",
+          "expected_result": "A modal opens with two panels: available metrics on the left and selected KPIs on the right."
+        },
+        {
+          "step": 21,
+          "action": "Locate the newly created metric in the left panel of available metrics.",
+          "expected_result": "The metric is found in the left panel."
+        },
+        {
+          "step": 22,
+          "action": "Click the metric in the left panel.",
+          "expected_result": "The metric automatically moves to the right panel (selected KPIs)."
+        },
+        {
+          "step": 23,
+          "action": "Click the 'Save' button in the modal.",
+          "expected_result": "The modal closes and the dashboard refreshes to show the newly added metric card in the 'My KPIs' section."
+        },
+        {
+          "step": 24,
+          "action": "Locate the correct metric card on the dashboard.",
+          "expected_result": "The metric card for the newly created metric is visible on the dashboard."
+        },
+        {
+          "step": 25,
+          "action": "Hover the mouse cursor over the metric card.",
+          "expected_result": "The three-dot menu button becomes visible on the card."
+        },
+        {
+          "step": 26,
+          "action": "Click the three-dot menu button.",
+          "expected_result": "A dropdown menu appears with options including 'Edit'."
+        },
+        {
+          "step": 27,
+          "action": "Click the 'Edit' option from the dropdown menu.",
+          "expected_result": "The user is navigated to the Edit page for the metric."
+        },
+        {
+          "step": 28,
+          "action": "Wait for the Edit page to load and select the 'Target' tab.",
+          "expected_result": "The Target configuration section is displayed with 'Custom', 'Time-Based', and 'None' options."
+        },
+        {
+          "step": 29,
+          "action": "Click the 'Custom' radio button.",
+          "expected_result": "Four input fields for custom targets (Level 1, Level 2, Level 3, Level 4) appear."
+        },
+        {
+          "step": 30,
+          "action": "Enter descending numeric values into the Level 1, Level 2, Level 3, and Level 4 target fields.",
+          "expected_result": "All four target values are entered correctly."
+        },
+        {
+          "step": 31,
+          "action": "Click the 'Save' button to save the target configuration.",
+          "expected_result": "The target configuration is saved, and the page navigates back to the dashboard."
+        },
+        {
+          "step": 32,
+          "action": "Verify the metric card on the dashboard displays the custom target indicators.",
+          "expected_result": "The metric card now shows visual indicators (e.g., colored zones) representing the four custom target levels."
+        }
+      ]
+    },
+    {
+      "id": "TC002",
+      "scenario_id": "TS002",
+      "name": "Create Metric from Existing Metric with Monthly Cadence and Time-Based Target",
+      "preconditions": [
+        "User has a valid account with credentials (sudhirbd@gmail.com).",
+        "The test user has permissions to create metrics and edit dashboards within the specified company.",
+        "The test environment has at least one pre-existing metric to be used as a value source.",
+        "The application and its backend services are available and functioning correctly."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "test_user_email": "sudhirbd@gmail.com",
+        "test_user_password": "Mindlinks2025#",
+        "company_name": "Mindlinks",
+        "metric_name": "Monthly Time-Based Metric TC002",
+        "value_source": "Metric",
+        "format": "Number",
+        "cadence": "Monthly",
+        "resets_on": null,
+        "first_metric": null,
+        "operator": null,
+        "second_metric": null,
+        "metric_to_select": "Existing Metric C",
+        "target_type": "Time-Based",
+        "custom_target_values": null,
+        "time_based_start_value": 50,
+        "time_based_target_value": 500
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application URL and log in with valid credentials, then select the specified company.",
+          "expected_result": "The user successfully logs in and the main dashboard page is displayed."
+        },
+        {
+          "step": 2,
+          "action": "Click on 'Metrics' in the navigation menu.",
+          "expected_result": "The Metrics page loads."
+        },
+        {
+          "step": 3,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 4,
+          "action": "Enter the metric name in the 'Name' input field.",
+          "expected_result": "The specified metric name is entered in the field."
+        },
+        {
+          "step": 5,
+          "action": "Click the 'Value Source' dropdown and select 'Metric'.",
+          "expected_result": "The 'Metric' option is selected and a metric selection interface is visible."
+        },
+        {
+          "step": 6,
+          "action": "Search for and select an existing metric from the metric selection interface.",
+          "expected_result": "The selected metric is displayed as the value source."
+        },
+        {
+          "step": 7,
+          "action": "Click the 'Cadence' dropdown and select 'Monthly'.",
+          "expected_result": "The cadence is set to 'Monthly' and the 'Resets On' dropdown does not appear."
+        },
+        {
+          "step": 8,
+          "action": "Click the 'Save' button to create the metric.",
+          "expected_result": "The metric is created successfully."
+        },
+        {
+          "step": 9,
+          "action": "Navigate to 'My Dashboard' and click the 'Edit KPI' icon.",
+          "expected_result": "The 'Edit KPI' modal opens."
+        },
+        {
+          "step": 10,
+          "action": "Locate the newly created metric in the left panel and click it to add it to the right panel.",
+          "expected_result": "The metric moves to the selected KPIs panel on the right."
+        },
+        {
+          "step": 11,
+          "action": "Click 'Save' in the modal.",
+          "expected_result": "The modal closes and the dashboard refreshes, showing the new metric card."
+        },
+        {
+          "step": 12,
+          "action": "On the new metric card, hover to reveal the three-dot menu, click it, and select 'Edit'.",
+          "expected_result": "The user is navigated to the Edit page for the metric."
+        },
+        {
+          "step": 13,
+          "action": "On the Edit page, select the 'Target' tab.",
+          "expected_result": "The Target configuration section is displayed."
+        },
+        {
+          "step": 14,
+          "action": "Click the 'Time-Based' radio button.",
+          "expected_result": "Two input fields, 'Start' and 'Target', appear."
+        },
+        {
+          "step": 15,
+          "action": "Enter a numeric value in the 'Start' input field.",
+          "expected_result": "The start value is entered correctly."
+        },
+        {
+          "step": 16,
+          "action": "Enter a numeric value greater than the start value in the 'Target' input field.",
+          "expected_result": "The target value is entered correctly."
+        },
+        {
+          "step": 17,
+          "action": "Click the 'Save' button to save the target configuration.",
+          "expected_result": "The target is saved, and the page navigates back to the dashboard."
+        },
+        {
+          "step": 18,
+          "action": "Verify the metric card on the dashboard displays the time-based progress indicator.",
+          "expected_result": "The metric card is updated to show a progress indicator (e.g., a progress bar) reflecting the start and target values."
+        }
+      ]
+    },
+    {
+      "id": "TC003",
+      "scenario_id": "TS003",
+      "name": "Create Formula Metric with Quarterly Cadence and Add to Dashboard without a Target",
+      "preconditions": [
+        "User has a valid account with credentials (sudhirbd@gmail.com).",
+        "The test user has permissions to create metrics and edit dashboards within the specified company.",
+        "The test environment has at least two pre-existing metrics to be used in a formula.",
+        "The application and its backend services are available and functioning correctly."
+      ],
+      "test_data": {
+        "base_url": "https://alignwebdev.aligntoday.com/",
+        "test_user_email": "sudhirbd@gmail.com",
+        "test_user_password": "Mindlinks2025#",
+        "company_name": "Mindlinks",
+        "metric_name": "Quarterly Formula No Target TC003",
+        "value_source": "Formula",
+        "format": "Number",
+        "cadence": "Quarterly",
+        "resets_on": null,
+        "first_metric": "Existing Metric A",
+        "operator": "*",
+        "second_metric": "Existing Metric D",
+        "metric_to_select": null,
+        "target_type": "None",
+        "custom_target_values": null,
+        "time_based_start_value": null,
+        "time_based_target_value": null
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application URL and log in with valid credentials, then select the specified company.",
+          "expected_result": "The user successfully logs in and the main dashboard page is displayed."
+        },
+        {
+          "step": 2,
+          "action": "Click on 'Metrics' in the navigation menu.",
+          "expected_result": "The Metrics page loads."
+        },
+        {
+          "step": 3,
+          "action": "Click the 'Add Metric' button.",
+          "expected_result": "The metric creation form appears."
+        },
+        {
+          "step": 4,
+          "action": "Enter the metric name.",
+          "expected_result": "The metric name is entered."
+        },
+        {
+          "step": 5,
+          "action": "Select 'Formula' from the 'Value Source' dropdown.",
+          "expected_result": "The Formula Builder interface appears."
+        },
+        {
+          "step": 6,
+          "action": "Search for and select the first metric, select a mathematical operator, and search for and select the second metric.",
+          "expected_result": "A complete formula is constructed and displayed."
+        },
+        {
+          "step": 7,
+          "action": "Select 'Quarterly' from the 'Cadence' dropdown.",
+          "expected_result": "The cadence is set to 'Quarterly'."
+        },
+        {
+          "step": 8,
+          "action": "Click the green checkmark button to confirm the formula, then click the 'Save' button.",
+          "expected_result": "The new formula-based metric is created successfully."
+        },
+        {
+          "step": 9,
+          "action": "Navigate to 'My Dashboard'.",
+          "expected_result": "The 'My Dashboard' page loads."
+        },
+        {
+          "step": 10,
+          "action": "Click the 'Edit KPI' icon to open the modal.",
+          "expected_result": "The 'Edit KPI' modal opens, showing available and selected metrics."
+        },
+        {
+          "step": 11,
+          "action": "Locate the newly created metric in the left panel and click it.",
+          "expected_result": "The metric is added to the right panel of selected KPIs."
+        },
+        {
+          "step": 12,
+          "action": "Click 'Save' in the modal.",
+          "expected_result": "The modal closes and the dashboard refreshes to display the new metric card."
+        },
+        {
+          "step": 13,
+          "action": "Locate the correct metric card on the dashboard and verify its appearance.",
+          "expected_result": "The metric card is displayed correctly with its name and value, but without any target-related visual indicators (no progress bars, no colored zones)."
+        }
+      ]
+    }
+  ]
+}
