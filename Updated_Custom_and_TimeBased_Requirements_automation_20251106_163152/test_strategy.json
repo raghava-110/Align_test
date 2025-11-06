@@ -1,0 +1,52 @@
+{
+  "test_types": [
+    "End-to-End (E2E) Testing: The entire set of requirements defines a complete user journey, which is the primary focus.",
+    "Functional Testing: Each step involves verifying specific functionalities, such as form submission, data saving, and correct UI responses to user input.",
+    "UI Testing: The test includes numerous checks for the visibility, state (enabled/disabled), and presence of specific UI components based on user selections.",
+    "Data-Driven Testing: The requirements explicitly define an Excel-based data structure to run multiple test scenarios with varying inputs (e.g., different cadences, target types, value sources).",
+    "Regression Testing: This comprehensive E2E scenario is a critical candidate for a regression suite to ensure this core workflow is not broken by future development."
+  ],
+  "test_categories": [
+    "User Authentication and Session Management",
+    "Metric Creation - Formula Source",
+    "Metric Creation - Existing Metric Source",
+    "Dashboard KPI Management",
+    "Metric Target Configuration - Custom Targets",
+    "Metric Target Configuration - Time-Based Targets",
+    "Data-Driven Test Execution via Excel"
+  ],
+  "test_data": {
+    "base_url": "https://alignwebdev.aligntoday.com/",
+    "test_user_email": "sudhirbd@gmail.com",
+    "test_user_password": "Mindlinks2025#",
+    "company_name": "[Your company name]",
+    "metric_name": "[Name of the metric to be created]",
+    "value_source": "[Formula or Metric]",
+    "format": "Number",
+    "cadence": "[Weekly, Monthly, Quarterly, or Yearly]",
+    "resets_on": "[Day of week - only if Cadence = Weekly]",
+    "first_metric": "[Name of first metric to use in formula]",
+    "operator": "[+, -, /, *, (, )]",
+    "second_metric": "[Name of second metric to use in formula]",
+    "metric_to_select": "[Name of existing metric]",
+    "target_type": "[Custom or Time-Based]",
+    "custom_target_values": "[4 values from highest to lowest - Level 1, Level 2, Level 3, Level 4]",
+    "time_based_start_value": "[Starting value]",
+    "time_based_target_value": "[Target value to achieve]"
+  },
+  "priorities": [
+    "High: The complete end-to-end user flow from login to verifying the configured target on the dashboard. This includes successful metric creation (especially with a formula), adding it to 'My KPIs', and saving a target.",
+    "High: Correct handling of conditional UI elements, such as the appearance of the 'Resets On' field for Weekly cadence and the different input fields for Custom vs. Time-Based targets.",
+    "Medium: Robust identification and interaction with dynamic and context-aware UI elements, such as the hover-activated three-dot menu and selecting the correct metric card when duplicates exist.",
+    "Medium: Validation of data integrity at each step, ensuring the entered formula, metric name, and target values are saved and displayed correctly.",
+    "Low: Verification of placeholder text and non-critical UI labels that do not impact the core functionality."
+  ],
+  "risk_areas": [
+    "Automation Flakiness: The test flow relies on complex UI interactions like hovering to reveal elements (three-dot menu), identifying elements within a dynamically loaded list, and handling asynchronous page/component refreshes. These are common sources of unstable tests.",
+    "Dynamic Element Identification: The requirement to identify the 'correct' metric card among potential duplicates (Step 25) is a significant risk. A failure in this logic will cause the test to interact with the wrong element and produce a false negative.",
+    "Formula Builder Complexity: The formula builder involves searching for metrics, selecting them, and applying operators. Any bugs in the search functionality, metric selection, or formula validation logic could block the entire test case.",
+    "State Management: The multi-step process (create metric -> save -> add to dashboard -> save -> edit -> configure target -> save) involves multiple state changes. A failure at any save point could lead to data inconsistency or an invalid application state for subsequent steps.",
+    "Test Data Dependency: The test is highly dependent on the existence of pre-requisite metrics ('First Metric', 'Second Metric') for the formula creation path. If these metrics are not present, the test will fail early."
+  ],
+  "recommendations": "The automation strategy should prioritize stability for complex UI interactions. Implement explicit waits for dynamic elements to appear, become clickable, or for asynchronous operations to complete, rather than using fixed delays. The logic for identifying the correct metric card (Step 25) must be exceptionally robust, a-t-il dit, potentially using a combination of name, position (e.g., 'last'), and other unique attributes. A pre-test setup or a post-test cleanup step to manage test data (like creating prerequisite metrics or deleting the newly created metric) is highly recommended to ensure test environment consistency and prevent failures from accumulated test data."
+}
