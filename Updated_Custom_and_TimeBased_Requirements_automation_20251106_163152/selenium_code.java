@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AlignTestDataDriven {
 
@@ -29,15 +28,19 @@ public class AlignTestDataDriven {
         "//input[@id='usernameField']",
         "//input[@name='username']",
         "//input[@type='email']",
+        "//input[@autocomplete='username']",
         "//input[contains(@placeholder, 'Email')]",
-        "//label[contains(text(), 'Email')]/following-sibling::span//input"
+        "//label[contains(text(), 'Email')]/following-sibling::span//input",
+        "//div[label[contains(text(), 'Email')]]//input"
     };
 
     private static final String[] CONTINUE_BUTTON_XPATHS = {
+        "//button[normalize-space()='Continue']",
         "//button[contains(text(), 'Continue')]",
         "//button[@id='continueButton']",
         "//button[@type='submit']",
-        "//button[contains(@class, 'continue')]"
+        "//button[contains(@class, 'continue')]",
+        "//button/span[normalize-space()='Continue']/.."
     };
 
     private static final String[] PASSWORD_INPUT_XPATHS = {
@@ -46,101 +49,130 @@ public class AlignTestDataDriven {
         "//input[@id='passwordField']",
         "//input[@name='password']",
         "//input[@type='password']",
-        "//input[contains(@placeholder, 'Password')]"
+        "//input[@autocomplete='current-password']",
+        "//input[contains(@placeholder, 'Password')]",
+        "//div[label[contains(text(), 'Password')]]//input"
     };
 
     private static final String[] LOGIN_BUTTON_XPATHS = {
         "//button[normalize-space()='Login']",
+        "//button[contains(text(), 'Login')]",
         "//button[@id='loginButton']",
         "//button[@type='submit']",
-        "//button[contains(text(), 'Login')]"
+        "//button/span[normalize-space()='Login']/..",
+        "//button[@data-testid='login-button']"
     };
 
     private static final String[] METRICS_LINK_XPATHS = {
         "//div[@id='navigation-header']//a[normalize-space()='Metrics']",
         "//a[@href='/Metric']",
         "//nav//a[contains(text(), 'Metrics')]",
-        "//div[contains(@class, 'main-nav')]//a[normalize-space()='Metrics']"
+        "//div[contains(@class, 'main-nav')]//a[normalize-space()='Metrics']",
+        "//div[@id='navigation-header']//a[span[normalize-space()='Metrics']]",
+        "//a[.//text()='Metrics']"
     };
 
     private static final String[] ADD_METRIC_BUTTON_XPATHS = {
+        "//button[normalize-space()='Add Metric']",
         "//button[contains(text(), 'Add Metric')]",
         "//a[contains(text(), 'Add Metric')]",
         "//button[@id='addMetricButton']",
-        "//button[contains(@class, 'add-metric')]"
+        "//button[contains(@class, 'add-metric')]",
+        "//a[@role='button' and contains(text(), 'Add Metric')]"
     };
 
     private static final String[] METRIC_NAME_INPUT_XPATHS = {
         "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']",
         "//input[@placeholder='Name of the Metric']",
         "//label[normalize-space()='Name']/following-sibling::div/input",
-        "//input[contains(@class,'metric-name')]"
+        "//div[label[normalize-space()='Name']]//input",
+        "//input[contains(@class,'metric-name')]",
+        "//input[contains(@class,'autocomplete-off') and @placeholder='Name of the Metric']"
     };
 
     private static final String[] VALUE_SOURCE_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Value Source']/following-sibling::span[contains(@class, 'k-dropdown')]/span[@class='k-input-value-text']",
-        "//label[normalize-space()='Value Source']/following-sibling::span//span[contains(@class, 'k-select')]"
+        "//label[normalize-space()='Value Source']/following-sibling::span[contains(@class, 'k-dropdown')]",
+        "//label[normalize-space()='Value Source']/following-sibling::span//span[contains(@class, 'k-select')]",
+        "//span[@aria-owns='selectedIntegration_listbox']"
     };
 
     private static final String[] FORMULA_SEARCH_METRIC_INPUT_XPATHS = {
         "//input[@data-bind='events: { keyup: calculated.onFilterChange }']",
         "//input[@placeholder='Name or Owner']",
-        "//div[contains(@class, 'formula-builder')]//input[@type='text']"
+        "//div[contains(@class, 'formula-builder')]//input[@type='text']",
+        "//div[@class='calculated-metric-search']//input"
     };
 
     private static final String[] CADENCE_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Cadence']/following-sibling::span[contains(@class, 'k-dropdown')]/span[@class='k-input-value-text']",
-        "//label[normalize-space()='Cadence']/following-sibling::span//span[contains(@class, 'k-select')]"
+        "//label[normalize-space()='Cadence']/following-sibling::span[contains(@class, 'k-dropdown')]",
+        "//label[normalize-space()='Cadence']/following-sibling::span//span[contains(@class, 'k-select')]",
+        "//span[@aria-owns='selectedCadence_listbox']"
     };
 
     private static final String[] RESETS_ON_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Resets On']/following-sibling::span[contains(@class, 'k-dropdown')]/span[@class='k-input-value-text']",
-        "//label[normalize-space()='Resets On']/following-sibling::span//span[contains(@class, 'k-select')]"
+        "//label[normalize-space()='Resets On']/following-sibling::span[contains(@class, 'k-dropdown')]",
+        "//label[normalize-space()='Resets On']/following-sibling::span//span[contains(@class, 'k-select')]",
+        "//span[@aria-owns='selectedResetWeekDay_listbox']"
     };
     
     private static final String[] FORMULA_CONFIRM_CHECKMARK_XPATHS = {
         "//span[@title='Validate and Calculate']",
-        "//span[contains(@class, 'ico-checkmark')]"
+        "//span[contains(@class, 'ico-checkmark')]",
+        "//button[@title='Validate and Calculate']",
+        "//span[contains(@class, 'ico-checkmark')]/ancestor::button"
     };
 
     private static final String[] SAVE_BUTTON_XPATHS = {
         "//button[@id='saveButton']",
         "//button[normalize-space()='Save']",
-        "//button[contains(., 'Save') and contains(@class, 'primary')]"
+        "//button[contains(., 'Save') and contains(@class, 'primary')]",
+        "//button[@type='submit' and (normalize-space()='Save' or .//span[normalize-space()='Save'])]"
     };
 
     private static final String[] MY_DASHBOARD_LINK_XPATHS = {
         "//div[@id='navigation-header']//a[normalize-space()='My Dashboard']",
         "//a[@href='/Dashboard']",
-        "//nav//a[contains(text(), 'My Dashboard')]"
+        "//nav//a[contains(text(), 'My Dashboard')]",
+        "//div[@id='navigation-header']//a[span[normalize-space()='My Dashboard']]",
+        "//a[.//text()='My Dashboard']"
     };
 
     private static final String[] EDIT_KPI_ICON_XPATHS = {
         "//div[@id='myKpi']//span[@title='Edit Kpi']",
-        "//h2[normalize-space()=\"My KPIs\"]/following-sibling::div//span[contains(@class, 'ico-edit')]"
+        "//h2[normalize-space()=\"My KPIs\"]/following-sibling::div//span[contains(@class, 'ico-edit')]",
+        "//div[contains(@class,'my-kpis')]//span[contains(@class, 'ico-edit')]",
+        "//div[@id='myKpi']//button[@title='Edit Kpi']"
     };
 
     private static final String[] KPI_MODAL_SEARCH_INPUT_XPATHS = {
-        "//div[contains(@class, 'kpi-modal')]//input[@placeholder='Search']"
+        "//div[contains(@class, 'kpi-modal')]//input[@placeholder='Search']",
+        "//div[contains(@class, 'k-window-content') and .//h3[text()='Select KPIs']]//input[@placeholder='Search']"
     };
 
+
     private static final String[] KPI_MODAL_SAVE_BUTTON_XPATHS = {
-        "//div[contains(@class, 'k-window-content')]//button[normalize-space()='Save']"
+        "//div[contains(@class, 'k-window-content')]//button[normalize-space()='Save']",
+        "//div[contains(@class, 'k-window-actions')]//button[normalize-space()='Save']"
     };
     
     private static final String[] TARGET_TAB_XPATHS = {
         "//a[normalize-space()='Target']",
-        "//li/a[contains(text(), 'Target')]"
+        "//li/a[contains(text(), 'Target')]",
+        "//div[contains(@class, 'k-tabstrip-items')]//a[normalize-space()='Target']"
     };
 
     private static final String[] CUSTOM_TARGET_RADIO_XPATHS = {
         "//label[normalize-space()='Custom']/preceding-sibling::input[@type='radio']",
-        "//input[@name='targetTemplate' and @value='1']"
+        "//input[@name='targetTemplate' and @value='1']",
+        "//label[normalize-space()='Custom']/input[@type='radio']",
+        "//input[@type='radio']/following-sibling::label[normalize-space()='Custom']"
     };
 
     private static final String[] TIME_BASED_TARGET_RADIO_XPATHS = {
         "//label[normalize-space()='Time-Based']/preceding-sibling::input[@type='radio']",
-        "//input[@name='targetTemplate' and @value='2']"
+        "//input[@name='targetTemplate' and @value='2']",
+        "//label[normalize-space()='Time-Based']/input[@type='radio']",
+        "//input[@type='radio']/following-sibling::label[normalize-space()='Time-Based']"
     };
 
     // ========== CONFIGURATION ==========
@@ -263,10 +295,16 @@ public class AlignTestDataDriven {
 
     private void clickElement(String[] xpaths) {
         WebElement element = findElementWithFallbacks(xpaths);
-        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (ElementClickInterceptedException e) {
+            log("  Click intercepted. Retrying with JavaScript click.");
+            jsClick(element);
+        }
     }
     
     private void jsClick(WebElement element) {
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
         js.executeScript("arguments[0].click();", element);
     }
 
@@ -340,7 +378,7 @@ public class AlignTestDataDriven {
         for (int i = 0; i < testData.size(); i++) {
             Map<String, String> data = testData.get(i);
             log("\n=====================================================================");
-            log("Executing Test Case: " + (i + 1) + " - " + data.getOrDefault("name", "N/A"));
+            log("Executing Test Case: " + (i + 1) + " - " + data.getOrDefault("metric_name", "N/A"));
             log("=====================================================================");
             try {
                 executeWorkflow(data);
@@ -424,28 +462,28 @@ public class AlignTestDataDriven {
         if ("Formula".equalsIgnoreCase(valueSource)) {
             logStart("Step 11: Select First Metric for Formula");
             sendKeysToElement(FORMULA_SEARCH_METRIC_INPUT_XPATHS, firstMetric);
-            String firstMetricXpath = String.format("//ul[contains(@class, 'k-list')]/li[normalize-space()='%s']", firstMetric);
+            String firstMetricXpath = String.format("//ul[contains(@class, 'k-list') and not(contains(@style, 'display: none'))]/li[normalize-space()='%s']", firstMetric);
             clickElement(new String[]{firstMetricXpath});
             logPass("Selected first metric: " + firstMetric);
 
             logStart("Step 12: Select Operator");
-            String operatorXpath = String.format("//button[normalize-space()='%s']", operator);
+            String operatorXpath = String.format("//div[@class='calculated-operators']//button[normalize-space()='%s']", operator);
             clickElement(new String[]{operatorXpath});
             logPass("Selected operator: " + operator);
 
             logStart("Step 13: Select Second Metric for Formula");
             sendKeysToElement(FORMULA_SEARCH_METRIC_INPUT_XPATHS, secondMetric);
-            String secondMetricXpath = String.format("//ul[contains(@class, 'k-list')]/li[normalize-space()='%s']", secondMetric);
+            String secondMetricXpath = String.format("//ul[contains(@class, 'k-list') and not(contains(@style, 'display: none'))]/li[normalize-space()='%s']", secondMetric);
             clickElement(new String[]{secondMetricXpath});
             logPass("Selected second metric: " + secondMetric);
             
-            logStart("Step 17: Confirm Formula");
+            logStart("Step 14: Confirm Formula");
             clickElement(FORMULA_CONFIRM_CHECKMARK_XPATHS);
             logPass("Formula confirmed.");
 
         } else if ("Metric".equalsIgnoreCase(valueSource)) {
             logStart("Step 9 (ALT): Select Existing Metric");
-            String metricDropdownXpath = "//label[normalize-space()='Metric']/following-sibling::span//span[contains(@class, 'k-select')]";
+            String metricDropdownXpath = "//label[normalize-space()='Metric']/following-sibling::span[contains(@class, 'k-dropdown')]";
             selectKendoDropdownOption(new String[]{metricDropdownXpath}, metricToSelect);
             logPass("Selected existing metric: " + metricToSelect);
         }
@@ -462,47 +500,47 @@ public class AlignTestDataDriven {
             logPass("Selected resets on: " + resetsOn);
         }
 
-        logStart("Step 18: Save Metric");
+        logStart("Step 17: Save Metric");
         clickElement(SAVE_BUTTON_XPATHS);
         wait.until(ExpectedConditions.urlContains("Metric"));
         logPass("Metric saved successfully.");
         sleep(PAGE_SETTLE_MS);
 
         // --- Add Metric to Dashboard ---
-        logStart("Step 19: Navigate to My Dashboard");
+        logStart("Step 18: Navigate to My Dashboard");
         clickElement(MY_DASHBOARD_LINK_XPATHS);
         wait.until(ExpectedConditions.urlContains("Dashboard"));
         logPass("Navigated to My Dashboard.");
 
-        logStart("Step 20: Open Edit KPI Modal");
+        logStart("Step 19: Open Edit KPI Modal");
         clickElement(EDIT_KPI_ICON_XPATHS);
         logPass("Clicked Edit KPI icon.");
 
-        logStart("Step 21 & 22: Find and Add New Metric");
+        logStart("Step 20 & 21: Find and Add New Metric");
         String metricInModalXpath = String.format("//div[contains(@class, 'available-metrics')]//div[normalize-space()='%s']", metricName);
         clickElement(new String[]{metricInModalXpath});
         logPass("Added metric '" + metricName + "' to KPIs.");
 
-        logStart("Step 23: Save KPI Configuration");
+        logStart("Step 22: Save KPI Configuration");
         clickElement(KPI_MODAL_SAVE_BUTTON_XPATHS);
         logPass("Saved KPI configuration.");
         sleep(PAGE_SETTLE_MS);
 
         // --- Configure Target ---
         if (!"None".equalsIgnoreCase(targetType)) {
-            logStart("Step 24 & 25: Locate the new metric card");
+            logStart("Step 23 & 24: Locate the new metric card");
             String cardXpath = String.format("//div[contains(@class, 'kpi-card-container')][.//span[normalize-space()='%s']]", metricName);
             List<WebElement> cards = driver.findElements(By.xpath(cardXpath));
             if (cards.isEmpty()) throw new NoSuchElementException("Could not find metric card for: " + metricName);
             WebElement metricCard = cards.get(cards.size() - 1); // Get the last one, likely the newest
-            js.executeScript("arguments[0].scrollIntoView(true);", metricCard);
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", metricCard);
             logPass("Located metric card for '" + metricName + "'.");
 
-            logStart("Step 26: Hover over card to reveal menu");
+            logStart("Step 25: Hover over card to reveal menu");
             waitAndHover(metricCard);
             logPass("Hovered over metric card.");
 
-            logStart("Step 27: Click three-dot menu");
+            logStart("Step 26: Click three-dot menu");
             WebElement threeDotMenu = metricCard.findElement(By.xpath(".//*[contains(@class, 'kpicard-dropdown-menu')]//button"));
             jsClick(threeDotMenu);
             logPass("Clicked three-dot menu.");
@@ -527,33 +565,33 @@ public class AlignTestDataDriven {
                 String[] customValues = data.get("custom_target_values").split(",");
                 for (int i = 0; i < customValues.length; i++) {
                     logStart("Step 30-" + (i+1) + ": Enter Level " + (i+1) + " target");
-                    String levelInputXpath = String.format("(//div[contains(@class, 'target-levels')]//input[@type='text'])[%d]", i + 1);
+                    String levelInputXpath = String.format("(//div[contains(@class, 'target-levels')]//input[contains(@class, 'k-input')])[%d]", i + 1);
                     sendKeysToElement(new String[]{levelInputXpath}, customValues[i].trim());
                     logPass("Entered " + customValues[i].trim() + " for Level " + (i+1));
                 }
             } else if ("Time-Based".equalsIgnoreCase(targetType)) {
-                logStart("Step 19 (ALT): Select 'Time-Based' target type");
+                logStart("Step 29 (ALT): Select 'Time-Based' target type");
                 clickElement(TIME_BASED_TARGET_RADIO_XPATHS);
                 logPass("Selected 'Time-Based' radio button.");
 
-                logStart("Step 20 (ALT): Enter Start Value");
+                logStart("Step 30 (ALT): Enter Start Value");
                 String startInputXpath = "//label[normalize-space()='Start']/following-sibling::span//input";
                 sendKeysToElement(new String[]{startInputXpath}, data.get("time_based_start_value"));
                 logPass("Entered start value: " + data.get("time_based_start_value"));
 
-                logStart("Step 21 (ALT): Enter Target Value");
+                logStart("Step 31 (ALT): Enter Target Value");
                 String targetInputXpath = "//label[normalize-space()='Target']/following-sibling::span//input";
                 sendKeysToElement(new String[]{targetInputXpath}, data.get("time_based_target_value"));
                 logPass("Entered target value: " + data.get("time_based_target_value"));
             }
 
-            logStart("Step 34: Save Target Configuration");
+            logStart("Step 32: Save Target Configuration");
             clickElement(SAVE_BUTTON_XPATHS);
             wait.until(ExpectedConditions.urlContains("Dashboard"));
             logPass("Target configuration saved.");
             sleep(PAGE_SETTLE_MS);
 
-            logStart("Step 35: Final Verification");
+            logStart("Step 33: Final Verification");
             String finalCardXpath = String.format("//div[contains(@class, 'kpi-card-container')][.//span[normalize-space()='%s']]", metricName);
             WebElement finalCard = findElementWithFallbacks(new String[]{finalCardXpath});
             if (finalCard.isDisplayed()) {
