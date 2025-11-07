@@ -1,0 +1,75 @@
+{
+  "test_types": [
+    "End-to-End (E2E) Testing",
+    "Integration Testing",
+    "Functional Testing",
+    "UI Testing",
+    "Data-Driven Testing",
+    "Regression Testing"
+  ],
+  "test_categories": [
+    "User Authentication and Session Management",
+    "User Administration (Invitation & Onboarding)",
+    "Metric Management (Creation & Configuration)",
+    "Formula Builder Functionality",
+    "Dashboard Customization (My KPIs)",
+    "Metric Target Configuration (Custom & Time-Based)",
+    "End-to-End Workflow Verification",
+    "Data-Driven Testing"
+  ],
+  "test_data": {
+    "Base URL": "https://alignwebdev.aligntoday.com/"
+  },
+  "priorities": [
+    {
+      "priority": "High",
+      "items": [
+        "Successful user login and company selection.",
+        "Ability to create a new metric using the Formula Builder.",
+        "Correct construction and validation of the formula with specified metrics and operators.",
+        "Successfully adding the newly created metric to 'My Dashboard KPIs'.",
+        "Ability to configure and save both 'Custom' and 'Time-Based' targets.",
+        "Verification that the configured target is correctly displayed on the metric card on the dashboard."
+      ]
+    },
+    {
+      "priority": "Medium",
+      "items": [
+        "The user invitation and acceptance workflow.",
+        "Correct handling of conditional UI elements, such as the 'Resets On' field appearing only for 'Weekly' cadence.",
+        "Robustness of searching for metrics within the Formula Builder and the 'Edit KPI' modal.",
+        "Correct state management between pages (e.g., navigating from metric creation to dashboard to edit page)."
+      ]
+    },
+    {
+      "priority": "Low",
+      "items": [
+        "Verification of minor UI details like hover effects on the metric card, unless they block functionality.",
+        "Confirmation of placeholder text in input fields."
+      ]
+    }
+  ],
+  "risk_areas": [
+    {
+      "risk": "Dynamic UI and Timing Issues",
+      "description": "The test flow relies on interacting with elements that appear dynamically, such as modals, dropdowns that appear on hover (three-dot menu), and conditional form fields. This creates a high risk of test flakiness due to timing issues or elements not being interactable when the script expects."
+    },
+    {
+      "risk": "Complex Element Identification",
+      "description": "Step 25 explicitly notes the challenge of identifying the correct metric card among potential duplicates from previous test runs. This is a critical failure point for automation if not handled with a robust locator strategy (e.g., selecting the last element in a list)."
+    },
+    {
+      "risk": "Data Dependency and Integrity",
+      "description": "The entire test is driven by an external Excel file. Incorrect data, missing columns, or improper formatting in the Excel sheet will cause test failures that are not related to application defects. The test's success is tightly coupled to the quality of the input data."
+    },
+    {
+      "risk": "State Management Across a Long Workflow",
+      "description": "The test case covers a long, multi-step workflow spanning user management, metric creation, and dashboard configuration. Any failure in maintaining application state between these steps (e.g., a new metric not being immediately available in the KPI list) will break the entire flow."
+    },
+    {
+      "risk": "Formula Builder Complexity",
+      "description": "The Formula Builder is a complex component involving search, dynamic list selection, and formula validation logic. There is a risk of bugs in how metrics are searched, added to the formula, and how the final formula string is parsed and saved."
+    }
+  ],
+  "recommendations": "Based on the requirements, the following is recommended: 1. Implement robust and dynamic wait strategies (e.g., 'wait for element visible/clickable') instead of fixed delays to mitigate risks from timing issues. 2. Develop a resilient locator strategy for dynamic elements, particularly for identifying the correct metric card as described in Step 25. Using data-test-id attributes in the application would be highly beneficial. 3. Modularize the automation script into reusable functions for each major workflow (Login, Invite User, Create Metric, Add KPI, Configure Target) to improve readability and maintainability. 4. Implement a pre-test data validation step to check the integrity of the Excel sheet before execution to separate data issues from application bugs. 5. Establish a clean test data environment or a reliable teardown/cleanup script to remove created users and metrics after each test run, preventing the accumulation of duplicate data that could cause test failures."
+}

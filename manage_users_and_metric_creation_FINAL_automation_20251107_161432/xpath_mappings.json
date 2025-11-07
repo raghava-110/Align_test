@@ -1,0 +1,520 @@
+{
+  "repository": "https://github.com/raghava-110/Align_test.git",
+  "files_analyzed": 9,
+  "elements_found": 77,
+  "xpath_mappings": {
+    "email_input": [
+      "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']",
+      "//input[contains(@data-bind,'value: username')]",
+      "//input[@id='usernameField']",
+      "//span[contains(@class,'k-widget')]//input[@id='usernameField']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='usernameField']",
+      "//span[contains(@class,'k-combobox')]//input[@id='usernameField']",
+      "//input[@name='username']",
+      "//input[@type='email']"
+    ],
+    "continue_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "password_input": [
+      "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']",
+      "//input[contains(@data-bind,'value: password')]",
+      "//input[@id='passwordField']",
+      "//span[contains(@class,'k-widget')]//input[@id='passwordField']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='passwordField']",
+      "//span[contains(@class,'k-combobox')]//input[@id='passwordField']",
+      "//input[@name='password']",
+      "//input[@type='password']"
+    ],
+    "login_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "administration_dropdown": [
+      "//label[contains(text(),'Administration')]/following-sibling::input",
+      "//label[contains(text(),'Administration')]/..//input",
+      "//label[contains(text(),'Administration')]/following-sibling::span//input",
+      "//span[contains(@class,'k-dropdown')]//input"
+    ],
+    "manage_users_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "invite_users_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "first_name_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "last_name_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "create_password_input": [
+      "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']",
+      "//input[contains(@data-bind,'value: password')]",
+      "//input[@id='passwordField']",
+      "//span[contains(@class,'k-widget')]//input[@id='passwordField']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='passwordField']",
+      "//span[contains(@class,'k-combobox')]//input[@id='passwordField']",
+      "//input[@name='password']",
+      "//input[@type='password']"
+    ],
+    "accept_invite_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "metrics_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "add_metric_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "name_input": [
+      "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']",
+      "//input[contains(@data-bind,'value: companyMetric')]",
+      "//input[@type='text']",
+      "//input[@placeholder='Name of the Metric']",
+      "//input[contains(@placeholder,'Name of th')]",
+      "//input[contains(@class,'autocomplete-off')]"
+    ],
+    "value_source_dropdown": [
+      "//label[contains(text(),'Value Source')]/following-sibling::input",
+      "//label[contains(text(),'Value Source')]/..//input",
+      "//label[contains(text(),'Value Source')]/following-sibling::span//input",
+      "//span[contains(@class,'k-dropdown')]//input"
+    ],
+    "search_metric_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "operator_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "cadence_dropdown": [
+      "//label[contains(text(),'Cadence')]/following-sibling::input",
+      "//label[contains(text(),'Cadence')]/..//input",
+      "//label[contains(text(),'Cadence')]/following-sibling::span//input",
+      "//span[contains(@class,'k-dropdown')]//input"
+    ],
+    "resets_on_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "save_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "dashboards_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "my_dashboard_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "edit_kpi_icon": [
+      "//span[contains(@class,'icon')]",
+      "//span[@title='Edit Kpi']"
+    ],
+    "search_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "custom_radio_button": [
+      "//button[contains(@class,'icon')]",
+      "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]"
+    ],
+    "start_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "target_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "navigation_header_dropdown_input": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "dropdown_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "administration_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "inviteusercontentpopup_input_p_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteUserContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteUserContentPopup_input_promoCode']/..//input"
+    ],
+    "invite_huddles_multiselect_label": [
+      "//label[@data-bind='value: selectedHuddles, source: dsHuddles, events: { change: changeSelectedHuddles, dataBound: updateSelectedHuddlesDisplayed, close: updateSelectedHuddlesDisplayed}']",
+      "//label[contains(@data-bind,'value: selectedHuddles')]",
+      "//label[@id='invite-huddles-multiselect']",
+      "//span[contains(@class,'k-widget')]//input[@id='invite-huddles-multiselect']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='invite-huddles-multiselect']",
+      "//span[contains(@class,'k-combobox')]//input[@id='invite-huddles-multiselect']",
+      "//label[@title='Select one or more Huddles...&#013;&#010;The invited User(s) will be added to the Huddle as a member.']",
+      "//label[@placeholder='Select one or more huddles...']"
+    ],
+    "inviteviewerscontentpopup_inpu_input": [
+      "//input[@data-bind='value: promoCode.code']",
+      "//input[contains(@data-bind,'value: promoCode')]",
+      "//input[@id='inviteViewersContentPopup_input_promoCode']",
+      "//input[@type='text']",
+      "//input[contains(@class,'input')]",
+      "//label[@for='inviteViewersContentPopup_input_promoCode']/following-sibling::input",
+      "//label[@for='inviteViewersContentPopup_input_promoCode']/..//input"
+    ],
+    "logcountbadge_span": [
+      "//span[@data-bind='text:logCount']",
+      "//span[@id='logCountBadge']",
+      "//span[@title='Log Count']"
+    ],
+    "subscription_span": [
+      "//span[@data-bind='text: subscription.BillingInfo.CreditCard.CCExpiration']"
+    ],
+    "name_of_the_metric_input": [
+      "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']",
+      "//input[contains(@data-bind,'value: companyMetric')]",
+      "//input[@type='text']",
+      "//input[@placeholder='Name of the Metric']",
+      "//input[contains(@placeholder,'Name of th')]",
+      "//input[contains(@class,'autocomplete-off')]"
+    ],
+    "companymetricowner_input": [
+      "//input[@data-bind='value: owner, source: dsSearchPersons, events: { filtering: toggleInviteInput, select: onSelectOwner, change: onChangeOwner }']",
+      "//input[contains(@data-bind,'value: owner')]",
+      "//input[@id='companyMetricOwner']",
+      "//span[contains(@class,'k-widget')]//input[@id='companyMetricOwner']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='companyMetricOwner']",
+      "//span[contains(@class,'k-combobox')]//input[@id='companyMetricOwner']",
+      "//input[@placeholder='Search or Invite Team Members']",
+      "//input[contains(@placeholder,'Search or ')]"
+    ],
+    "select_a_value_source_input": [
+      "//input[@data-bind='value: selectedIntegration,source: integrationOptions, events: { open: clickValuesourceDropdown, change: clickChangeIntegration, select: disableOptions}']",
+      "//input[contains(@data-bind,'value: selectedIntegration')]",
+      "//input[@placeholder='Select a Value Source']",
+      "//input[contains(@placeholder,'Select a V')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "name_or_owner_input": [
+      "//input[@data-bind='events: { keyup: calculated.onFilterChange }']",
+      "//input[@type='text']",
+      "//input[@placeholder='Name or Owner']",
+      "//input[contains(@placeholder,'Name or Ow')]"
+    ],
+    "calculated_span": [
+      "//span[@data-bind='events: { click: calculated.clearFormula }']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'ion-android-cancel')]"
+    ],
+    "validate_and_calculate_span": [
+      "//span[@title='Validate and Calculate']"
+    ],
+    "selectedcadence_input": [
+      "//input[@data-bind='value: selectedCadence, source:cadenceChoiceOptions, enabled:cadenceIsNonEditable, events: { change: clickChangeCadence }']",
+      "//input[contains(@data-bind,'value: selectedCadence')]",
+      "//input[contains(@class,'dropdown')]",
+      "//input[contains(@class,'dropdown') and contains(@class,'padding-top')]"
+    ],
+    "the_dropdown": [
+      "//label[contains(text(),'The')]/following-sibling::input",
+      "//label[contains(text(),'The')]/..//input",
+      "//label[contains(text(),'The')]/following-sibling::span//input",
+      "//span[contains(@class,'k-dropdown')]//input"
+    ],
+    "selectedresetweekday_input": [
+      "//input[@data-bind='value: selectedResetWeekDay, source:weeklyCadenceOptions, enabled:cadenceSelectionEnabled, invisible:monthlyCadenceSelected, events: { change: clickChangeResetWeekDay }']",
+      "//input[contains(@data-bind,'value: selectedResetWeekDay')]",
+      "//input[contains(@class,'dropdown')]",
+      "//input[contains(@class,'dropdown') and contains(@class,'padding-top')]"
+    ],
+    "selectedresetdayofthemonth_input": [
+      "//input[@data-bind='value: selectedResetDayOfTheMonth, source:monthlyCadenceOptions, enabled:cadenceSelectionEnabled, visible:monthlyCadenceSelected, events: { change: clickChangeResetDayOfTheMonth }']",
+      "//input[contains(@data-bind,'value: selectedResetDayOfTheMonth')]",
+      "//input[contains(@class,'dropdown')]",
+      "//input[contains(@class,'dropdown') and contains(@class,'padding-top')]"
+    ],
+    "enter_a_value_input": [
+      "//input[@data-bind='value: companyMetric.Value, disabled: isNonEditableMetricIntegration']",
+      "//input[contains(@data-bind,'value: companyMetric')]",
+      "//input[@type='text']",
+      "//input[@placeholder='Enter a Value']",
+      "//input[contains(@placeholder,'Enter a Va')]",
+      "//input[contains(@class,'padding-top')]"
+    ],
+    "enter_unique_identifier_input": [
+      "//input[@data-bind='value: companyMetric.UniqueID, events: { change: onChangeUniqueIdentifier }']",
+      "//input[contains(@data-bind,'value: companyMetric')]",
+      "//input[@type='text']",
+      "//input[@placeholder='Enter unique identifier']",
+      "//input[contains(@placeholder,'Enter uniq')]"
+    ],
+    "selectedintegration_input": [
+      "//input[@data-bind='value: selectedIntegration,enabled: isIntegrationSelectionEnabled, source: integrationOptions, events: { change: clickChangeIntegration, select: disableOptions }']",
+      "//input[contains(@data-bind,'value: selectedIntegration')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "hubspot_input": [
+      "//input[@data-bind='value: hubSpot.selectedMetric, source: hubSpot.dsMetrics , events: { select: hubSpot.changeMetric }']",
+      "//input[contains(@data-bind,'value: hubSpot')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "hubspot_label": [
+      "//label[@data-bind='text: hubSpot.parameterControlLabel.dateRange']",
+      "//label[contains(@class,'label')]"
+    ],
+    "selectedsfreport_input": [
+      "//input[@data-bind='value: selectedSFReport, source: dsSalesforceReportList, events: { change: clickChangeReport }']",
+      "//input[contains(@data-bind,'value: selectedSFReport')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "selectedsfmetric_input": [
+      "//input[@data-bind='value: selectedSFMetric, enabled: isMetricEnabled, source: salesforceMetricList, events: { change: clickChangeMetric }']",
+      "//input[contains(@data-bind,'value: selectedSFMetric')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "companymetric_input": [
+      "//input[@data-bind='value: companyMetric.Status, source:statusOptions']",
+      "//input[contains(@data-bind,'value: companyMetric')]",
+      "//input[contains(@class,'dropdown')]"
+    ],
+    "companymetric_label": [
+      "//label[@data-bind='value: companyMetric.KPITarget.Comments']",
+      "//label[contains(@data-bind,'value: companyMetric')]",
+      "//label[contains(@class,'label')]"
+    ],
+    "companymetrickpiowner_input": [
+      "//input[@data-bind='value: targetOwner, source: dsSearchPersons, events: { filtering: toggleInviteInput, select: onSelectTargetOwner, change: onChangeTargetOwner },enabled: IsTargetOwnerEnabled']",
+      "//input[contains(@data-bind,'value: targetOwner')]",
+      "//input[@id='companyMetricKPIOwner']",
+      "//span[contains(@class,'k-widget')]//input[@id='companyMetricKPIOwner']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='companyMetricKPIOwner']",
+      "//span[contains(@class,'k-combobox')]//input[@id='companyMetricKPIOwner']",
+      "//input[@placeholder='Search Targets...']",
+      "//input[contains(@placeholder,'Search Tar')]"
+    ],
+    "custom_radio_button_under_target_link": [
+      "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']",
+      "//input[contains(@data-bind,'value: headerNavigation')]",
+      "//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']",
+      "//input[contains(@class,'header-dropdown')]",
+      "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]"
+    ],
+    "companymetricid_input": [
+      "//input[@data-bind='value: targetTemplateOptions,disabled: disableTargetOptions, events: { change: clickChangeTargetTemplate }']",
+      "//input[contains(@data-bind,'value: targetTemplateOptions')]",
+      "//input[@name='#= companyMetric.ID #']",
+      "//input[@type='radio']"
+    ],
+    "selectedsharedtargetname_link": [
+      "//link[@data-bind='text: selectedSharedTargetName']"
+    ],
+    "showsharedtargettrigger_span": [
+      "//span[@data-bind='click:showCopySelectedTargetModal , visible:isBrokenLinkIconVisible']",
+      "//span[@id='showSharedTargetTrigger']",
+      "//span[@title='Clear selected target']",
+      "//span[@type='button']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'ico-link-broken')]"
+    ],
+    "connections_span": [
+      "//span[@data-bind='text: companyMetric.SharedTarget.TargetLinkedCount']",
+      "//span[@title='Connections']"
+    ],
+    "visibilitydropdown_input": [
+      "//input[@data-bind='value: selectedVisibility, source: getVisibilityOptions, events: { change: clickChangeVisibility, select: disableOptions }, disabled: isTaskSecurityDisabled']",
+      "//input[contains(@data-bind,'value: selectedVisibility')]",
+      "//input[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='visibilityDropdown']",
+      "//input[contains(@class,'dropdown')]",
+      "//label[@for='visibilityDropdown']/following-sibling::input"
+    ],
+    "visibilitytemplatecompanymetri_label": [
+      "//label[@data-bind='value: selectedIntegration,enabled: isIntegrationSelectionEnabled, source: integrationOptions, events: { change: clickChangeIntegration, select: disableOptions }']",
+      "//label[contains(@data-bind,'value: selectedIntegration')]",
+      "//label[@id='visibilityTemplateCompanyMetrics']",
+      "//span[contains(@class,'k-widget')]//input[@id='visibilityTemplateCompanyMetrics']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='visibilityTemplateCompanyMetrics']",
+      "//span[contains(@class,'k-combobox')]//input[@id='visibilityTemplateCompanyMetrics']",
+      "//label[@type='text/x-kendo-template']",
+      "//label[contains(@class,'label')]"
+    ],
+    "multiteamfilter_list_item": [
+      "//list_item[@data-bind='value: selectedTeams, source: dsUserTeams, events: { change: onChangeTeam }']",
+      "//list_item[contains(@data-bind,'value: selectedTeams')]",
+      "//list_item[@id='multiTeamFilter']",
+      "//span[contains(@class,'k-widget')]//input[@id='multiTeamFilter']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='multiTeamFilter']",
+      "//span[contains(@class,'k-combobox')]//input[@id='multiTeamFilter']",
+      "//list_item[@placeholder='Team Name']",
+      "//list_item[contains(@class,'label')]"
+    ],
+    "member_name_list_item": [
+      "//list_item[@data-bind='click: clickAddAllMembers']",
+      "//list_item[@placeholder='Member Name...']",
+      "//list_item[contains(@placeholder,'Member Nam')]",
+      "//list_item[contains(@class,'no-margin')]",
+      "//list_item[contains(@class,'no-margin') and contains(@class,'margin-bottom-less')]"
+    ],
+    "clickremoveselectedmember_span": [
+      "//span[@data-bind='click:clickRemoveSelectedMember']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'red')]"
+    ],
+    "visibilitydropdown_list_item": [
+      "//list_item[@data-bind='value: selectedVisibility, source: getVisibilityOptions, events: { change: clickChangeVisibility, select: disableOptions }, disabled: isTaskSecurityDisabled']",
+      "//list_item[contains(@data-bind,'value: selectedVisibility')]",
+      "//list_item[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-widget')]//input[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-dropdown')]//input[@id='visibilityDropdown']",
+      "//span[contains(@class,'k-combobox')]//input[@id='visibilityDropdown']",
+      "//list_item[@type='text/x-kendo-template']",
+      "//list_item[contains(@class,'module')]"
+    ],
+    "name_list_item": [
+      "//list_item[@data-bind='text:Name']",
+      "//list_item[contains(@class,'icon')]",
+      "//list_item[contains(@class,'icon') and contains(@class,'ico-plus-circle')]"
+    ],
+    "description_span": [
+      "//span[@data-bind='text:MetricName']",
+      "//span[@title='#: Description #']",
+      "//span[contains(@class,'ellipsis-text')]"
+    ],
+    "no_owner_span": [
+      "//span[@title='No Owner']",
+      "//span[contains(@class,'profile-container')]",
+      "//span[contains(@class,'profile-container') and contains(@class,'padding-left')]"
+    ],
+    "manually_updated_span": [
+      "//span[@title='Manually Updated']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'ico-user')]"
+    ],
+    "hubspot_enabled_span": [
+      "//span[@title='HubSpot Enabled']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'background')]"
+    ],
+    "salesforce_enabledsalesforcere_span": [
+      "//span[@title='Salesforce Enabled<br />#=salesforceReportName#']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'background')]"
+    ],
+    "zapier_enabled_span": [
+      "//span[@title='Zapier Enabled']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'background')]"
+    ],
+    "target_linked_span": [
+      "//span[@title='Target Linked']",
+      "//span[contains(@class,'icon')]",
+      "//span[contains(@class,'icon') and contains(@class,'ico-link')]"
+    ],
+    "formattedvalue_span": [
+      "//span[@title='#=formattedValue#']",
+      "//span[contains(@class,'ellipsis-text')]",
+      "//span[contains(@class,'ellipsis-text') and contains(@class,'display-block')]"
+    ],
+    "togglearrow_span": [
+      "//span[@id='toggleArrow']",
+      "//span[contains(@class,'k-icon')]"
+    ],
+    "clear_span": [
+      "//span[@title='Clear']"
+    ]
+  }
+}
