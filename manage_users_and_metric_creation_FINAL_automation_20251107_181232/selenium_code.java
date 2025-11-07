@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+
 
 public class AlignTestDataDriven {
 
@@ -28,16 +28,23 @@ public class AlignTestDataDriven {
         "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']",
         "//input[@name='username']",
         "//input[@type='email']",
-        "//input[contains(@placeholder, 'Email')]",
-        "//label[contains(text(),'Email')]/following-sibling::input",
-        "//span[contains(@class,'k-widget')]//input[@id='usernameField']"
+        "//input[contains(@placeholder, 'Email') or contains(@placeholder, 'Username')]",
+        "//label[contains(.,'Email') or contains(.,'Username')]/following-sibling::input",
+        "//span[contains(@class,'k-widget')]//input[@id='usernameField']",
+        "//input[@id='email']",
+        "//input[@aria-label='Email']",
+        "//form//input[@type='email']"
     };
     private static final String[] continue_button = {
         "//button[normalize-space()='Continue']",
         "//button[contains(.,'Continue')]",
         "//button[@type='submit' and contains(.,'Continue')]",
         "//button[contains(@class,'icon') and contains(@class,'primary')]",
-        "//form//button[contains(., 'Continue')]"
+        "//form//button[contains(., 'Continue')]",
+        "//input[@type='submit' and contains(@value, 'Continue')]",
+        "//button[@id='continue-button']",
+        "//button[@data-testid='continue']",
+        "//a[@role='button' and normalize-space()='Continue']"
     };
     private static final String[] password_input = {
         "//input[@id='passwordField']",
@@ -45,175 +52,239 @@ public class AlignTestDataDriven {
         "//input[@name='password']",
         "//input[@type='password']",
         "//input[contains(@placeholder, 'Password')]",
-        "//label[contains(text(),'Password')]/following-sibling::input"
+        "//label[contains(.,'Password')]/following-sibling::input",
+        "//input[@id='password']",
+        "//input[@aria-label='Password']",
+        "//form//input[@type='password']"
     };
     private static final String[] login_button = {
         "//button[normalize-space()='Login']",
-        "//button[contains(.,'Login')]",
-        "//button[@type='submit' and contains(.,'Login')]",
+        "//button[normalize-space()='Log In']",
+        "//button[contains(.,'Login') or contains(.,'Log In')]",
+        "//button[@type='submit' and (contains(.,'Login') or contains(.,'Log In'))]",
         "//button[contains(@class,'login-button')]",
-        "//form//button[contains(., 'Login')]"
+        "//form//button[contains(., 'Login') or contains(., 'Log In')]",
+        "//input[@type='submit' and (contains(@value, 'Login') or contains(@value, 'Log In'))]",
+        "//button[@id='login-button']",
+        "//button[@data-testid='login']"
     };
     private static final String[] administration_link = {
         "//a[normalize-space()='Administration']",
         "//span[normalize-space()='Administration']/parent::a",
         "//div[contains(@class,'navigation')]//a[contains(.,'Administration')]",
         "//li/a[normalize-space()='Administration']",
-        "//div[@id='header-links']//a[normalize-space()='Administration']"
+        "//div[@id='header-links']//a[normalize-space()='Administration']",
+        "//button[normalize-space()='Administration']",
+        "//a[@role='menuitem' and normalize-space()='Administration']",
+        "//nav//a[contains(.,'Administration')]"
     };
     private static final String[] manage_users_link = {
         "//a[normalize-space()='Manage Users']",
         "//li/a[normalize-space()='Manage Users']",
         "//ul[contains(@class,'dropdown')]//a[contains(.,'Manage Users')]",
-        "//div[contains(@class,'menu')]//a[normalize-space()='Manage Users']"
+        "//div[contains(@class,'menu')]//a[normalize-space()='Manage Users']",
+        "//a[@role='menuitem' and normalize-space()='Manage Users']",
+        "//div[contains(@class,'k-popup')]//a[normalize-space()='Manage Users']"
     };
     private static final String[] invite_users_button = {
         "//button[normalize-space()='Invite Users']",
         "//a[normalize-space()='Invite Users']",
         "//button[contains(.,'Invite Users')]",
-        "//span[normalize-space()='Invite Users']/parent::button"
+        "//span[normalize-space()='Invite Users']/parent::button",
+        "//button[@id='invite-users']",
+        "//a[@role='button' and contains(.,'Invite Users')]"
     };
     private static final String[] invite_user_email_input = {
         "//div[contains(@class,'modal')]//input[@type='email']",
         "//label[contains(text(),'Email')]/following-sibling::input",
         "//input[contains(@placeholder, 'Enter email')]",
-        "//form[@id='invite-users-form']//input[@type='email']"
+        "//form[@id='invite-users-form']//input[@type='email']",
+        "//div[contains(@class,'invite-modal')]//input[@name='email']",
+        "//input[@aria-label='Invite Email']"
     };
     private static final String[] admin_checkbox = {
         "//label[normalize-space()='Admin']/preceding-sibling::input[@type='checkbox']",
         "//label[normalize-space()='Admin']/input",
         "//input[@type='checkbox' and contains(@name,'admin')]",
-        "//label[contains(.,'Admin')]/..//input[@type='checkbox']"
+        "//label[contains(.,'Admin')]/..//input[@type='checkbox']",
+        "//div[label[contains(.,'Admin')]]/input[@type='checkbox']",
+        "//input[@id='admin-checkbox']"
     };
     private static final String[] send_invite_button = {
         "//button[normalize-space()='Send Invite']",
         "//button[contains(.,'Send Invite')]",
-        "//div[contains(@class,'modal-footer')]//button[contains(.,'Send')]"
+        "//div[contains(@class,'modal-footer')]//button[contains(.,'Send')]",
+        "//form[@id='invite-users-form']//button[@type='submit']",
+        "//button[@data-testid='send-invite']"
     };
     private static final String[] accept_invitation_checkmark = {
         "//td[contains(.,'%s')]/following-sibling::td//a[contains(@title, 'Accept')]",
         "//td[contains(.,'%s')]/following-sibling::td//span[contains(@class, 'check')]",
         "//tr[contains(.,'%s')]//i[contains(@class, 'check')]",
-        "//tr[td[normalize-space()='%s']]//a[contains(@title, 'Accept') or contains(@class, 'check')]"
+        "//tr[td[normalize-space()='%s']]//a[contains(@title, 'Accept') or contains(@class, 'check')]",
+        "//tr[td[contains(.,'%s')]]//button[@aria-label='Accept Invitation']",
+        "//div[contains(text(),'%s')]/ancestor::tr//a[contains(@title,'Accept')]"
     };
     private static final String[] first_name_input = {
         "//input[@id='FirstName']",
         "//input[contains(@name,'FirstName')]",
         "//label[contains(text(),'First Name')]/following-sibling::input",
-        "//input[contains(@placeholder, 'First Name')]"
+        "//input[contains(@placeholder, 'First Name')]",
+        "//input[@name='firstName']",
+        "//input[@aria-label='First Name']"
     };
     private static final String[] last_name_input = {
         "//input[@id='LastName']",
         "//input[contains(@name,'LastName')]",
         "//label[contains(text(),'Last Name')]/following-sibling::input",
-        "//input[contains(@placeholder, 'Last Name')]"
+        "//input[contains(@placeholder, 'Last Name')]",
+        "//input[@name='lastName']",
+        "//input[@aria-label='Last Name']"
     };
     private static final String[] user_password_input = {
         "//input[@id='Password']",
         "//input[contains(@name,'Password') and @type='password']",
         "//label[contains(text(),'Create Password')]/following-sibling::input",
-        "//input[@type='password']"
+        "//input[@type='password' and contains(@placeholder,'Create')]",
+        "//input[@name='newPassword']",
+        "//input[@aria-label='Create Password']"
     };
     private static final String[] accept_invite_button = {
         "//button[normalize-space()='Accept Invite']",
         "//button[contains(.,'Accept Invite')]",
-        "//div[contains(@class,'form-actions')]//button[contains(.,'Accept')]"
+        "//div[contains(@class,'form-actions')]//button[contains(.,'Accept')]",
+        "//form//button[@type='submit']",
+        "//button[@data-testid='accept-invite']"
     };
     private static final String[] metrics_link = {
         "//a[normalize-space()='Metrics']",
         "//span[normalize-space()='Metrics']/parent::a",
         "//div[contains(@class,'navigation')]//a[contains(.,'Metrics')]",
-        "//li/a[normalize-space()='Metrics']"
+        "//li/a[normalize-space()='Metrics']",
+        "//a[@role='menuitem' and normalize-space()='Metrics']",
+        "//nav//a[normalize-space()='Metrics']"
     };
     private static final String[] add_metric_button = {
         "//button[normalize-space()='Add Metric']",
         "//a[normalize-space()='Add Metric']",
         "//button[contains(.,'Add Metric')]",
-        "//span[normalize-space()='Add Metric']/parent::button"
+        "//span[normalize-space()='Add Metric']/parent::button",
+        "//a[@role='button' and contains(., 'Add Metric')]",
+        "//button[@id='add-metric']"
     };
     private static final String[] metric_name_input = {
         "//input[@placeholder='Name of the Metric']",
         "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']",
         "//label[normalize-space()='Name']/following-sibling::input",
-        "//form[contains(@class,'metric-form')]//input[1]"
+        "//form[contains(@class,'metric-form')]//input[1]",
+        "//input[@name='metricName']",
+        "//label[contains(.,'Metric Name')]/following-sibling::input"
     };
     private static final String[] value_source_dropdown_arrow = {
         "//label[contains(text(),'Value Source')]/following-sibling::span//span[contains(@class,'k-select')]",
-        "//label[normalize-space()='Value Source']/..//span[@aria-label='select']"
+        "//label[normalize-space()='Value Source']/..//span[@aria-label='select']",
+        "//div[label[contains(.,'Value Source')]]//span[contains(@class,'k-icon')]",
+        "//input[@aria-owns='valueSource_listbox']/following-sibling::span"
     };
     private static final String[] cadence_dropdown_arrow = {
         "//label[contains(text(),'Cadence')]/following-sibling::span//span[contains(@class,'k-select')]",
-        "//label[normalize-space()='Cadence']/..//span[@aria-label='select']"
+        "//label[normalize-space()='Cadence']/..//span[@aria-label='select']",
+        "//div[label[contains(.,'Cadence')]]//span[contains(@class,'k-icon')]",
+        "//input[@aria-owns='cadence_listbox']/following-sibling::span"
     };
     private static final String[] resets_on_dropdown_arrow = {
         "//label[contains(text(),'Resets On')]/following-sibling::span//span[contains(@class,'k-select')]",
-        "//label[normalize-space()='Resets On']/..//span[@aria-label='select']"
+        "//label[normalize-space()='Resets On']/..//span[@aria-label='select']",
+        "//div[label[contains(.,'Resets On')]]//span[contains(@class,'k-icon')]",
+        "//input[@aria-owns='resetsOn_listbox']/following-sibling::span"
     };
     private static final String[] formula_builder_metric_search = {
         "//input[@placeholder='Name or Owner']",
-        "//div[contains(@class,'formula-builder')]//input[@type='text']"
+        "//div[contains(@class,'formula-builder')]//input[@type='text']",
+        "//div[@id='formula-builder']//input[contains(@placeholder,'Search')]",
+        "//input[@aria-label='Search for a metric']"
     };
     private static final String[] formula_confirm_checkmark = {
         "//span[@title='Validate and Calculate']",
         "//button[contains(@class,'validate-formula')]",
-        "//span[contains(@class,'ico-checkmark')]"
+        "//span[contains(@class,'ico-checkmark')]",
+        "//button[@aria-label='Validate Formula']",
+        "//i[contains(@class,'fa-check')]"
     };
     private static final String[] save_button = {
         "//button[normalize-space()='Save']",
         "//button[contains(.,'Save') and not(@disabled)]",
         "//button[@id='saveButton']",
-        "//div[contains(@class,'footer')]//button[normalize-space()='Save']"
+        "//div[contains(@class,'footer')]//button[normalize-space()='Save']",
+        "//input[@type='submit' and @value='Save']",
+        "//button[@type='submit' and normalize-space()='Save']"
     };
     private static final String[] my_dashboard_link = {
         "//a[normalize-space()='My Dashboard']",
         "//span[normalize-space()='My Dashboard']/parent::a",
         "//div[contains(@class,'navigation')]//a[contains(.,'My Dashboard')]",
-        "//li/a[normalize-space()='My Dashboard']"
+        "//li/a[normalize-space()='My Dashboard']",
+        "//a[@role='menuitem' and normalize-space()='My Dashboard']",
+        "//nav//a[normalize-space()='My Dashboard']"
     };
     private static final String[] edit_kpi_icon = {
         "//span[@title='Edit Kpi']",
         "//button[@aria-label='Edit KPI']",
         "//a[contains(@class,'edit-kpi')]",
-        "//i[contains(@class,'ico-edit')]"
+        "//i[contains(@class,'ico-edit')]",
+        "//button[contains(@title,'Edit') and contains(@title,'KPI')]",
+        "//span[contains(@class,'icon-edit')]/.."
     };
     private static final String[] edit_kpi_modal_metric_item = {
         "//div[contains(@class,'modal')]//div[contains(@class,'available-metrics')]//li[normalize-space()='%s']",
-        "//div[@id='editKpiModal']//ul//li[contains(.,'%s')]"
+        "//div[@id='editKpiModal']//ul//li[contains(.,'%s')]",
+        "//div[@role='dialog']//li[.//span[normalize-space()='%s']]",
+        "//ul[@aria-label='Available Metrics']//li[normalize-space()='%s']"
     };
     private static final String[] edit_kpi_modal_save_button = {
         "//div[contains(@class,'modal-footer')]//button[normalize-space()='Save']",
-        "//div[@id='editKpiModal']//button[contains(.,'Save')]"
+        "//div[@id='editKpiModal']//button[contains(.,'Save')]",
+        "//div[@role='dialog']//footer//button[normalize-space()='Save']",
+        "//div[contains(@class,'modal')]//button[@data-testid='save-kpi-changes']"
     };
     private static final String[] metric_card_dots_menu = {
         "//div[contains(@class,'kpicard-container') and .//span[normalize-space()='%s']]//span[contains(@class,'ico-threeDots')]",
-        "//div[contains(@class,'metric-card')][.//div[text()='%s']]//button[@aria-label='menu']"
+        "//div[contains(@class,'metric-card')][.//div[text()='%s']]//button[@aria-label='menu']",
+        "//div[div[contains(.,'%s')]]//button[contains(@class,'menu')]",
+        "//div[h3[normalize-space()='%s']]/..//button[@aria-label='Options']"
     };
     private static final String[] metric_card_edit_option = {
         "//div[contains(@class,'k-popup')]//li[@title='Edit']",
         "//ul[contains(@class,'k-menu-group')]//li[normalize-space()='Edit']",
-        "//div[contains(@class,'dropdown-menu') and contains(@style,'display: block')]//a[normalize-space()='Edit']"
+        "//div[contains(@class,'dropdown-menu') and contains(@style,'display: block')]//a[normalize-space()='Edit']",
+        "//div[@role='menu']//a[normalize-space()='Edit']",
+        "//button[@role='menuitem' and normalize-space()='Edit']"
     };
     private static final String[] target_tab = {
         "//a[normalize-space()='Target']",
         "//li[normalize-space()='Target']",
-        "//div[@role='tablist']//a[contains(.,'Target')]"
+        "//div[@role='tablist']//a[contains(.,'Target')]",
+        "//button[@role='tab' and normalize-space()='Target']",
+        "//li[@aria-controls='target-tab']"
     };
     private static final String[] custom_target_radio = {
         "//label[normalize-space()='Custom']/preceding-sibling::input[@type='radio']",
         "//input[@type='radio' and @value='Custom']",
-        "//label[contains(.,'Custom')]/input"
+        "//label[contains(.,'Custom')]/input",
+        "//label[span[normalize-space()='Custom']]/input[@type='radio']"
     };
-    private static final String[] level_1_input = { "//div[./label[contains(text(),'Level 1')]]/following-sibling::div//input", "//input[contains(@placeholder, '400')]" };
-    private static final String[] level_2_input = { "//div[./label[contains(text(),'Level 2')]]/following-sibling::div//input", "//input[contains(@placeholder, '300')]" };
-    private static final String[] level_3_input = { "//div[./label[contains(text(),'Level 3')]]/following-sibling::div//input", "//input[contains(@placeholder, '200')]" };
-    private static final String[] level_4_input = { "//div[./label[contains(text(),'Level 4')]]/following-sibling::div//input", "//input[contains(@placeholder, '100')]" };
+    private static final String[] level_1_input = { "//div[./label[contains(text(),'Level 1')]]/following-sibling::div//input", "//input[contains(@placeholder, '400')]", "//input[@name='level1']", "//label[contains(.,'Level 1')]/following-sibling::input" };
+    private static final String[] level_2_input = { "//div[./label[contains(text(),'Level 2')]]/following-sibling::div//input", "//input[contains(@placeholder, '300')]", "//input[@name='level2']", "//label[contains(.,'Level 2')]/following-sibling::input" };
+    private static final String[] level_3_input = { "//div[./label[contains(text(),'Level 3')]]/following-sibling::div//input", "//input[contains(@placeholder, '200')]", "//input[@name='level3']", "//label[contains(.,'Level 3')]/following-sibling::input" };
+    private static final String[] level_4_input = { "//div[./label[contains(text(),'Level 4')]]/following-sibling::div//input", "//input[contains(@placeholder, '100')]", "//input[@name='level4']", "//label[contains(.,'Level 4')]/following-sibling::input" };
     private static final String[] time_based_target_radio = {
         "//label[normalize-space()='Time-Based']/preceding-sibling::input[@type='radio']",
         "//input[@type='radio' and @value='Time-Based']",
-        "//label[contains(.,'Time-Based')]/input"
+        "//label[contains(.,'Time-Based')]/input",
+        "//label[span[normalize-space()='Time-Based']]/input[@type='radio']"
     };
-    private static final String[] start_value_input = { "//label[normalize-space()='Start']/following-sibling::input", "//input[contains(@name,'startValue')]" };
-    private static final String[] target_value_input = { "//label[normalize-space()='Target']/following-sibling::input", "//input[contains(@name,'targetValue')]" };
+    private static final String[] start_value_input = { "//label[normalize-space()='Start']/following-sibling::input", "//input[contains(@name,'startValue')]", "//input[@aria-label='Start Value']" };
+    private static final String[] target_value_input = { "//label[normalize-space()='Target']/following-sibling::input", "//input[contains(@name,'targetValue')]", "//input[@aria-label='Target Value']" };
 
     // ========== CONFIGURATION - CHANGE THIS ==========
     private static final String EXCEL_FILE_PATH = "C:/path/to/your/testdata.xlsx";
@@ -313,36 +384,85 @@ public class AlignTestDataDriven {
     }
 
     private WebElement waitClickable(String[] xpaths) {
-        return wait.until(ExpectedConditions.elementToBeClickable(findElementWithFallbacks(xpaths)));
+        WebElement element = wait.until(driver -> findElementWithFallbacks(xpaths));
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
 
     private void sendKeysToElement(String[] xpaths, String text) {
         if (text == null || text.isEmpty()) return;
-        WebElement element = waitVisible(xpaths);
-        element.clear();
-        element.sendKeys(text);
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                WebElement element = waitVisible(xpaths);
+                element.clear();
+                element.sendKeys(text);
+                return;
+            } catch (StaleElementReferenceException e) {
+                log("Stale element on sendKeys attempt " + (attempts + 1) + ". Retrying...");
+                attempts++;
+            } catch (Exception e) {
+                log("Error during sendKeys: " + e.getMessage() + ". Attempt " + (attempts + 1));
+                attempts++;
+                sleep(500);
+            }
+        }
+        throw new RuntimeException("Failed to send keys to element after multiple retries.");
     }
 
     private void typeSlowly(String[] xpaths, String text) {
         if (text == null || text.isEmpty()) return;
-        WebElement element = waitVisible(xpaths);
-        element.clear();
-        for (char c : text.toCharArray()) {
-            element.sendKeys(String.valueOf(c));
-            sleep(TYPE_DELAY_MS);
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                WebElement element = waitVisible(xpaths);
+                element.clear();
+                for (char c : text.toCharArray()) {
+                    element.sendKeys(String.valueOf(c));
+                    sleep(TYPE_DELAY_MS);
+                }
+                return;
+            } catch (StaleElementReferenceException e) {
+                log("Stale element on typeSlowly attempt " + (attempts + 1) + ". Retrying...");
+                attempts++;
+            } catch (Exception e) {
+                log("Error during typeSlowly: " + e.getMessage() + ". Attempt " + (attempts + 1));
+                attempts++;
+                sleep(500);
+            }
         }
+         throw new RuntimeException("Failed to type slowly into element after multiple retries.");
     }
 
     private void clickElement(String[] xpaths) {
-        WebElement element = waitClickable(xpaths);
-        try {
-            element.click();
-        } catch (Exception e) {
-            log("Regular click failed, trying JavaScript click.");
-            jsClick(element);
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                WebElement element = waitClickable(xpaths);
+                element.click();
+                return; // Success
+            } catch (StaleElementReferenceException e) {
+                log("Stale element on click attempt " + (attempts + 1) + ". Retrying...");
+                attempts++;
+            } catch (ElementClickInterceptedException e) {
+                log("Click intercepted on attempt " + (attempts + 1) + ". Trying JavaScript click.");
+                try {
+                    WebElement element = waitVisible(xpaths); // Find again, maybe visibility is enough
+                    jsClick(element);
+                    return; // Success with JS click
+                } catch (Exception e2) {
+                    log("JS click also failed: " + e2.getMessage());
+                    attempts++;
+                }
+            } catch (Exception e) {
+                log("An unexpected error occurred during click: " + e.getClass().getSimpleName() + ". Retrying attempt " + (attempts + 1));
+                attempts++;
+            }
+            sleep(500); // Wait before next retry
         }
+        throw new RuntimeException("Failed to click element after multiple retries for xpaths: " + String.join(" | ", xpaths));
     }
+
 
     private void jsClick(WebElement element) {
         js.executeScript("arguments[0].click();", element);
@@ -401,9 +521,10 @@ public class AlignTestDataDriven {
         List<Map<String, String>> testData = ExcelReader.readExcel(EXCEL_FILE_PATH);
         log("Found " + testData.size() + " test records in the Excel file.");
         for (int i = 0; i < testData.size(); i++) {
+            Map<String, String> data = testData.get(i);
             log("\n--- Starting execution for record " + (i + 1) + " ---");
             try {
-                executeWorkflow(testData.get(i));
+                executeWorkflow(data);
                 log("--- Successfully completed record " + (i + 1) + " ---");
             } catch (Exception e) {
                 log("ERROR in record " + (i + 1) + ": " + e.getMessage());
