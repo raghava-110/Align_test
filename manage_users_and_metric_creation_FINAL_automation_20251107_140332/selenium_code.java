@@ -28,118 +28,118 @@ import java.util.Objects;
 
 public class SeleniumDataDrivenTest {
 
-    // ========== LOCATORS - GENERATED WITH HYBRID STRATEGY ==========
+    // ========== LOCATORS - REFINED WITH HYBRID STRATEGY ==========
     private static final String[] EMAIL_INPUT_XPATHS = {
-        "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']", "//input[contains(@data-bind,'value: username')]", "//input[@id='usernameField']", "//span[contains(@class,'k-widget')]//input[@id='usernameField']", "//span[contains(@class,'k-dropdown')]//input[@id='usernameField']", "//span[contains(@class,'k-combobox')]//input[@id='usernameField']", "//input[@name='username']", "//input[@type='email']", "//input[@id='email']", "//input[contains(@placeholder, 'Email')]"
+        "//input[@id='usernameField']", "//input[@name='username']", "//input[@type='email']", "//input[@id='email']", "//input[contains(@placeholder, 'Email')]", "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']", "//input[contains(@data-bind,'value: username')]", "//span[contains(@class,'k-widget')]//input[@id='usernameField']"
     };
     private static final String[] CONTINUE_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Continue']", "//button[contains(text(),'Continue')]", "//button[@id='continue-button']"
+        "//button[normalize-space()='Continue']", "//button[contains(text(),'Continue')]", "//button[@id='continue-button']", "//button[@data-test-id='continue-button']", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[contains(@class,'icon')]"
     };
     private static final String[] PASSWORD_INPUT_XPATHS = {
-        "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']", "//input[contains(@data-bind,'value: password')]", "//input[@id='passwordField']", "//span[contains(@class,'k-widget')]//input[@id='passwordField']", "//span[contains(@class,'k-dropdown')]//input[@id='passwordField']", "//span[contains(@class,'k-combobox')]//input[@id='passwordField']", "//input[@name='password']", "//input[@type='password']", "//input[@id='password']", "//input[contains(@placeholder, 'Password')]"
+        "//input[@id='passwordField']", "//input[@name='password']", "//input[@type='password']", "//input[@id='password']", "//input[contains(@placeholder, 'Password')]", "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']", "//input[contains(@data-bind,'value: password')]", "//span[contains(@class,'k-widget')]//input[@id='passwordField']"
     };
     private static final String[] LOGIN_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Login']", "//button[contains(text(),'Login')]", "//button[@type='submit']"
+        "//button[normalize-space()='Login']", "//button[normalize-space()='Sign In']", "//button[contains(text(),'Login')]", "//button[@type='submit']", "//button[@id='login-button']", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[contains(@class,'icon')]"
     };
     private static final String[] ADMINISTRATION_MENU_XPATHS = {
-        "//input[@data-bind='value: headerNavigation.selected, source: headerNavigation.headers, events: { change: headerNavigation.select }']", "//input[contains(@data-bind,'value: headerNavigation')]", "//input[@id='navigation-header-dropdown']", "//span[contains(@class,'k-widget')]//input[@id='navigation-header-dropdown']", "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']", "//span[contains(@class,'k-combobox')]//input[@id='navigation-header-dropdown']", "//input[contains(@class,'header-dropdown')]", "//input[contains(@class,'header-dropdown') and contains(@class,'setMaxWidth')]", "//a[normalize-space()='Administration']", "//span[normalize-space()='Administration']"
+        "//a[normalize-space()='Administration']", "//span[normalize-space()='Administration']", "//a[contains(text(),'Administration')]", "//input[@id='navigation-header-dropdown']", "//input[contains(@class,'header-dropdown')]"
     };
     private static final String[] MANAGE_USERS_LINK_XPATHS = {
-        "//ul[contains(@style,'display: block')]//li[normalize-space()='Manage Users']", "//a[normalize-space()='Manage Users']", "//li/a[contains(text(),'Manage Users')]"
+        "//ul[contains(@style,'display: block')]//a[normalize-space()='Manage Users']", "//ul[contains(@class,'k-menu-group') and contains(@style,'display: block')]//span[normalize-space()='Manage Users']", "//a[normalize-space()='Manage Users']", "//li/a[contains(text(),'Manage Users')]"
     };
     private static final String[] INVITE_USERS_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Invite Users']", "//button[contains(text(),'Invite')]"
+        "//button[normalize-space()='Invite Users']", "//button[normalize-space()='Invite User']", "//button[contains(text(),'Invite')]", "//button[@id='invite-users-btn']", "//a[normalize-space()='Invite Users']"
     };
     private static final String[] INVITE_USER_EMAIL_INPUT_XPATHS = {
-        "//div[contains(@class,'modal-body')]//input[@type='email']", "//input[@id='inviteUserContentPopup_input_email']", "//label[contains(text(),'Email')]/following-sibling::input"
+        "//input[@id='inviteUserContentPopup_input_email']", "//div[contains(@class,'modal-body')]//input[@type='email']", "//label[contains(text(),'Email')]/following-sibling::input[@type='email']", "//input[contains(@placeholder,'Enter email')]"
     };
     private static final String[] ADMIN_CHECKBOX_XPATHS = {
-        "//label[normalize-space()='Admin']/preceding-sibling::input[@type='checkbox']", "//input[@id='inviteUserContentPopup_input_isAdmin']"
+        "//input[@id='inviteUserContentPopup_input_isAdmin']", "//label[normalize-space()='Admin']/preceding-sibling::input[@type='checkbox']", "//label[contains(.,'Admin')]/input[@type='checkbox']"
     };
     private static final String[] SEND_INVITE_BUTTON_XPATHS = {
-        "//button[normalize-space()='Send Invite']", "//button[contains(text(),'Send')]"
+        "//button[normalize-space()='Send Invite']", "//div[contains(@class,'modal-footer')]//button[contains(text(),'Send')]", "//button[@type='submit' and contains(text(),'Invite')]"
     };
     private static final String[] ACCEPT_INVITE_ICON_XPATHS = {
-        "//td[contains(text(),'%s')]/following-sibling::td//span[contains(@class,'ico-checkmark')]"
+        "//td[contains(text(),'%s')]/following-sibling::td//span[contains(@class,'ico-checkmark')]", "//td[normalize-space()='%s']/following-sibling::td//a[@title='Accept']"
     };
     private static final String[] FIRST_NAME_INPUT_XPATHS = {
-        "//input[@data-bind='value: promoCode.code']", "//input[contains(@data-bind,'value: promoCode')]", "//input[@id='inviteUserContentPopup_input_promoCode']", "//input[@type='text']", "//input[contains(@class,'input')]", "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input", "//label[@for='inviteUserContentPopup_input_promoCode']/..//input", "//input[@name='FirstName']", "//input[contains(@placeholder,'First Name')]"
+        "//input[@name='FirstName']", "//input[@id='FirstName']", "//input[contains(@id, 'firstName')]", "//input[contains(@placeholder,'First Name')]", "//label[normalize-space()='First Name']/following-sibling::input", "//label[contains(., 'First Name')]/following::input[1]", "//input[@data-bind='value: firstName']"
     };
     private static final String[] LAST_NAME_INPUT_XPATHS = {
-        "//input[@data-bind='value: promoCode.code']", "//input[contains(@data-bind,'value: promoCode')]", "//input[@id='inviteUserContentPopup_input_promoCode']", "//input[@type='text']", "//input[contains(@class,'input')]", "//label[@for='inviteUserContentPopup_input_promoCode']/following-sibling::input", "//label[@for='inviteUserContentPopup_input_promoCode']/..//input", "//input[@name='LastName']", "//input[contains(@placeholder,'Last Name')]"
+        "//input[@name='LastName']", "//input[@id='LastName']", "//input[contains(@id, 'lastName')]", "//input[contains(@placeholder,'Last Name')]", "//label[normalize-space()='Last Name']/following-sibling::input", "//label[contains(., 'Last Name')]/following::input[1]", "//input[@data-bind='value: lastName']"
     };
     private static final String[] USER_PASSWORD_INPUT_XPATHS = {
-        "//input[@data-bind='value: password, displaynone: showClearText, events: { keyup: passwordKeyUp }']", "//input[contains(@data-bind,'value: password')]", "//input[@id='passwordField']", "//span[contains(@class,'k-widget')]//input[@id='passwordField']", "//span[contains(@class,'k-dropdown')]//input[@id='passwordField']", "//span[contains(@class,'k-combobox')]//input[@id='passwordField']", "//input[@name='password']", "//input[@type='password']", "//input[contains(@placeholder,'Create Password')]"
+        "//input[@id='passwordField']", "//input[@name='password']", "//input[@type='password']", "//input[contains(@placeholder,'Create Password')]", "//input[contains(@placeholder,'Password')]", "//label[contains(.,'Password')]/following::input[@type='password'][1]", "//input[@data-bind='value: password']"
     };
     private static final String[] ACCEPT_INVITE_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Accept Invite']"
+        "//button[normalize-space()='Accept Invite']", "//button[contains(text(),'Accept') and @type='submit']", "//button[@id='accept-invite-btn']"
     };
     private static final String[] METRICS_MENU_XPATHS = {
-        "//a[normalize-space()='Metrics']", "//span[normalize-space()='Metrics']"
+        "//a[normalize-space()='Metrics']", "//span[normalize-space()='Metrics']", "//a[contains(text(),'Metrics')]"
     };
     private static final String[] ADD_METRIC_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Add Metric']"
+        "//button[normalize-space()='Add Metric']", "//a[normalize-space()='Add Metric']", "//button[contains(text(),'Add Metric')]"
     };
     private static final String[] METRIC_NAME_INPUT_XPATHS = {
-        "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']", "//input[contains(@data-bind,'value: companyMetric')]", "//input[@type='text']", "//input[@placeholder='Name of the Metric']", "//input[contains(@placeholder,'Name of th')]", "//input[contains(@class,'autocomplete-off')]"
+        "//input[@placeholder='Name of the Metric']", "//input[@data-bind='value: companyMetric.MetricName, events: { change: onChangeMetricName }']", "//label[normalize-space()='Name']/following-sibling::input", "//input[contains(@data-bind,'value: companyMetric')]", "//input[@type='text']"
     };
     private static final String[] VALUE_SOURCE_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Value Source']/following-sibling::span//span[contains(@class,'k-select')]"
+        "//label[normalize-space()='Value Source']/following-sibling::span//span[contains(@class,'k-select')]", "//label[contains(text(),'Value Source')]/..//span[contains(@aria-label,'select')]"
     };
     private static final String[] FORMULA_BUILDER_SEARCH_INPUT_XPATHS = {
-        "//div[contains(@class,'formula-builder')]//input[@placeholder='Name or Owner']"
+        "//div[contains(@class,'formula-builder')]//input[@placeholder='Name or Owner']", "//div[contains(@class,'formula-builder')]//input[@type='text']"
     };
     private static final String[] CADENCE_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Cadence']/following-sibling::span//span[contains(@class,'k-select')]"
+        "//label[normalize-space()='Cadence']/following-sibling::span//span[contains(@class,'k-select')]", "//label[contains(text(),'Cadence')]/..//span[contains(@aria-label,'select')]"
     };
     private static final String[] RESETS_ON_DROPDOWN_XPATHS = {
-        "//label[normalize-space()='Resets On']/following-sibling::span//span[contains(@class,'k-select')]"
+        "//label[normalize-space()='Resets On']/following-sibling::span//span[contains(@class,'k-select')]", "//label[contains(text(),'Resets On')]/..//span[contains(@aria-label,'select')]"
     };
     private static final String[] FORMULA_CONFIRM_BUTTON_XPATHS = {
-        "//span[@title='Validate and Calculate']"
+        "//span[@title='Validate and Calculate']", "//button[@aria-label='Validate and Calculate']"
     };
     private static final String[] SAVE_BUTTON_XPATHS = {
-        "//button[contains(@class,'icon')]", "//button[contains(@class,'icon') and contains(@class,'ico-edit-')]", "//button[normalize-space()='Save']", "//button[@id='saveButton']"
+        "//button[normalize-space()='Save']", "//button[@id='saveButton']", "//button[@type='submit' and (contains(text(),'Save') or .='Save')]"
     };
     private static final String[] DASHBOARDS_MENU_XPATHS = {
-        "//a[normalize-space()='Dashboards']", "//span[normalize-space()='Dashboards']"
+        "//a[normalize-space()='Dashboards']", "//span[normalize-space()='Dashboards']", "//a[contains(text(),'Dashboards')]"
     };
     private static final String[] MY_DASHBOARD_LINK_XPATHS = {
-        "//ul[contains(@style,'display: block')]//li[normalize-space()='My Dashboard']", "//a[normalize-space()='My Dashboard']"
+        "//ul[contains(@style,'display: block')]//a[normalize-space()='My Dashboard']", "//ul[contains(@class,'k-menu-group') and contains(@style,'display: block')]//span[normalize-space()='My Dashboard']", "//a[normalize-space()='My Dashboard']"
     };
     private static final String[] EDIT_KPI_ICON_XPATHS = {
-        "//span[contains(@class,'icon')]", "//span[@title='Edit Kpi']", "//div[@id='myKpi']//span[contains(@class,'ico-edit')]"
+        "//span[@title='Edit Kpi']", "//div[@id='myKpi']//span[contains(@class,'ico-edit')]", "//button[@aria-label='Edit KPI']", "//a[@title='Edit KPI']"
     };
     private static final String[] EDIT_KPI_MODAL_SEARCH_XPATHS = {
-        "//div[contains(@class,'modal-body')]//input[@placeholder='Search']"
+        "//div[contains(@class,'modal-body')]//input[@placeholder='Search']", "//div[contains(@class,'k-window-content')]//input[@type='text']"
     };
     private static final String[] EDIT_KPI_MODAL_LEFT_PANEL_METRIC_XPATHS = {
-        "//div[contains(@class,'left-panel')]//div[contains(@class,'metric-name') and normalize-space()='%s']"
+        "//div[contains(@class,'left-panel')]//div[contains(@class,'metric-name') and normalize-space()='%s']", "//div[contains(@class,'k-panel')]//div[normalize-space()='%s']"
     };
     private static final String[] EDIT_KPI_MODAL_SAVE_BUTTON_XPATHS = {
-        "//div[contains(@class,'modal-footer')]//button[normalize-space()='Save']"
+        "//div[contains(@class,'modal-footer')]//button[normalize-space()='Save']", "//div[contains(@class,'k-window-actions')]//button[contains(text(),'Save')]"
     };
     private static final String[] METRIC_CARD_THREE_DOT_MENU_XPATHS = {
-        "//div[contains(@class,'kpi-card-container') and .//span[normalize-space()='%s']]//span[contains(@class,'ico-threeDots')]"
+        "//div[contains(@class,'kpi-card-container') and .//span[normalize-space()='%s']]//span[contains(@class,'ico-threeDots')]", "//div[contains(@class,'kpi-card')][.//div[text()='%s']]//button[@aria-label='Actions']"
     };
     private static final String[] METRIC_CARD_EDIT_OPTION_XPATHS = {
-        "//div[contains(@class,'kpicard-dropdown-menu-content') and contains(@style,'display: block')]//li[@title='Edit']"
+        "//div[contains(@class,'k-popup')]//li[@title='Edit']", "//div[contains(@class,'kpicard-dropdown-menu-content') and contains(@style,'display: block')]//li[@title='Edit']", "//ul[contains(@class,'k-menu-group')]//span[normalize-space()='Edit']"
     };
     private static final String[] TARGET_TAB_XPATHS = {
-        "//a[normalize-space()='Target']"
+        "//a[normalize-space()='Target']", "//li[contains(@class,'k-item')]//span[text()='Target']"
     };
     private static final String[] CUSTOM_TARGET_RADIO_XPATHS = {
-        "//label[normalize-space()='Custom']/preceding-sibling::input[@type='radio']"
+        "//label[normalize-space()='Custom']/preceding-sibling::input[@type='radio']", "//input[@type='radio' and @value='custom']"
     };
     private static final String[] TIME_BASED_TARGET_RADIO_XPATHS = {
-        "//label[normalize-space()='Time-Based']/preceding-sibling::input[@type='radio']"
+        "//label[normalize-space()='Time-Based']/preceding-sibling::input[@type='radio']", "//input[@type='radio' and @value='timebased']"
     };
-    private static final String[] LEVEL_1_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level1']"};
-    private static final String[] LEVEL_2_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level2']"};
-    private static final String[] LEVEL_3_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level3']"};
-    private static final String[] LEVEL_4_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level4']"};
-    private static final String[] START_VALUE_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.StartValue']"};
-    private static final String[] TARGET_VALUE_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.TargetValue']"};
+    private static final String[] LEVEL_1_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level1']", "//label[contains(.,'Level 1')]/following::input[1]"};
+    private static final String[] LEVEL_2_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level2']", "//label[contains(.,'Level 2')]/following::input[1]"};
+    private static final String[] LEVEL_3_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level3']", "//label[contains(.,'Level 3')]/following::input[1]"};
+    private static final String[] LEVEL_4_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.Level4']", "//label[contains(.,'Level 4')]/following::input[1]"};
+    private static final String[] START_VALUE_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.StartValue']", "//label[contains(.,'Start Value')]/following::input[1]"};
+    private static final String[] TARGET_VALUE_INPUT_XPATHS = {"//input[@data-bind='value: companyMetric.KPITarget.TargetValue']", "//label[contains(.,'Target Value')]/following::input[1]"};
 
     // ========== CONFIGURATION - CHANGE THIS ==========
     private static final String EXCEL_FILE_PATH = "C:/path/to/your/test-data.xlsx";
@@ -214,8 +214,15 @@ public class SeleniumDataDrivenTest {
                     return String.valueOf(cell.getBooleanCellValue());
                 case FORMULA:
                     try {
-                        return String.valueOf(cell.getNumericCellValue());
+                        // Attempt to get the formula's result as a number first
+                        double numericResult = cell.getNumericCellValue();
+                        if (numericResult == (long) numericResult) {
+                            return String.format("%d", (long) numericResult);
+                        } else {
+                            return new DecimalFormat("#.##").format(numericResult);
+                        }
                     } catch (IllegalStateException e) {
+                        // If it fails, it might be a string result
                         return cell.getStringCellValue().trim();
                     }
                 case BLANK:
@@ -246,7 +253,7 @@ public class SeleniumDataDrivenTest {
                 // Ignore and try the next xpath
             }
         }
-        throw new NoSuchElementException("Element not found with any of the provided XPaths.");
+        throw new NoSuchElementException("Element not found with any of the provided XPaths. First XPath tried: " + xpaths[0]);
     }
 
     private void clickElement(String[] xpaths) {
@@ -254,7 +261,9 @@ public class SeleniumDataDrivenTest {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         try {
             element.click();
-        } catch (Exception e) {
+        } catch (Exception e) { // Catches ClickIntercepted, StaleElement, etc.
+            log("Standard click failed. Retrying with JavaScript click. Reason: " + e.getMessage());
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
             js.executeScript("arguments[0].click();", element);
         }
         log("Clicked element located by: " + xpaths[0]);
@@ -268,11 +277,17 @@ public class SeleniumDataDrivenTest {
         }
         WebElement element = findElementWithFallbacks(xpaths);
         wait.until(ExpectedConditions.visibilityOf(element));
-        element.clear();
-        element.sendKeys(text);
+        try {
+            element.clear();
+            element.sendKeys(text);
+        } catch (Exception e) {
+            log("Standard sendKeys failed. Retrying with JS. Reason: " + e.getMessage());
+            js.executeScript("arguments[0].value='';", element); // JS clear
+            element.sendKeys(text); // Try standard sendKeys again after JS clear
+        }
         log("Entered text '" + text + "' into element: " + xpaths[0]);
     }
-    
+
     private void typeSlowly(String[] xpaths, String text) {
         if (text == null || text.isEmpty()) {
             log("Skipping typeSlowly as text is null or empty for element: " + xpaths[0]);
@@ -305,13 +320,13 @@ public class SeleniumDataDrivenTest {
             for (String parentXpath : parentCardXpaths) {
                 try {
                     clickableParent = companySpan.findElement(By.xpath("." + parentXpath));
-                    if (clickableParent != null && clickableParent.isDisplayed() && clickableParent.isEnabled()) {
+                    if (clickableParent.isDisplayed() && clickableParent.isEnabled()) {
                         log("Found clickable parent card for company.");
                         clickableParent.click();
                         return;
                     }
                 } catch (Exception e) {
-                    // Parent not found, try next strategy
+                    // Parent not found with this strategy, try next
                 }
             }
             log("WARNING: Could not find a clickable parent card. Clicking the company name span directly.");
@@ -322,6 +337,16 @@ public class SeleniumDataDrivenTest {
         }
     }
 
+    private void navigateToSubMenu(String[] menuXpaths, String[] subMenuXpaths) {
+        log("Navigating to submenu using main menu: " + menuXpaths[0]);
+        WebElement menu = findElementWithFallbacks(menuXpaths);
+        new Actions(driver).moveToElement(menu).perform();
+        log("Hovered over main menu item.");
+        sleep(500); // Brief pause for menu to appear
+        clickElement(subMenuXpaths);
+        log("Clicked on submenu item: " + subMenuXpaths[0]);
+    }
+
     private void selectDropdownOptionByText(String[] dropdownTriggerXpaths, String optionText) {
         if (optionText == null || optionText.isEmpty() || "N/A".equalsIgnoreCase(optionText)) {
             log("Skipping dropdown selection as option text is invalid for: " + dropdownTriggerXpaths[0]);
@@ -329,9 +354,18 @@ public class SeleniumDataDrivenTest {
         }
         clickElement(dropdownTriggerXpaths);
         sleep(500);
-        String optionXpath = String.format("//ul[contains(@style,'display: block')]//li[normalize-space()='%s']", optionText);
-        clickElement(new String[]{optionXpath});
+        String optionXpath = String.format("//ul[contains(@style,'display: block') or contains(@class,'k-list-container')]//li[normalize-space()='%s']", optionText);
+        String optionSpanXpath = String.format("//ul[contains(@style,'display: block') or contains(@class,'k-list-container')]//li/span[normalize-space()='%s']", optionText);
+        clickElement(new String[]{optionXpath, optionSpanXpath});
         log("Selected option '" + optionText + "' from dropdown.");
+    }
+
+    private String getData(Map<String, String> data, String primaryKey, String secondaryKey) {
+        String value = data.get(primaryKey);
+        if (value == null || value.trim().isEmpty()) {
+            value = data.get(secondaryKey);
+        }
+        return (value == null) ? "" : value.trim();
     }
 
     // ========== TEST EXECUTION WORKFLOW ==========
@@ -349,11 +383,11 @@ public class SeleniumDataDrivenTest {
                 log("XXX--- Test Case for Record #" + (i + 1) + " FAILED: " + e.getMessage() + " ---XXX\n");
                 e.printStackTrace();
                 // Reset state for the next test
-                isFirstRecord = true; 
+                isFirstRecord = true;
                 cleanup();
                 setUp();
             } finally {
-                isFirstRecord = false;
+                if(i == 0) isFirstRecord = false; // Set to false only after the first record has attempted execution
             }
         }
     }
@@ -361,8 +395,8 @@ public class SeleniumDataDrivenTest {
     private void executeWorkflow(Map<String, String> data) {
         // Extract data from map
         String testCaseId = data.get("id");
-        String email = data.getOrDefault("Email", data.get("Email (Admin user)"));
-        String password = data.getOrDefault("Password", data.get("Password (Admin user)"));
+        String email = getData(data, "Email", "Email (Admin user)");
+        String password = getData(data, "Password", "Password (Admin user)");
         String companyName = data.get("Company_Name");
 
         // Step 1-4: Login and Company Selection (only for the first record)
@@ -377,28 +411,19 @@ public class SeleniumDataDrivenTest {
             sleep(PAGE_SETTLE_MS);
             selectCompanyByName(companyName);
             sleep(PAGE_SETTLE_MS);
-        } else {
-            log("Skipping login, assuming user is already logged in.");
-            // Ensure we are on a dashboard page before proceeding
-            if (!driver.getCurrentUrl().contains("dashboard")) {
-                log("Not on dashboard, navigating to My Dashboard.");
-                clickElement(DASHBOARDS_MENU_XPATHS);
-                clickElement(MY_DASHBOARD_LINK_XPATHS);
-                sleep(PAGE_SETTLE_MS);
-            }
         }
 
         // Execute steps based on Test Case ID
         switch (Objects.requireNonNull(testCaseId)) {
             case "TC001":
-            case "TC004":
                 performUserOnboarding(data);
-                if ("TC001".equals(testCaseId)) {
-                    performMetricCreation(data);
-                    performAddMetricToDashboard(data);
-                    performTargetConfiguration(data);
-                }
+                performMetricCreation(data);
+                performAddMetricToDashboard(data);
+                performTargetConfiguration(data);
                 break;
+            case "TC004":
+                 performUserOnboarding(data);
+                 break;
             case "TC002":
                 performMetricCreation(data);
                 break;
@@ -407,6 +432,7 @@ public class SeleniumDataDrivenTest {
                 break;
             default:
                 log("ERROR: Unknown Test Case ID: " + testCaseId);
+                throw new IllegalArgumentException("Unknown Test Case ID: " + testCaseId);
         }
     }
 
@@ -418,25 +444,24 @@ public class SeleniumDataDrivenTest {
         String lastName = data.get("Last_Name");
         String userPassword = data.get("User_Password");
 
-        clickElement(ADMINISTRATION_MENU_XPATHS);
-        clickElement(MANAGE_USERS_LINK_XPATHS);
+        navigateToSubMenu(ADMINISTRATION_MENU_XPATHS, MANAGE_USERS_LINK_XPATHS);
         sleep(PAGE_SETTLE_MS);
         clickElement(INVITE_USERS_BUTTON_XPATHS);
         sleep(ACTION_PAUSE_MS);
         sendKeysToElement(INVITE_USER_EMAIL_INPUT_XPATHS, inviteUserEmail);
-        
+
         WebElement adminCheckbox = findElementWithFallbacks(ADMIN_CHECKBOX_XPATHS);
         if ("Yes".equalsIgnoreCase(isAdmin) && !adminCheckbox.isSelected()) {
-            adminCheckbox.click();
+            clickElement(ADMIN_CHECKBOX_XPATHS);
             log("Set user as Admin.");
         } else if ("No".equalsIgnoreCase(isAdmin) && adminCheckbox.isSelected()) {
-            adminCheckbox.click();
+            clickElement(ADMIN_CHECKBOX_XPATHS);
             log("Set user as non-Admin.");
         }
 
         clickElement(SEND_INVITE_BUTTON_XPATHS);
         sleep(PAGE_SETTLE_MS);
-        
+
         String acceptIconXpath = String.format(ACCEPT_INVITE_ICON_XPATHS[0], inviteUserEmail);
         clickElement(new String[]{acceptIconXpath});
         sleep(ACTION_PAUSE_MS);
@@ -483,7 +508,7 @@ public class SeleniumDataDrivenTest {
             String secondMetricOptionXpath = String.format("//ul[contains(@style,'display: block')]//li[normalize-space()='%s']", secondMetric);
             clickElement(new String[]{secondMetricOptionXpath});
             sleep(500);
-            
+
             clickElement(FORMULA_CONFIRM_BUTTON_XPATHS);
             sleep(500);
 
@@ -507,8 +532,7 @@ public class SeleniumDataDrivenTest {
         log("Starting 'Add Metric to Dashboard' flow.");
         String metricName = data.get("Metric_Name");
 
-        clickElement(DASHBOARDS_MENU_XPATHS);
-        clickElement(MY_DASHBOARD_LINK_XPATHS);
+        navigateToSubMenu(DASHBOARDS_MENU_XPATHS, MY_DASHBOARD_LINK_XPATHS);
         sleep(PAGE_SETTLE_MS);
 
         clickElement(EDIT_KPI_ICON_XPATHS);
@@ -528,14 +552,12 @@ public class SeleniumDataDrivenTest {
 
     private void performTargetConfiguration(Map<String, String> data) {
         log("Starting Target Configuration flow.");
-        String metricName = data.getOrDefault("Metric_Name", data.get("Metric_Name (to find on dashboard)"));
+        String metricName = getData(data, "Metric_Name", "Metric_Name (to find on dashboard)");
         String targetType = data.get("Target_Type");
 
-        // Navigate to dashboard if not already there
         if (!driver.getCurrentUrl().contains("dashboard")) {
-            clickElement(DASHBOARDS_MENU_XPATHS);
-            clickElement(MY_DASHBOARD_LINK_XPATHS);
-            sleep(PAGE_SETTLE_MS);
+             navigateToSubMenu(DASHBOARDS_MENU_XPATHS, MY_DASHBOARD_LINK_XPATHS);
+             sleep(PAGE_SETTLE_MS);
         }
 
         String threeDotMenuXpath = String.format(METRIC_CARD_THREE_DOT_MENU_XPATHS[0], metricName);
