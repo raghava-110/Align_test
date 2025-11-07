@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class AlignTestDataDrivenExecutor {
 
@@ -36,17 +35,17 @@ public class AlignTestDataDrivenExecutor {
         "//input[@id='usernameField']",
         "//input[@name='username']",
         "//input[@type='email']",
-        "//input[contains(@placeholder, 'Email')]",
-        "//label[contains(.,'Email')]/following-sibling::span//input",
+        "//input[contains(@placeholder, 'Email') or contains(@placeholder, 'email')]",
+        "//label[normalize-space()='Email']/following-sibling::span//input",
         "//input[@aria-label='Email']"
     };
 
     private static final String[] continue_button_locators = {
-        "//button[contains(@class,'icon')]",
         "//button[normalize-space()='Continue']",
         "//button[@id='continueButton']",
-        "//button[@type='submit']",
-        "//button[contains(., 'Continue')]"
+        "//button[@type='submit' and (contains(., 'Continue') or contains(., 'Next'))]",
+        "//button[contains(., 'Continue')]",
+        "//button[contains(@class,'icon') and contains(@data-bind, 'continueLogin')]"
     };
 
     private static final String[] password_input_locators = {
@@ -55,31 +54,32 @@ public class AlignTestDataDrivenExecutor {
         "//input[@id='passwordField']",
         "//input[@name='password']",
         "//input[@type='password']",
-        "//input[contains(@placeholder, 'Password')]",
-        "//label[contains(.,'Password')]/following-sibling::span//input",
+        "//input[contains(@placeholder, 'Password') or contains(@placeholder, 'password')]",
+        "//label[normalize-space()='Password']/following-sibling::span//input",
         "//input[@aria-label='Password']"
     };
 
     private static final String[] login_button_locators = {
-        "//button[contains(@class,'icon')]",
         "//button[normalize-space()='Login']",
         "//button[normalize-space()='Log In']",
         "//button[@id='loginButton']",
-        "//button[@type='submit']",
-        "//button[contains(., 'Login') or contains(., 'Log In')]"
+        "//button[@type='submit' and (contains(., 'Login') or contains(., 'Log In'))]",
+        "//button[contains(., 'Login') or contains(., 'Log In')]",
+        "//button[contains(@class,'icon') and contains(@data-bind, 'login')]"
     };
 
     private static final String[] metrics_link_locators = {
         "//a[normalize-space()='Metrics']",
-        "//span[normalize-space()='Metrics']/parent::a",
+        "//span[normalize-space()='Metrics']/ancestor::a",
         "//div[contains(@class, 'nav')]//a[contains(., 'Metrics')]",
-        "//a[@href='/CompanyMetric']",
+        "//a[@href='/CompanyMetric' or @href='#/CompanyMetric']",
         "//a[@title='Metrics']"
     };
 
     private static final String[] add_metric_button_locators = {
+        "//button[normalize-space()='Add Metric']",
+        "//a[normalize-space()='Add Metric']",
         "//button[contains(., 'Add Metric')]",
-        "//a[contains(., 'Add Metric')]",
         "//button[@id='addMetricButton']",
         "//button[@title='Add Metric']",
         "//span[normalize-space()='Add Metric']/parent::button"
@@ -95,77 +95,85 @@ public class AlignTestDataDrivenExecutor {
 
     private static final String[] value_source_dropdown_locators = {
         "//label[normalize-space()='Value Source']/following-sibling::span//span[contains(@class, 'k-select')]",
-        "//label[contains(text(),'Value Source')]/following-sibling::span//input",
         "//span[@aria-owns='selectedIntegration_listbox']",
-        "//input[@placeholder='Select a Value Source']/ancestor::span"
+        "//label[contains(text(),'Value Source')]/following-sibling::span//span[@class='k-input-value-text']/ancestor::span",
+        "//input[@placeholder='Select a Value Source']/ancestor::span[contains(@class, 'k-dropdown')]"
     };
 
     private static final String[] formula_first_metric_search_locators = {
         "//div[@class='formula-builder']//input[@placeholder='Name or Owner']",
+        "//div[contains(@class,'formula-builder')]//input[contains(@class, 'k-input')]",
         "//label[normalize-space()='Formula Builder']/..//input[contains(@class, 'k-input')]"
     };
-    
+
     private static final String[] formula_checkmark_button_locators = {
         "//span[@title='Validate and Calculate']",
-        "//button[contains(@class, 'green')]/span[contains(@class, 'ico-checkmark')]"
+        "//button[contains(@class, 'green')]/span[contains(@class, 'ico-checkmark')]",
+        "//button[@aria-label='Validate and Calculate']"
     };
 
     private static final String[] cadence_dropdown_locators = {
         "//label[normalize-space()='Cadence']/following-sibling::span//span[contains(@class, 'k-select')]",
-        "//label[contains(text(),'Cadence')]/following-sibling::span//input",
-        "//span[@aria-owns='selectedCadence_listbox']"
+        "//span[@aria-owns='selectedCadence_listbox']",
+        "//label[contains(text(),'Cadence')]/following-sibling::span//span[@class='k-input-value-text']/ancestor::span"
     };
 
     private static final String[] resets_on_dropdown_locators = {
         "//label[normalize-space()='Resets On']/following-sibling::span//span[contains(@class, 'k-select')]",
-        "//label[contains(text(),'Resets On')]/following-sibling::span//input",
-        "//span[@aria-owns='selectedResetWeekDay_listbox']"
+        "//span[@aria-owns='selectedResetWeekDay_listbox']",
+        "//label[contains(text(),'Resets On')]/following-sibling::span//span[@class='k-input-value-text']/ancestor::span"
     };
 
     private static final String[] save_button_locators = {
-        "//button[@id='saveButton']",
         "//button[normalize-space()='Save']",
-        "//button[contains(., 'Save')]",
-        "//button/span[normalize-space()='Save']",
+        "//button[@id='saveButton']",
+        "//button[contains(., 'Save') and not(contains(., 'Draft'))]",
+        "//button/span[normalize-space()='Save']/parent::button",
         "//button[@type='submit' and contains(., 'Save')]"
     };
 
     private static final String[] dashboards_menu_locators = {
         "//a[normalize-space()='Dashboards']",
-        "//span[normalize-space()='Dashboards']/parent::a",
+        "//span[normalize-space()='Dashboards']/ancestor::a",
         "//div[contains(@class, 'nav')]//a[contains(., 'Dashboards')]",
-        "//a[@href='/Dashboard']"
+        "//a[@href='/Dashboard' or @href='#/Dashboard']"
     };
 
     private static final String[] my_dashboard_link_locators = {
         "//a[normalize-space()='My Dashboard']",
-        "//ul//a[contains(., 'My Dashboard')]"
+        "//ul[contains(@class, 'menu')]//a[contains(., 'My Dashboard')]",
+        "//div[contains(@class, 'dropdown-menu')]//a[normalize-space()='My Dashboard']"
     };
 
     private static final String[] edit_kpi_icon_locators = {
         "//span[@title='Edit Kpi']",
         "//span[contains(@class, 'ico-edit-kpi')]",
-        "//div[@id='myKpi']//span[contains(@class, 'icon') and @data-bind='click: editMyKpi']"
+        "//div[@id='myKpi']//span[contains(@class, 'icon') and @data-bind='click: editMyKpi']",
+        "//a[@aria-label='Edit Kpi']//span"
     };
 
     private static final String[] edit_kpi_modal_save_button_locators = {
         "//div[contains(@class, 'k-window-content')]//button[normalize-space()='Save']",
-        "//div[@aria-labelledby='editMyKpi_wnd_title']//button[contains(., 'Save')]"
+        "//div[@aria-labelledby='editMyKpi_wnd_title']//button[contains(., 'Save')]",
+        "//div[contains(@class,'k-popup-edit-form')]//button[normalize-space()='Save']"
     };
 
     private static final String[] target_tab_locators = {
         "//a[normalize-space()='Target']",
-        "//li/a[contains(text(), 'Target')]"
+        "//li/a[contains(text(), 'Target')]",
+        "//div[contains(@class, 'k-tabstrip-items')]//a[normalize-space()='Target']"
     };
 
     private static final String[] custom_target_radio_locators = {
         "//label[normalize-space()='Custom']/preceding-sibling::input[@type='radio']",
-        "//input[@name='targetTemplate' and @value='2']"
+        "//input[@name='targetTemplate' and @value='2']",
+        "//label[contains(., 'Custom')]/input[@type='radio']"
     };
 
     private static final String[] time_based_target_radio_locators = {
         "//label[normalize-space()='Time-Based']/preceding-sibling::input[@type='radio']",
-        "//input[@name='targetTemplate' and @value='1']"
+        "//input[@name='targetTemplate' and @value='1']",
+        "//label[contains(., 'Time-Based')]/input[@type='radio']"
     };
 
     // ========== CONFIGURATION ==========
@@ -243,7 +251,7 @@ public class AlignTestDataDrivenExecutor {
 
     // ========== HELPER METHODS ==========
 
-    private void log(String message) {
+    private static void log(String message) {
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " - " + message);
     }
 
@@ -280,7 +288,7 @@ public class AlignTestDataDrivenExecutor {
         try {
             element.click();
         } catch (Exception e) {
-            js.executeScript("arguments[0].click();", element);
+            jsClick(element);
         }
     }
 
@@ -294,7 +302,7 @@ public class AlignTestDataDrivenExecutor {
             sleep(TYPE_DELAY_MS);
         }
     }
-    
+
     private void selectCompanyByName(String companyName) {
         logStart("Select company: " + companyName);
         String companySpanXpath = String.format("//div[contains(@class, 'company-name') and normalize-space()='%s']", companyName);
@@ -329,6 +337,7 @@ public class AlignTestDataDrivenExecutor {
 
     private void jsClick(WebElement element) {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
         js.executeScript("arguments[0].click();", element);
     }
 
@@ -348,13 +357,13 @@ public class AlignTestDataDrivenExecutor {
         // This part simulates reading from Excel by using the JSON input directly.
         // In a real scenario, this would be replaced by:
         // List<Map<String, String>> testDataList = ExcelReader.readExcel(EXCEL_FILE_PATH);
-        
+
         // Manually populating test data from the provided JSON for demonstration
         Map<String, String> tc1 = new HashMap<>();
         tc1.put("base_url", "https://alignwebdev.aligntoday.com/");
         tc1.put("test_user_email", "sudhirbd@gmail.com");
         tc1.put("test_user_password", "Mindlinks2025#");
-        tc1.put("company_name", "Sudhir"); // Using a placeholder, as "[Your company name]" is not specific
+        tc1.put("company_name", "Sudhir");
         tc1.put("metric_name", "Weekly Sales Formula");
         tc1.put("value_source", "Formula");
         tc1.put("first_metric", "Metric A");
@@ -537,11 +546,11 @@ public class AlignTestDataDrivenExecutor {
         String metricCardXpath = String.format("//div[contains(@class, 'kpi-card-container')]//span[normalize-space()='%s']/ancestor::div[contains(@class, 'kpi-card-container')]", metricName);
         WebElement metricCard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(metricCardXpath)));
         new Actions(driver).moveToElement(metricCard).perform();
-        
+
         String threeDotMenuXpath = metricCardXpath + "//span[contains(@class, 'ico-threeDots1')]";
         WebElement threeDotMenu = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(threeDotMenuXpath)));
         jsClick(threeDotMenu);
-        
+
         String editOptionXpath = "//div[contains(@class, 'kpicard-dropdown-menu-content') and not(contains(@style,'display: none'))]//li[@title='Edit']";
         WebElement editOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(editOptionXpath)));
         jsClick(editOption);
