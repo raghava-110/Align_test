@@ -20,10 +20,11 @@ public class HuddlePairWiseTest {
 
     // ========== LOCATORS - GENERATED BASED ON REQUIREMENTS AND MAPPINGS ==========
     private static final String[] emailInputLocators = {
-        "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']",
         "//input[@id='usernameField']",
         "//input[@name='username']",
         "//input[@type='email']",
+        "//input[contains(@data-bind,'value: username')]",
+        "//input[@data-bind='value: username, events: { keyup: emailKeyUp }']",
         "//input[contains(@placeholder, 'Email') or contains(@placeholder, 'email')]",
         "//input[contains(@aria-label, 'Email') or contains(@aria-label, 'email')]",
         "//label[contains(.,'Email')]/following-sibling::input",
@@ -32,11 +33,12 @@ public class HuddlePairWiseTest {
 
     private static final String[] continueButtonLocators = {
         "//button[normalize-space()='Continue']",
+        "//button[@type='submit'][normalize-space()='Continue']",
         "//input[@value='Continue']",
         "//a[normalize-space()='Continue']",
         "//button[contains(., 'Continue')]",
         "//span[normalize-space()='Continue']/ancestor::button[1]",
-        "//button[@type='submit']"
+        "//button[@id='continue-button']"
     };
 
     private static final String[] passwordInputLocators = {
@@ -45,7 +47,8 @@ public class HuddlePairWiseTest {
         "//input[contains(@id, 'password') or contains(@id, 'Password')]",
         "//input[contains(@placeholder, 'Password') or contains(@placeholder, 'password')]",
         "//input[contains(@aria-label, 'Password') or contains(@aria-label, 'password')]",
-        "//label[contains(.,'Password')]/following-sibling::input"
+        "//label[contains(.,'Password')]/following-sibling::input",
+        "//input[@id='passwordField']"
     };
 
     private static final String[] loginButtonLocators = {
@@ -55,7 +58,8 @@ public class HuddlePairWiseTest {
         "//input[@value='Sign In']",
         "//button[contains(., 'Login') or contains(., 'Sign In')]",
         "//span[normalize-space()='Login']/ancestor::button[1]",
-        "//button[@type='submit'][not(contains(.,'Continue'))]"
+        "//button[@type='submit'][not(contains(.,'Continue'))]",
+        "//button[@id='login-button']"
     };
 
     private static final String[] huddlesMenuLocators = {
@@ -64,7 +68,9 @@ public class HuddlePairWiseTest {
         "//span[normalize-space()='Huddles']",
         "//div[contains(@class, 'nav')]//*[normalize-space()='Huddles']",
         "//button[contains(., 'Huddles')]",
-        "//input[contains(@data-bind,'value: headerNavigation')]"
+        "//input[contains(@data-bind,'value: headerNavigation')]",
+        "//input[contains(@class,'header-dropdown')]",
+        "//span[contains(@class,'k-dropdown')]//input[@id='navigation-header-dropdown']"
     };
 
     private static final String[] addTaskButtonLocators = {
@@ -73,65 +79,78 @@ public class HuddlePairWiseTest {
         "//button[contains(., 'Add Task')]",
         "//span[normalize-space()='Add Task']/ancestor::button[1]",
         "//i[contains(@class, 'plus')]/ancestor::button[contains(., 'Task')]",
-        "//button[@aria-label='Add Task']"
+        "//button[@aria-label='Add Task']",
+        "//button[@data-testid='add-task-btn']",
+        "//div[contains(@class, 'actions')]//button[contains(., 'Add')]"
     };
 
     private static final String[] taskNameInputLocators = {
-        "//input[@data-bind='value: promoCode.code']", // From mappings, likely incorrect but included
+        "//div[contains(@class, 'task-modal')]//textarea",
+        "//div[contains(@class, 'task-modal')]//input[@type='text']",
         "//textarea[contains(@placeholder, 'Task')]",
         "//input[contains(@placeholder, 'Task')]",
-        "//label[contains(.,'Task')]/following-sibling::textarea",
-        "//label[contains(.,'Task')]/following-sibling::input",
+        "//label[contains(.,'Task Name')]/following-sibling::textarea",
+        "//label[contains(.,'Task Name')]/following-sibling::input",
         "//input[@name='taskName']",
-        "//div[contains(@class, 'task-modal')]//input[@type='text']"
+        "//textarea[@name='taskDescription']",
+        "//input[@aria-label='Task Name']"
     };
 
     private static final String[] calendarIconLocators = {
         "//span[@title='Calendar']",
+        "//button[@aria-label='Open calendar']",
         "//span[contains(@class,'icon') and contains(@class,'calendar')]",
         "//i[contains(@class, 'calendar')]",
-        "//button[@aria-label='Open calendar']",
-        "//button[contains(., 'Date')]"
+        "//button[contains(., 'Date')]",
+        "//div[contains(@class, 'date-picker')]//button",
+        "//span[@aria-controls='task-modal-datepicker_dateview']"
     };
 
     private static final String[] saveTaskButtonLocators = {
         "//button[normalize-space()='Save']",
-        "//input[@value='Save']",
-        "//button[contains(., 'Save')]",
+        "//button[normalize-space()='Add']",
         "//div[contains(@class, 'modal-footer')]//button[normalize-space()='Save']",
-        "//button[@type='submit'][contains(., 'Save')]"
+        "//input[@value='Save']",
+        "//button[contains(., 'Save') and @type='submit']",
+        "//button[contains(., 'Create Task')]",
+        "//button[@data-testid='save-task-btn']"
     };
 
     private static final String[] myUpdatesSectionLocators = {
         "//h2[normalize-space()='My Updates']",
         "//h3[normalize-space()='My Updates']",
-        "//div[contains(@class, 'section-header') and contains(., 'My Updates')]",
-        "//div[@id='my-updates-section']"
+        "//div[contains(@class, 'section-header') and .//*[normalize-space()='My Updates']]",
+        "//div[@id='my-updates-section']",
+        "//div[contains(@class, 'my-updates-container')]"
     };
 
     private static final String[] topPriorityInputLocators = {
         "//h3[normalize-space()='Top Priority']/following-sibling::div[@contenteditable='true']",
+        "//div[contains(@class, 'my-updates')]//div[@contenteditable='true'][1]",
         "//label[normalize-space()='Top Priority']/following-sibling::div[@contenteditable='true']",
-        "//div[contains(@class, 'my-updates')]//div[@contenteditable='true']",
         "//div[@aria-label='Top Priority']",
-        "//div[@role='textbox'][contains(@aria-label, 'Priority')]"
+        "//div[@role='textbox'][contains(@aria-label, 'Priority')]",
+        "//div[contains(@class, 'priority-editor') and @contenteditable='true']",
+        "//div[contains(@placeholder, 'priority') and @contenteditable='true']"
     };
 
     private static final String[] profileMenuLocators = {
-        "//div[contains(@class, 'profile-menu')]",
+        "//button[@id='profile-menu-btn']",
+        "//div[contains(@class, 'profile-menu-trigger')]",
         "//button[contains(@aria-label, 'profile') or contains(@aria-label, 'user')]",
-        "//img[contains(@alt, 'avatar') or contains(@alt, 'profile')]",
+        "//img[contains(@alt, 'avatar') or contains(@alt, 'profile')]/ancestor::button[1]",
         "//div[contains(@class, 'user-menu-trigger')]",
-        "//button[@id='profile-menu-btn']"
+        "//div[contains(@data-testid, 'profile-menu')]"
     };
 
     private static final String[] signOutButtonLocators = {
         "//a[normalize-space()='Sign Out']",
         "//button[normalize-space()='Sign Out']",
         "//li[normalize-space()='Sign Out']",
-        "//span[normalize-space()='Sign Out']/ancestor::button[1]",
         "//div[contains(@class, 'dropdown-menu')]//*[normalize-space()='Sign Out']",
-        "//a[contains(@href, 'logout')]"
+        "//span[normalize-space()='Sign Out']/ancestor::button[1]",
+        "//a[contains(@href, 'logout')]",
+        "//button[@role='menuitem'][contains(., 'Sign Out')]"
     };
 
     // ========== CONFIGURATION - CHANGE THIS ==========
