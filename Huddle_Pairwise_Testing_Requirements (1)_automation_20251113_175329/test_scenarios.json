@@ -1,0 +1,209 @@
+{
+  "scenarios": [
+    {
+      "id": "TS001",
+      "name": "E2E Pair-Wise Verification for a Single User Pair",
+      "description": "This end-to-end test verifies the complete collaborative workflow for a single pair of users from an Excel file. User1 logs in, creates a task and a top priority, and logs out. User2 then logs in, verifies User1's data, creates their own task and priority, and logs out. Finally, User1 re-logs in to verify User2's data, confirming bi-directional data synchronization.",
+      "category": "functional",
+      "priority": "High",
+      "user_journey": [
+        "PHASE 1: First User Login and Setup (User1)",
+        "Step 1: Navigate to the application URL and verify the login page is displayed.",
+        "Step 2: Enter User1's email from Excel and click Continue.",
+        "Step 3: Enter User1's password from Excel and click Login.",
+        "Step 4: Select the correct Company_Name from Excel.",
+        "Step 5: Click the Huddles menu to expand the dropdown.",
+        "Step 6: Select the correct huddleName from Excel.",
+        "Step 7: Click 'Add Task' button and enter User1's TaskName from Excel.",
+        "Step 8: Click the calendar icon and select the DueDate from Excel.",
+        "Step 9: Click the Save button and wait for the task to be saved.",
+        "Step 10: Locate the 'Top Priority' input field in the 'My Updates' section.",
+        "Step 11: Enter User1's TopPriority text from Excel into the field.",
+        "Step 12: Click outside the field to trigger the auto-save.",
+        "Step 13: Click the profile menu, select Sign Out, and wait for the login page.",
+        "PHASE 2: Second User Login and Verification (User2)",
+        "Step 14: Repeat login steps 1-6 for User2 using their credentials from Excel.",
+        "Step 15: Verify User2 appears at the top of the members list.",
+        "Step 16: Click on User1 in the members panel to view their updates.",
+        "Step 17: Verify User1's TaskName is displayed in the 'Who What When' section.",
+        "Step 18: Verify User1's TopPriority is displayed in the 'My Updates' section.",
+        "Step 19: Click on User2 in the members panel to return to their own view.",
+        "Step 20: Confirm the 'My Updates' section is visible for the current user.",
+        "Step 21: Repeat task creation steps 7-9 using User2's data from Excel.",
+        "Step 22: Repeat priority creation steps 10-12 using User2's data from Excel.",
+        "Step 23: Click the profile menu and Sign Out.",
+        "PHASE 3: First User Re-login and Cross-Verification (User1)",
+        "Step 24: Repeat login steps 1-6 for User1.",
+        "Step 25: Click on User2 in the members panel.",
+        "Step 26: Verify User2's TaskName is visible in the 'Who What When' section.",
+        "Step 27: Verify User2's TopPriority is visible in the 'My Updates' section.",
+        "Step 28: Click the profile menu and Sign Out."
+      ],
+      "acceptance_criteria": [
+        "User1 successfully logs in, creates a task and priority, and logs out.",
+        "User2 successfully logs in and can view User1's task and priority as specified in the Excel file.",
+        "User2 successfully creates their own task and priority using data from the Excel file.",
+        "User1 can successfully re-login and view User2's newly created task and priority.",
+        "All data synchronization occurs successfully and is visible to the corresponding user in the pair."
+      ],
+      "test_data_requirements": [
+        "A valid user pair (e.g., sample_user_pair_1) from the Excel file with matching Company_Name and huddleName.",
+        "Users must have permissions to create tasks and add priorities."
+      ]
+    },
+    {
+      "id": "TS002",
+      "name": "Successful Task Creation and Cross-User Visibility",
+      "description": "This scenario focuses specifically on the task creation and verification part of the workflow. It ensures that a task created by one user is correctly saved and becomes immediately visible to another user in the same huddle.",
+      "category": "functional",
+      "priority": "High",
+      "user_journey": [
+        "Step 1: User1 logs in, selects the company, and navigates to the specified huddle.",
+        "Step 2: User1 clicks the 'Add Task' button.",
+        "Step 3: User1 enters the TaskName from the Excel file.",
+        "Step 4: User1 clicks the calendar icon and selects the DueDate from the Excel file.",
+        "Step 5: User1 clicks the 'Save' button and confirms the task appears.",
+        "Step 6: User1 logs out.",
+        "Step 7: User2 logs in, selects the same company, and navigates to the same huddle.",
+        "Step 8: User2 clicks on User1 in the members panel.",
+        "Step 9: User2 scrolls to the 'Who What When' section."
+      ],
+      "acceptance_criteria": [
+        "User1's task is successfully created and saved with the correct name and due date.",
+        "After User2 logs in, User1's task is visible and accurately displayed in the 'Who What When' section of User1's profile view."
+      ],
+      "test_data_requirements": [
+        "A valid user pair from the Excel file with data for Email, Password, Company_Name, huddleName, TaskName, and DueDate."
+      ]
+    },
+    {
+      "id": "TS003",
+      "name": "Successful Priority Creation and Cross-User Visibility",
+      "description": "This scenario focuses on the priority creation workflow, specifically testing the interaction with the contenteditable div. It verifies that a priority set by one user is correctly auto-saved and is visible to their huddle partner.",
+      "category": "functional",
+      "priority": "High",
+      "user_journey": [
+        "Step 1: User1 logs in, selects the company, and navigates to the specified huddle.",
+        "Step 2: User1 scrolls to the 'My Updates' section.",
+        "Step 3: User1 clicks on the 'Top Priority' field to focus on it.",
+        "Step 4: User1 enters the TopPriority text from the Excel file.",
+        "Step 5: User1 clicks another element on the page to shift focus and trigger the auto-save.",
+        "Step 6: User1 logs out.",
+        "Step 7: User2 logs in, selects the same company, and navigates to the same huddle.",
+        "Step 8: User2 clicks on User1 in the members panel.",
+        "Step 9: User2 scrolls to the 'My Updates' section."
+      ],
+      "acceptance_criteria": [
+        "User1's top priority text is successfully entered and saved via the auto-save mechanism.",
+        "After User2 logs in, User1's top priority is visible and accurately displayed in the 'My Updates' section of User1's profile view."
+      ],
+      "test_data_requirements": [
+        "A valid user pair from the Excel file with data for Email, Password, Company_Name, huddleName, and TopPriority."
+      ]
+    },
+    {
+      "id": "TS004",
+      "name": "Data-Driven E2E Workflow for a Second User Pair",
+      "description": "This scenario validates the data-driven capability of the test suite by executing the full pair-wise E2E workflow for a second, distinct pair of users (User3 and User4) from the Excel file. This ensures the test logic correctly iterates through the data source.",
+      "category": "functional",
+      "priority": "High",
+      "user_journey": [
+        "The test automation reads the second pair of user data (e.g., User3 and User4) from the Excel file.",
+        "Execute the complete 28-step E2E workflow as defined in scenario TS001, but using the data for User3 and User4.",
+        "PHASE 1: User3 logs in, creates their task and priority, and logs out.",
+        "PHASE 2: User4 logs in, verifies User3's data, creates their own task and priority, and logs out.",
+        "PHASE 3: User3 re-logs in and verifies User4's data."
+      ],
+      "acceptance_criteria": [
+        "The test successfully processes the second pair of users from the Excel sheet.",
+        "User3's created task and priority are visible to User4.",
+        "User4's created task and priority are visible to User3 upon re-login.",
+        "The test completes the full cycle for the second pair without errors."
+      ],
+      "test_data_requirements": [
+        "An Excel file containing at least two valid user pairs, such as sample_user_pair_1 and sample_user_pair_2.",
+        "Each pair must have a matching Company_Name and huddleName."
+      ]
+    },
+    {
+      "id": "TS005",
+      "name": "Successful UI Navigation from Login to Huddle",
+      "description": "This scenario verifies the fundamental navigation flow of the application. It ensures a user can successfully authenticate, be presented with a company selection, and navigate to their designated huddle based on the data provided in the Excel file.",
+      "category": "functional",
+      "priority": "Medium",
+      "user_journey": [
+        "Step 1: Navigate to the application URL.",
+        "Step 2: Enter a valid user email from Excel and click Continue.",
+        "Step 3: Enter the corresponding password from Excel and click Login.",
+        "Step 4: On the company selection page, locate and click the company name specified in the Excel file.",
+        "Step 5: In the main navigation, locate and click the 'Huddles' menu to expand it.",
+        "Step 6: From the dropdown, click the huddle name specified in the Excel file."
+      ],
+      "acceptance_criteria": [
+        "User login is successful.",
+        "The user is correctly redirected to the company selection page.",
+        "The specified company is successfully selected.",
+        "The user successfully navigates to and lands on the correct huddle page."
+      ],
+      "test_data_requirements": [
+        "A single valid user record from the Excel file containing Email, Password, Company_Name, and huddleName."
+      ]
+    }
+  ],
+  "dependencies": [
+    "A properly formatted Excel file (.xlsx) with all required headers must exist and be accessible to the test runner.",
+    "All users in the test data must be pre-provisioned in the application with the correct permissions to access the specified companies and huddles.",
+    "Each pair of users designated for a test run must be members of the same company and the same huddle.",
+    "The application environment must be stable and accessible at the specified base_url.",
+    "The test automation framework must be configured to handle session management correctly, ensuring cookies are cleared after each user's logout."
+  ],
+  "edge_cases": [
+    "Successfully creating a task with a due date far in the future.",
+    "Successfully setting a Top Priority that contains special characters and is very long.",
+    "Successfully completing the workflow where the huddleName or TaskName contains leading/trailing spaces which are handled correctly by the application.",
+    "Successfully completing the workflow on the last day of a month or year using the calendar picker."
+  ],
+  "test_data": {
+    "base_url": "[Application URL]",
+    "excel_file_format": ".xlsx",
+    "excel_sheet_name": "Sheet1",
+    "date_format": "MM/DD/YYYY",
+    "required_headers": [
+      "Email",
+      "Password",
+      "Company_Name",
+      "huddleName",
+      "TaskName",
+      "DueDate",
+      "TopPriority"
+    ],
+    "sample_user_pair_1": {
+      "user1_email": "user1@example.com",
+      "user1_password": "pass123",
+      "user2_email": "user2@example.com",
+      "user2_password": "pass456",
+      "company_name": "Innovate Inc",
+      "huddle_name": "Alpha Team Huddle",
+      "user1_task": "Develop login feature",
+      "user1_due_date": "11/15/2025",
+      "user1_priority": "Finalize API endpoints",
+      "user2_task": "Test login feature",
+      "user2_due_date": "11/16/2025",
+      "user2_priority": "Write E2E test cases"
+    },
+    "sample_user_pair_2": {
+      "user3_email": "user3@example.com",
+      "user3_password": "pass789",
+      "user4_email": "user4@example.com",
+      "user4_password": "pass101",
+      "company_name": "Innovate Inc",
+      "huddle_name": "Beta Team Huddle",
+      "user3_task": "Design new dashboard",
+      "user3_due_date": "12/01/2025",
+      "user3_priority": "Create wireframes",
+      "user4_task": "Review dashboard design",
+      "user4_due_date": "12/02/2025",
+      "user4_priority": "Provide feedback on mockups"
+    }
+  }
+}
