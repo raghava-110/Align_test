@@ -1,0 +1,211 @@
+{
+  "scenarios": [
+    {
+      "id": "TS001",
+      "name": "Successful E2E Task Creation with Single User, File Upload, and Alignments",
+      "description": "Verifies the complete happy path from user login to creating a single task with a specific user assignment, alignment to an existing Priority and Huddle, and attaching a local file.",
+      "category": "End-to-End Testing",
+      "priority": "High",
+      "user_journey": [
+        "Navigate to Application base URL.",
+        "Enter a valid email from Excel and click Continue.",
+        "Enter the corresponding valid password and click Login.",
+        "Select the specified company name from the list.",
+        "Click on 'Action Items' in the navigation menu.",
+        "Click on 'Tasks' from the submenu.",
+        "Click the 'New Task' button to open the form.",
+        "Enter the 'Short Task Name' from Excel.",
+        "Enter the 'Due Date' in MM/DD/YYYY format from Excel.",
+        "In the 'Search or Invite Team Members' field, enter a single user email from Excel.",
+        "Wait for the autocomplete dropdown and click the matching user to assign them.",
+        "In the 'Start typing to search Priorities' field, enter an existing priority name from Excel.",
+        "Wait for the autocomplete dropdown and click the matching priority to align it.",
+        "In the 'Start typing to search Huddles' field, enter an existing huddle name from Excel.",
+        "Wait for the autocomplete dropdown and click the matching huddle to align it.",
+        "Click the '+' icon next to Documents to open the upload dialog.",
+        "Enter the 'Document Name' and 'Document_Description' from Excel.",
+        "Ensure 'Document_Type' is 'File'.",
+        "Upload the specified 'Document_File' from the local file path.",
+        "Click the 'Save' button on the document dialog.",
+        "Click the final 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "User successfully logs in, selects a company, and navigates to the Manage Tasks page.",
+        "The task is created with the correct name, due date, and assigned user.",
+        "The task is successfully aligned with the specified Priority and Huddle.",
+        "The specified file is successfully attached to the newly created task.",
+        "The system returns to the Manage Tasks page, confirming successful creation."
+      ],
+      "test_data_requirements": [
+        "A valid user Email and Password.",
+        "A valid Company_Name associated with the user.",
+        "A unique Task_Name.",
+        "A valid future Due_Date in MM/DD/YYYY format.",
+        "An Assigned_To field containing a single, existing user's email.",
+        "An Align_Priority field with the name of a pre-existing Priority.",
+        "An Align_Huddle field with the name of a pre-existing Huddle.",
+        "A Document_Name, Document_Description, Document_Type='File', and a Document_File that exists at the specified path."
+      ]
+    },
+    {
+      "id": "TS002",
+      "name": "Successful Task Creation with 'Assign to all Users' Bulk Assignment",
+      "description": "Verifies that a task can be created and successfully assigned to all users in the company using the 'Assign to all Users' checkbox.",
+      "category": "Functional Testing",
+      "priority": "Medium",
+      "user_journey": [
+        "User is logged in and on the Manage Tasks page.",
+        "Click the 'New Task' button.",
+        "Enter the 'Short Task Name' from Excel.",
+        "Enter the 'Due Date' from Excel.",
+        "Locate and click the 'Assign to all Users' checkbox to select it.",
+        "Click the 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "The 'Assign to all Users' checkbox is successfully selected.",
+        "The task is created successfully upon saving.",
+        "The system returns to the Manage Tasks page.",
+        "The created task is correctly assigned to all users in the system."
+      ],
+      "test_data_requirements": [
+        "A unique Task_Name.",
+        "A valid future Due_Date in MM/DD/YYYY format.",
+        "The Assigned_To field in the Excel data must be 'Assign to all Users'."
+      ]
+    },
+    {
+      "id": "TS003",
+      "name": "Successful Task Creation with 'Assign to all Admins' Bulk Assignment",
+      "description": "Verifies that a task can be created and successfully assigned to all administrators in the company using the 'Assign to all Admins' checkbox.",
+      "category": "Functional Testing",
+      "priority": "Medium",
+      "user_journey": [
+        "User is logged in and on the Manage Tasks page.",
+        "Click the 'New Task' button.",
+        "Enter the 'Short Task Name' from Excel.",
+        "Enter the 'Due Date' from Excel.",
+        "Locate and click the 'Assign to all Admins' checkbox to select it.",
+        "Click the 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "The 'Assign to all Admins' checkbox is successfully selected.",
+        "The task is created successfully upon saving.",
+        "The system returns to the Manage Tasks page.",
+        "The created task is correctly assigned to all admin users in the system."
+      ],
+      "test_data_requirements": [
+        "A unique Task_Name.",
+        "A valid future Due_Date in MM/DD/YYYY format.",
+        "The Assigned_To field in the Excel data must be 'Assign to all Admins'."
+      ]
+    },
+    {
+      "id": "TS004",
+      "name": "Successful Task Creation with Multiple Individual User Assignments",
+      "description": "Verifies a task can be successfully assigned to multiple specific team members by searching for and selecting their emails sequentially from the autocomplete dropdown.",
+      "category": "Functional Testing",
+      "priority": "Medium",
+      "user_journey": [
+        "User is logged in and on the Manage Tasks page.",
+        "Click the 'New Task' button.",
+        "Enter the 'Short Task Name' from Excel.",
+        "Enter the 'Due Date' from Excel.",
+        "For each email in the comma-separated list from Excel:",
+        "  a. Click the 'Search or Invite Team Members' input field.",
+        "  b. Enter the user email address.",
+        "  c. Wait for the autocomplete dropdown and click the matching user option to select them.",
+        "Click the 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "All specified users are successfully found and selected from the autocomplete dropdown.",
+        "The task is created successfully.",
+        "The created task is assigned to all specified individuals.",
+        "The system returns to the Manage Tasks page."
+      ],
+      "test_data_requirements": [
+        "A unique Task_Name.",
+        "A valid future Due_Date in MM/DD/YYYY format.",
+        "The Assigned_To field in Excel must contain a comma-separated list of emails for at least two existing users (e.g., 'user1@example.com,user2@example.com')."
+      ]
+    },
+    {
+      "id": "TS005",
+      "name": "Successful Task Creation with a 'Link' Document Attachment",
+      "description": "Verifies a user can create a task and successfully attach a document of type 'Link' by providing a name, description, and a valid URL.",
+      "category": "Functional Testing",
+      "priority": "Medium",
+      "user_journey": [
+        "User is logged in and on the Manage Tasks page.",
+        "Click the 'New Task' button.",
+        "Enter the 'Short Task Name' from Excel.",
+        "Enter the 'Due Date' from Excel.",
+        "Click the '+' icon next to Documents to open the upload dialog.",
+        "Enter the 'Document Name' from Excel.",
+        "Enter the 'Document_Description' from Excel.",
+        "Click the document type dropdown and select the 'Link' option.",
+        "Enter the 'Document_URL' from Excel into the 'Enter Link...' field.",
+        "Click the 'Save' button on the document dialog.",
+        "Click the final 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "The document dialog opens and the type is successfully changed to 'Link'.",
+        "The document name, description, and URL are entered correctly.",
+        "The link document is successfully saved and attached to the task.",
+        "The task is created successfully and the system returns to the Manage Tasks page."
+      ],
+      "test_data_requirements": [
+        "A unique Task_Name.",
+        "A valid future Due_Date in MM/DD/YYYY format.",
+        "A Document_Name, Document_Description, Document_Type='Link', and a valid Document_URL (e.g., 'https://example.com/doc')."
+      ]
+    },
+    {
+      "id": "TS006",
+      "name": "Successful Sequential Creation of Multiple Tasks in a Single Session",
+      "description": "Verifies the data-driven flow where the system processes multiple rows from an Excel file, creating each task sequentially without requiring the user to log in again.",
+      "category": "Data-Driven Testing",
+      "priority": "High",
+      "user_journey": [
+        "For the FIRST task in the Excel file, execute the full login and navigation flow (PHASE 1).",
+        "Execute the task creation steps (PHASE 2) for the first task.",
+        "Verify the system is on the Manage Tasks page.",
+        "For the SECOND and subsequent tasks in the Excel file, skip the login flow.",
+        "Directly execute the task creation steps (PHASE 2) for each subsequent task.",
+        "Continue until all tasks from the Excel file are created."
+      ],
+      "acceptance_criteria": [
+        "The user logs in only once at the beginning of the test session.",
+        "Each task defined in the Excel file is created successfully in sequence.",
+        "The user remains on the Manage Tasks page between task creations.",
+        "The entire batch of tasks is processed without session timeout or unexpected logout."
+      ],
+      "test_data_requirements": [
+        "An Excel file containing at least two valid and distinct task definitions.",
+        "The first row must contain valid login credentials (Email, Password, Company_Name).",
+        "Subsequent rows can have varied, but valid, data for task creation (e.g., different assignment types, with/without documents)."
+      ]
+    }
+  ],
+  "edge_cases": [
+    "Creating a task with a due date set to the last day of a leap year (e.g., 02/29/2028).",
+    "Uploading a file with a very long filename containing spaces and special characters.",
+    "Assigning a task to a user whose email is a substring of another existing user's email to ensure the correct one is selected from the dropdown.",
+    "Creating a task with only the mandatory fields (Task Name, Due Date, one assignee) and no optional data."
+  ],
+  "dependencies": [
+    "The test environment must be pre-seeded with all users, Priorities, and Huddles specified in the test data Excel file.",
+    "A stable internet connection is required for the application to load and respond within the defined timeouts.",
+    "The test data Excel file must be correctly formatted and contain valid, accurate data.",
+    "For file upload scenarios, the specified files must exist at the hardcoded 'File_Upload_Base_Path' on the execution machine."
+  ],
+  "test_data": {
+    "Base_URL": "https://alignwebdev.aligntoday.com/",
+    "Browser": "Chrome",
+    "Due_Date_Format": "MM/DD/YYYY",
+    "Assignment_Option_1": "Assign to all Users",
+    "Assignment_Option_2": "Assign to all Admins",
+    "Document_Type_1": "File",
+    "Document_Type_2": "Link",
+    "File_Upload_Base_Path": "C:\\Users\\sudhi\\Downloads\\"
+  }
+}
