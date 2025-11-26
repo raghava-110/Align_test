@@ -1,0 +1,423 @@
+{
+  "test_cases": [
+    {
+      "id": "TC001",
+      "scenario_id": "TS001",
+      "name": "Successful Login and Creation of a Basic Task Assigned to a Single User",
+      "preconditions": [
+        "The test environment and application server must be stable and accessible.",
+        "A valid user account with appropriate permissions exists.",
+        "The specified company is associated with the user account.",
+        "The team member to be assigned exists in the target company."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Email": "valid_user@example.com",
+        "Password": "valid_password",
+        "Company_Name": "Valid Test Company",
+        "Task_Name": "Review Q4 Marketing Plan",
+        "Due_Date": "11/30/2025",
+        "Assigned_To": "user1@example.com"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application base URL.",
+          "expected_result": "The login page loads successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid email address.",
+          "expected_result": "The email address is correctly entered into the email input field."
+        },
+        {
+          "step": 3,
+          "action": "Click the Continue button.",
+          "expected_result": "The application proceeds to the password entry screen."
+        },
+        {
+          "step": 4,
+          "action": "Enter the corresponding valid password.",
+          "expected_result": "The password is entered into the password field."
+        },
+        {
+          "step": 5,
+          "action": "Click the Login button.",
+          "expected_result": "User is successfully authenticated and redirected to the company selection page."
+        },
+        {
+          "step": 6,
+          "action": "Wait for the company selection page and click on the correct company name.",
+          "expected_result": "The company is selected and the user is navigated to the application dashboard."
+        },
+        {
+          "step": 7,
+          "action": "From the dashboard, click on the 'Action Items' menu.",
+          "expected_result": "A submenu with options appears."
+        },
+        {
+          "step": 8,
+          "action": "Click on the 'Tasks' submenu option.",
+          "expected_result": "The user is navigated to the Manage Tasks page."
+        },
+        {
+          "step": 9,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The 'New Task' creation form opens."
+        },
+        {
+          "step": 10,
+          "action": "Enter a valid 'Short Task Name'.",
+          "expected_result": "The task name is entered into the input field."
+        },
+        {
+          "step": 11,
+          "action": "Enter a valid 'Due_Date' in MM/DD/YYYY format and press ENTER.",
+          "expected_result": "The due date is accepted and displayed in the date field."
+        },
+        {
+          "step": 12,
+          "action": "In the 'Search or Invite Team Members' field, enter a single, valid user email.",
+          "expected_result": "An autocomplete dropdown appears showing matching users."
+        },
+        {
+          "step": 13,
+          "action": "Click the matching user from the autocomplete dropdown to select them.",
+          "expected_result": "The selected user is added to the assignment list for the task."
+        },
+        {
+          "step": 14,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The form is submitted and the task creation process is initiated."
+        },
+        {
+          "step": 15,
+          "action": "Wait for the Manage Tasks page to reload.",
+          "expected_result": "The application returns to the Manage Tasks page, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC002",
+      "scenario_id": "TS002",
+      "name": "Successful Task Creation with 'Assign to all Users' Bulk Assignment",
+      "preconditions": [
+        "User is already logged in and on the Manage Tasks page.",
+        "The test environment and application server are stable."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Task_Name": "Complete Annual Compliance Training",
+        "Due_Date": "11/30/2025",
+        "Assigned_To": "Assign to all Users"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The 'New Task' creation form opens."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name'.",
+          "expected_result": "The task name is entered into the input field."
+        },
+        {
+          "step": 3,
+          "action": "Enter a valid 'Due_Date' in MM/DD/YYYY format and press ENTER.",
+          "expected_result": "The due date is accepted and displayed in the date field."
+        },
+        {
+          "step": 4,
+          "action": "Scroll down and locate the 'Assign to all Users' checkbox.",
+          "expected_result": "The 'Assign to all Users' checkbox is visible."
+        },
+        {
+          "step": 5,
+          "action": "Click the 'Assign to all Users' checkbox to select it.",
+          "expected_result": "The checkbox is successfully selected."
+        },
+        {
+          "step": 6,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The task is created and saved without errors."
+        },
+        {
+          "step": 7,
+          "action": "Wait for the Manage Tasks page to reload.",
+          "expected_result": "The application returns to the Manage Tasks page after task creation."
+        }
+      ]
+    },
+    {
+      "id": "TC003",
+      "scenario_id": "TS003",
+      "name": "Successful Task Creation with 'Assign to all Admins' and Optional Alignments",
+      "preconditions": [
+        "User is already logged in and on the Manage Tasks page.",
+        "A Priority with a known name exists in the system.",
+        "A Huddle with a known name exists in the system."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Task_Name": "Prepare Board Meeting Agenda",
+        "Due_Date": "11/30/2025",
+        "Assigned_To": "Assign to all Admins",
+        "Align_Priority": "Increase Annual Revenue by 20%",
+        "Align_Huddle": "Weekly Leadership Sync"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The 'New Task' creation form opens."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name'.",
+          "expected_result": "The task name is entered into the input field."
+        },
+        {
+          "step": 3,
+          "action": "Enter a valid 'Due_Date' in MM/DD/YYYY format and press ENTER.",
+          "expected_result": "The due date is accepted and displayed in the date field."
+        },
+        {
+          "step": 4,
+          "action": "Scroll down and click the 'Assign to all Admins' checkbox to select it.",
+          "expected_result": "The 'Assign to all Admins' checkbox is successfully selected."
+        },
+        {
+          "step": 5,
+          "action": "Scroll to the Priority alignment section and click the 'Start typing to search Priorities' input field.",
+          "expected_result": "The input field is focused."
+        },
+        {
+          "step": 6,
+          "action": "Enter the name of a pre-existing Priority.",
+          "expected_result": "A dropdown appears with matching Priorities."
+        },
+        {
+          "step": 7,
+          "action": "Click the matching Priority from the dropdown to select it.",
+          "expected_result": "The specified Priority is successfully selected and aligned."
+        },
+        {
+          "step": 8,
+          "action": "Scroll to the Huddle alignment section and click the 'Start typing to search Huddles' input field.",
+          "expected_result": "The input field is focused."
+        },
+        {
+          "step": 9,
+          "action": "Enter the name of a pre-existing Huddle.",
+          "expected_result": "A dropdown appears with matching Huddles."
+        },
+        {
+          "step": 10,
+          "action": "Click the matching Huddle from the dropdown to select it.",
+          "expected_result": "The specified Huddle is successfully selected and aligned."
+        },
+        {
+          "step": 11,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The task is created successfully with all specified assignments and alignments."
+        }
+      ]
+    },
+    {
+      "id": "TC004",
+      "scenario_id": "TS004",
+      "name": "Successful Task Creation with a 'File' Type Document Attachment",
+      "preconditions": [
+        "User is already logged in and on the Manage Tasks page.",
+        "The specified file for upload exists at the configured base path on the test execution machine."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Task_Name": "Submit Expense Report",
+        "Due_Date": "11/30/2025",
+        "Document_Name": "Q4 Expense Report",
+        "Document_Description": "Detailed expense report for Q4 2025.",
+        "Document_Type": "File",
+        "Document_File": "report.pdf",
+        "File_Upload_Base_Path": "C:\\Users\\sudhi\\Downloads\\"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The 'New Task' creation form opens."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "Task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Scroll down to the Documents section and click the '+' icon.",
+          "expected_result": "The document upload dialog opens successfully."
+        },
+        {
+          "step": 4,
+          "action": "In the document upload dialog, enter the 'Document Name'.",
+          "expected_result": "The document name is entered correctly."
+        },
+        {
+          "step": 5,
+          "action": "Enter the 'Document_Description'.",
+          "expected_result": "The document description is entered correctly."
+        },
+        {
+          "step": 6,
+          "action": "Ensure the document type is 'File'.",
+          "expected_result": "'File' is the selected document type."
+        },
+        {
+          "step": 7,
+          "action": "Locate the hidden file input, make it visible, and send the full path to an existing local file.",
+          "expected_result": "The file path is sent to the input element and the upload process begins."
+        },
+        {
+          "step": 8,
+          "action": "Wait for the file upload to complete.",
+          "expected_result": "A confirmation indicates the file has been uploaded."
+        },
+        {
+          "step": 9,
+          "action": "Click the 'Save' button in the document dialog.",
+          "expected_result": "The dialog closes and the document appears as attached to the task."
+        },
+        {
+          "step": 10,
+          "action": "Click the main 'Save' button to create the task.",
+          "expected_result": "The task is created with the document attached, and the application returns to the Manage Tasks page."
+        }
+      ]
+    },
+    {
+      "id": "TC005",
+      "scenario_id": "TS005",
+      "name": "Successful Task Creation with a 'Link' Type Document Attachment",
+      "preconditions": [
+        "User is already logged in and on the Manage Tasks page."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Task_Name": "Review Project Documentation",
+        "Due_Date": "11/30/2025",
+        "Document_Name": "Project Wiki",
+        "Document_Description": "Link to the main project documentation page.",
+        "Document_Type": "Link",
+        "Document_URL": "https://example.com/doc"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The 'New Task' creation form opens."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "Task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Scroll down to the Documents section and click the '+' icon.",
+          "expected_result": "The document upload dialog opens successfully."
+        },
+        {
+          "step": 4,
+          "action": "In the document upload dialog, enter the 'Document Name'.",
+          "expected_result": "The document name is entered correctly."
+        },
+        {
+          "step": 5,
+          "action": "Enter the 'Document_Description'.",
+          "expected_result": "The document description is entered correctly."
+        },
+        {
+          "step": 6,
+          "action": "Click the document type dropdown and select the 'Link' option.",
+          "expected_result": "The 'Link' document type is selected, and a URL input field appears."
+        },
+        {
+          "step": 7,
+          "action": "Enter a valid URL in the 'Enter Link...' field.",
+          "expected_result": "The URL is accepted by the input field."
+        },
+        {
+          "step": 8,
+          "action": "Click the 'Save' button in the document dialog.",
+          "expected_result": "The dialog closes and the document link appears as attached to the task."
+        },
+        {
+          "step": 9,
+          "action": "Click the main 'Save' button to create the task.",
+          "expected_result": "The task is created with the document link attached, and the application returns to the Manage Tasks page."
+        }
+      ]
+    },
+    {
+      "id": "TC006",
+      "scenario_id": "TS006",
+      "name": "Successful Data-Driven Creation of Multiple Tasks in a Single Session",
+      "preconditions": [
+        "The test environment and application server must be stable and accessible.",
+        "An Excel file containing at least two distinct, valid task definitions is available.",
+        "The first row of the Excel file contains valid login credentials and company name.",
+        "All users, Priorities, and Huddles specified in the Excel file pre-exist in the system."
+      ],
+      "test_data": {
+        "note": "This test case uses a data source (e.g., Excel) with multiple rows.",
+        "row1": {
+          "Base_URL": "https://alignwebdev.aligntoday.com/",
+          "Email": "valid_user@example.com",
+          "Password": "valid_password",
+          "Company_Name": "Valid Test Company",
+          "Task_Name": "Data-Driven Task 1",
+          "Due_Date": "11/30/2025",
+          "Assigned_To": "user1@example.com"
+        },
+        "row2": {
+          "Task_Name": "Data-Driven Task 2",
+          "Due_Date": "12/15/2025",
+          "Assigned_To": "Assign to all Users"
+        }
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Execute the full login, company selection, and navigation to the Tasks page using data from the first task row.",
+          "expected_result": "The user is logged in and the Manage Tasks page is displayed."
+        },
+        {
+          "step": 2,
+          "action": "Create the first task according to its data from the first row.",
+          "expected_result": "The first task is created successfully, and the application returns to the Manage Tasks page."
+        },
+        {
+          "step": 3,
+          "action": "Verify the application is still on the Manage Tasks page.",
+          "expected_result": "The 'New Task' button is visible, confirming the user session is active and on the correct page."
+        },
+        {
+          "step": 4,
+          "action": "Create the second task according to its data from the second row without re-logging in.",
+          "expected_result": "The second task is created successfully in the same session, and the application returns to the Manage Tasks page."
+        },
+        {
+          "step": 5,
+          "action": "Continue this process for all subsequent rows in the Excel file.",
+          "expected_result": "Each task defined in the Excel file is created successfully in sequence without session errors."
+        },
+        {
+          "step": 6,
+          "action": "After the last task is created, close the browser.",
+          "expected_result": "The test completes successfully."
+        }
+      ]
+    }
+  ]
+}
