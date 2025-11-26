@@ -1,0 +1,209 @@
+{
+  "scenarios": [
+    {
+      "id": "TS001",
+      "name": "Successful User Login, Company Selection, and Navigation to Tasks Page",
+      "category": "End-to-End (E2E) Testing",
+      "priority": "High",
+      "description": "Verifies that a user can successfully log in with valid credentials, select their assigned company, and navigate to the 'Manage Tasks' page. This scenario covers the complete Phase 1 authentication and setup flow.",
+      "user_journey": [
+        "Navigate to the application Base URL.",
+        "Enter a valid user email from the Excel data into the email input field.",
+        "Click the 'Continue' button.",
+        "Enter the corresponding valid password from the Excel data into the password input field.",
+        "Click the 'Login' button.",
+        "On the company selection page, locate and click the company name specified in the Excel data.",
+        "After the dashboard loads, click on the 'Action Items' menu item in the navigation.",
+        "From the submenu, click on the 'Tasks' option.",
+        "Wait for the 'Manage Tasks' page to load completely."
+      ],
+      "acceptance_criteria": [
+        "User is successfully authenticated without any errors.",
+        "The correct company dashboard is loaded after selection.",
+        "The user successfully navigates to the 'Manage Tasks' page.",
+        "The 'New Task' button is visible on the 'Manage Tasks' page, confirming the page has loaded correctly."
+      ],
+      "test_data_requirements": [
+        "Valid user credentials (Email, Password).",
+        "A valid Company_Name that the user has access to."
+      ]
+    },
+    {
+      "id": "TS002",
+      "name": "Create a Core Task with Individual Team Member Assignment",
+      "category": "Functional Testing",
+      "priority": "High",
+      "description": "Verifies the creation of a task with a name, due date, and assignment to specific, pre-existing users via email search. This tests the core task creation and individual assignment functionality.",
+      "user_journey": [
+        "Start on the 'Manage Tasks' page.",
+        "Click the 'New Task' button to open the task creation form.",
+        "Enter a task name in the 'Short Task Name' input field.",
+        "Click the date picker and enter a valid due date in MM/DD/YYYY format.",
+        "In the 'Search or Invite Team Members' input field, enter a pre-existing user's email address.",
+        "Wait for the autocomplete dropdown to populate.",
+        "Click the matching user from the dropdown options to select them.",
+        "Repeat the previous three steps for any additional emails.",
+        "Scroll to the bottom of the form and click the 'Save' button."
+      ],
+      "acceptance_criteria": [
+        "The 'New Task' form opens successfully.",
+        "Task name and due date are populated correctly.",
+        "The specified, existing users are successfully found and selected from the dropdown.",
+        "The task is created successfully upon clicking 'Save'.",
+        "The application returns to the 'Manage Tasks' page after task creation."
+      ],
+      "test_data_requirements": [
+        "A valid Task_Name.",
+        "A valid Due_Date in MM/DD/YYYY format.",
+        "A comma-separated string of one or more valid, pre-existing user emails for the 'Assigned_To' field."
+      ]
+    },
+    {
+      "id": "TS003",
+      "name": "Create a Task with Bulk Assignment to 'All Users'",
+      "category": "Functional Testing",
+      "priority": "Medium",
+      "description": "Verifies that a task can be created and successfully assigned to all users in the system using the 'Assign to all Users' checkbox.",
+      "user_journey": [
+        "Start on the 'Manage Tasks' page.",
+        "Click the 'New Task' button.",
+        "Enter a task name in the 'Short Task Name' input field.",
+        "Enter a valid due date in MM/DD/YYYY format.",
+        "Locate and click the 'Assign to all Users' checkbox to select it.",
+        "Scroll to the bottom of the form and click the 'Save' button."
+      ],
+      "acceptance_criteria": [
+        "The 'Assign to all Users' checkbox is successfully selected.",
+        "The task is created successfully.",
+        "The application returns to the 'Manage Tasks' page."
+      ],
+      "test_data_requirements": [
+        "A valid Task_Name.",
+        "A valid Due_Date.",
+        "The 'Assigned_To' field must contain the exact string 'Assign to all Users'."
+      ]
+    },
+    {
+      "id": "TS004",
+      "name": "Create a Task with File Upload and Priority Alignment",
+      "category": "Integration Testing",
+      "priority": "Medium",
+      "description": "Verifies that a user can create a task, align it to a pre-existing Priority, and attach a document by uploading a file from their local system.",
+      "user_journey": [
+        "Start on the 'Manage Tasks' page and click 'New Task'.",
+        "Enter a Task Name and Due Date.",
+        "Click the 'Start typing to search Priorities' input field and enter a pre-existing priority name.",
+        "Wait for the dropdown and select the matching priority.",
+        "Click the '+' icon next to the 'Documents' section.",
+        "In the document dialog, enter a Document Name and optional Document Description.",
+        "Ensure the document type is 'File'.",
+        "Locate the hidden file input, make it visible, and send the full file path to it.",
+        "Wait for the file to upload.",
+        "Click the 'Save' button in the document dialog.",
+        "Click the main 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "The pre-existing Priority is successfully found and selected.",
+        "The document upload dialog opens correctly.",
+        "The specified file is successfully uploaded and attached to the task.",
+        "The document dialog closes and the attachment is visible.",
+        "The task is created successfully with the alignment and attachment."
+      ],
+      "test_data_requirements": [
+        "A valid Task_Name and Due_Date.",
+        "A valid, pre-existing Priority name for the 'Align_Priority' field.",
+        "A valid Document_Name.",
+        "Document_Type set to 'File'.",
+        "A valid Document_File name that exists at the specified 'File_Upload_Base_Path'."
+      ]
+    },
+    {
+      "id": "TS005",
+      "name": "Create a Task with Link Attachment and Huddle Alignment",
+      "category": "Integration Testing",
+      "priority": "Low",
+      "description": "Verifies that a user can create a task, align it to a pre-existing Huddle, and attach a document by providing a URL link.",
+      "user_journey": [
+        "Start on the 'Manage Tasks' page and click 'New Task'.",
+        "Enter a Task Name and Due Date.",
+        "Click the 'Start typing to search Huddles' input field and enter a pre-existing huddle name.",
+        "Wait for the dropdown and select the matching huddle.",
+        "Click the '+' icon next to the 'Documents' section.",
+        "In the document dialog, enter a Document Name.",
+        "Click the document type dropdown and select the 'Link' option.",
+        "Enter a valid URL in the 'Enter Link...' field.",
+        "Click the 'Save' button in the document dialog.",
+        "Click the main 'Save' button to create the task."
+      ],
+      "acceptance_criteria": [
+        "The pre-existing Huddle is successfully found and selected.",
+        "The document upload dialog opens correctly.",
+        "The document type is successfully changed to 'Link'.",
+        "The URL is accepted and the link is attached to the task.",
+        "The task is created successfully with the alignment and link attachment."
+      ],
+      "test_data_requirements": [
+        "A valid Task_Name and Due_Date.",
+        "A valid, pre-existing Huddle name for the 'Align_Huddle' field.",
+        "A valid Document_Name.",
+        "Document_Type set to 'Link'.",
+        "A valid URL for the 'Document_URL' field."
+      ]
+    },
+    {
+      "id": "TS006",
+      "name": "Create Multiple Tasks Sequentially in a Single Session",
+      "category": "Regression Testing",
+      "priority": "High",
+      "description": "Verifies the system's ability to process multiple task creation requests from a data source (e.g., Excel) within a single user session, without requiring re-login.",
+      "user_journey": [
+        "Execute the full login and navigation flow for the first task in the data set.",
+        "Create the first task with its specified details (e.g., individual assignment).",
+        "Verify the application returns to the 'Manage Tasks' page.",
+        "Without logging out, proceed to the data for the second task.",
+        "Verify the 'New Task' button is still visible, confirming the session is active.",
+        "Click 'New Task' again.",
+        "Create the second task with its specified details (e.g., bulk assignment).",
+        "Verify the application again returns to the 'Manage Tasks' page."
+      ],
+      "acceptance_criteria": [
+        "The user logs in only once at the beginning of the test run.",
+        "The first task is created successfully.",
+        "The user session remains active after the first task is created.",
+        "The second task is created successfully in the same session.",
+        "The system correctly returns to the 'Manage Tasks' page after each task creation."
+      ],
+      "test_data_requirements": [
+        "A data source (e.g., Excel file) with at least two rows of complete and valid task data.",
+        "The first row must contain valid login credentials.",
+        "Subsequent rows should contain varied but valid task details."
+      ]
+    }
+  ],
+  "dependencies": [
+    "The test environment must be stable and accessible at the specified Base_URL.",
+    "Valid user credentials with appropriate permissions must be available.",
+    "All required test data (specific users, Priorities, Huddles) must pre-exist in the test environment's database.",
+    "For file upload tests, the specified file must exist at the configured 'File_Upload_Base_Path' on the test execution machine.",
+    "The user session timeout must be configured to be longer than the time it takes to execute all sequential tasks in the test run."
+  ],
+  "edge_cases": [
+    "Creating a task with a due date set to the current day.",
+    "Creating a task where the Task Name, Priority Name, and Huddle Name use the maximum allowed character limit.",
+    "Successfully uploading a file of the maximum supported size.",
+    "Attaching a link that is a very long URL with many query parameters."
+  ],
+  "test_data": {
+    "Base_URL": "https://alignwebdev.aligntoday.com/",
+    "Due_Date_Format": "MM/DD/YYYY",
+    "Example_Due_Date": "11/30/2025",
+    "Assignment_Option_Individual": "user1@example.com, user2@example.com",
+    "Assignment_Option_Bulk_Users": "Assign to all Users",
+    "Assignment_Option_Bulk_Admins": "Assign to all Admins",
+    "Document_Type_File": "File",
+    "Document_Type_Link": "Link",
+    "Example_Document_File_Name": "report.pdf",
+    "Example_Document_URL": "https://example.com/doc",
+    "File_Upload_Base_Path": "C:\\Users\\sudhi\\Downloads\\"
+  }
+}
