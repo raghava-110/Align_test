@@ -262,32 +262,92 @@ public class AlignTaskCreationTest {
     }
 
     private WebElement waitVisible(String[] xpaths) {
-        return wait.until(driver -> findElementWithFallbacks(xpaths));
+        return wait.until(driver -> {
+            for (String xpath : xpaths) {
+                try {
+                    WebElement element = driver.findElement(By.xpath(xpath));
+                    if (element.isDisplayed()) {
+                        return element;
+                    }
+                } catch (NoSuchElementException | StaleElementReferenceException e) {
+                    // Ignore and try next locator or re-poll
+                }
+            }
+            return null;
+        });
     }
 
+    private WebElement waitPresent(String[] xpaths) {
+        return wait.until(driver -> {
+            for (String xpath : xpaths) {
+                try {
+                    return driver.findElement(By.xpath(xpath));
+                } catch (NoSuchElementException e) {
+                    // Ignore and try next locator
+                }
+            }
+            return null;
+        });
+    }
+    
     private WebElement waitClickable(String[] xpaths) {
-        return wait.until(ExpectedConditions.elementToBeClickable(findElementWithFallbacks(xpaths)));
+        return wait.until(driver -> {
+            for (String xpath : xpaths) {
+                try {
+                    WebElement element = driver.findElement(By.xpath(xpath));
+                    if (element.isDisplayed() && element.isEnabled()) {
+                        return element;
+                    }
+                } catch (NoSuchElementException | StaleElementReferenceException e) {
+                    // Ignore and try next locator or re-poll
+                }
+            }
+            return null;
+        });
     }
 
     private void sendKeysToElement(String[] xpaths, String text) {
         if (text == null || text.isEmpty()) return;
-        WebElement element = waitVisible(xpaths);
-        element.clear();
-        element.sendKeys(text);
+        try {
+            WebElement element = waitVisible(xpaths);
+            element.clear();
+            element.sendKeys(text);
+        } catch (Exception e) {
+            log("ERROR: Could not send keys to element. " + e.getMessage());
+            throw e;
+        }
     }
 
     private void clickElement(String[] xpaths) {
-        WebElement element = waitClickable(xpaths);
-        element.click();
+        WebElement element = null;
+        try {
+            element = waitClickable(xpaths);
+            element.click();
+        } catch (Exception e) {
+            log("WARNING: Standard click failed: " + e.getClass().getSimpleName() + ". Retrying with JavaScript click.");
+            try {
+                if (element == null) {
+                    element = waitPresent(xpaths);
+                }
+                jsClick(element);
+            } catch (Exception jsEx) {
+                log("ERROR: JavaScript click also failed. " + jsEx.getMessage());
+                throw new RuntimeException("Failed to click element with locators starting: " + xpaths[0], jsEx);
+            }
+        }
     }
-    
+
     private void jsClick(WebElement element) {
-        js.executeScript("arguments[0].click();", element);
+        js.executeScript("arguments[0].scrollIntoView(true); arguments[0].click();", element);
     }
 
     private void waitForPageLoad() {
-        wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-        sleep(PAGE_SETTLE_MS);
+        try {
+            wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+            sleep(PAGE_SETTLE_MS);
+        } catch (Exception e) {
+            log("WARNING: Timeout waiting for page to load completely. Proceeding anyway. " + e.getMessage());
+        }
     }
 
     private String getOrDefault(Map<String, String> map, String key, String defaultValue) {
@@ -304,18 +364,18 @@ public class AlignTaskCreationTest {
             String companySpanXpath = String.format("//*[normalize-space()='%s']", companyName);
             WebElement companyElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(companySpanXpath)));
             
-            // Try to find a more robust clickable parent
             try {
                 WebElement parentCard = companyElement.findElement(By.xpath("./ancestor::div[contains(@class, 'company-card') or contains(@class, 'selectable-item') or @role='button'][1]"));
                 log("Found clickable parent card for company. Clicking it.");
-                parentCard.click();
+                jsClick(parentCard); // Use JS click for reliability
             } catch (Exception e) {
                 log("WARNING: Could not find a specific parent card. Clicking the company name element directly.");
-                companyElement.click();
+                jsClick(companyElement);
             }
             waitForPageLoad();
         } catch (Exception e) {
             log("ERROR: Could not select company '" + companyName + "'. " + e.getMessage());
+            throw new RuntimeException("Failed to select company: " + companyName, e);
         }
     }
 
@@ -360,45 +420,32 @@ public class AlignTaskCreationTest {
             driver.get(BASE_URL);
             waitForPageLoad();
 
-            // Enter Email with robust pattern
             try {
                 log("Entering email: " + email);
-                WebElement emailField = waitVisible(EMAIL_INPUT_LOCATORS);
-                emailField.clear();
-                sleep(500);
-                emailField.sendKeys(email);
-                sleep(1000);
-                String enteredValue = emailField.getAttribute("value");
-                if (!enteredValue.equals(email)) {
-                    log("WARNING: Email not entered correctly, retrying character by character...");
-                    emailField.clear();
-                    sleep(500);
-                    for (char c : email.toCharArray()) {
-                        emailField.sendKeys(String.valueOf(c));
-                        sleep(50);
-                    }
-                }
+                sendKeysToElement(EMAIL_INPUT_LOCATORS, email);
+                clickElement(CONTINUE_BUTTON_LOCATORS);
+                
+                log("Entering password.");
+                sendKeysToElement(PASSWORD_INPUT_LOCATORS, password);
+                clickElement(LOGIN_BUTTON_LOCATORS);
+                waitForPageLoad();
             } catch (Exception e) {
-                log("FATAL: Could not enter email. Page URL: " + driver.getCurrentUrl() + ", Title: " + driver.getTitle());
-                throw e;
+                log("FATAL: Login sequence failed. " + e.getMessage());
+                throw new RuntimeException("Login failed", e);
             }
-            
-            clickElement(CONTINUE_BUTTON_LOCATORS);
-            sleep(ACTION_PAUSE_MS);
-
-            log("Entering password.");
-            sendKeysToElement(PASSWORD_INPUT_LOCATORS, password);
-            
-            clickElement(LOGIN_BUTTON_LOCATORS);
-            waitForPageLoad();
 
             selectCompanyByName(companyName);
             
-            log("Navigating to Tasks page.");
-            clickElement(ACTION_ITEMS_MENU_LOCATORS);
-            sleep(ACTION_PAUSE_MS);
-            clickElement(TASKS_SUBMENU_LOCATORS);
-            waitForPageLoad();
+            try {
+                log("Navigating to Tasks page.");
+                clickElement(ACTION_ITEMS_MENU_LOCATORS);
+                sleep(ACTION_PAUSE_MS);
+                clickElement(TASKS_SUBMENU_LOCATORS);
+                waitForPageLoad();
+            } catch (Exception e) {
+                log("FATAL: Navigation to Tasks page failed. " + e.getMessage());
+                throw new RuntimeException("Navigation to Tasks page failed", e);
+            }
         } else {
             log("Skipping login. Verifying user is on the Tasks page.");
             try {
@@ -440,17 +487,17 @@ public class AlignTaskCreationTest {
                 String trimmedUser = user.trim();
                 if (trimmedUser.isEmpty()) continue;
                 log("Assigning user: " + trimmedUser);
-                WebElement searchInput = waitClickable(SEARCH_TEAM_MEMBERS_INPUT_LOCATORS);
-                searchInput.click();
+                WebElement searchInput = waitVisible(SEARCH_TEAM_MEMBERS_INPUT_LOCATORS);
                 searchInput.sendKeys(trimmedUser);
-                sleep(2000); // Wait for autocomplete
                 try {
-                    String userOptionXpath = String.format("//ul[contains(@class, 'k-list') or contains(@class, 'autocomplete')]//li[contains(., '%s')]", trimmedUser);
-                    WebElement userOption = driver.findElement(By.xpath(userOptionXpath));
+                    String userOptionXpath = String.format("//ul[contains(@class, 'k-list')][not(contains(@style,'display: none'))]//li[contains(normalize-space(), \"%s\")]", trimmedUser);
+                    WebDriverWait dropdownWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                    WebElement userOption = dropdownWait.until(ExpectedConditions.elementToBeClickable(By.xpath(userOptionXpath)));
                     userOption.click();
                     log("Selected " + trimmedUser + " from dropdown.");
                 } catch (Exception e) {
                     log("WARNING: User '" + trimmedUser + "' not found in dropdown. Leaving as typed text.");
+                    searchInput.sendKeys(Keys.ENTER); // Attempt to add the user anyway
                 }
                 sleep(500);
             }
@@ -459,12 +506,12 @@ public class AlignTaskCreationTest {
         // --- Alignments ---
         if (!alignPriority.isEmpty()) {
             log("Aligning to priority: " + alignPriority);
-            WebElement priorityInput = waitClickable(SEARCH_PRIORITIES_INPUT_LOCATORS);
+            WebElement priorityInput = waitVisible(SEARCH_PRIORITIES_INPUT_LOCATORS);
             priorityInput.sendKeys(alignPriority);
-            sleep(2500);
             try {
-                String priorityOptionXpath = String.format("//ul[contains(@class, 'k-list')]//li[contains(., '%s')]", alignPriority);
-                driver.findElement(By.xpath(priorityOptionXpath)).click();
+                String optionXpath = String.format("//ul[contains(@class, 'k-list')][not(contains(@style,'display: none'))]//li[contains(normalize-space(), \"%s\")]", alignPriority);
+                WebElement option = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath(optionXpath)));
+                option.click();
                 log("Selected priority from dropdown.");
             } catch (Exception e) {
                 log("WARNING: Priority '" + alignPriority + "' not found in dropdown.");
@@ -473,12 +520,12 @@ public class AlignTaskCreationTest {
 
         if (!alignHuddle.isEmpty()) {
             log("Aligning to huddle: " + alignHuddle);
-            WebElement huddleInput = waitClickable(SEARCH_HUDDLES_INPUT_LOCATORS);
+            WebElement huddleInput = waitVisible(SEARCH_HUDDLES_INPUT_LOCATORS);
             huddleInput.sendKeys(alignHuddle);
-            sleep(2500);
             try {
-                String huddleOptionXpath = String.format("//ul[contains(@class, 'k-list')]//li[contains(., '%s')]", alignHuddle);
-                driver.findElement(By.xpath(huddleOptionXpath)).click();
+                String optionXpath = String.format("//ul[contains(@class, 'k-list')][not(contains(@style,'display: none'))]//li[contains(normalize-space(), \"%s\")]", alignHuddle);
+                WebElement option = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath(optionXpath)));
+                option.click();
                 log("Selected huddle from dropdown.");
             } catch (Exception e) {
                 log("WARNING: Huddle '" + alignHuddle + "' not found in dropdown.");
@@ -494,15 +541,14 @@ public class AlignTaskCreationTest {
             sendKeysToElement(DOCUMENT_NAME_INPUT_LOCATORS, documentName);
             
             if (!documentDescription.isEmpty()) {
-                WebElement descInput = waitVisible(DOCUMENT_DESCRIPTION_INPUT_LOCATORS);
-                js.executeScript("arguments[0].value = arguments[1];", descInput, documentDescription);
+                sendKeysToElement(DOCUMENT_DESCRIPTION_INPUT_LOCATORS, documentDescription);
             }
 
             if ("File".equalsIgnoreCase(documentType) && !documentFile.isEmpty()) {
                 log("Uploading file: " + documentFile);
-                WebElement fileInput = findElementWithFallbacks(DOCUMENT_FILE_INPUT_LOCATORS);
+                WebElement fileInput = waitPresent(DOCUMENT_FILE_INPUT_LOCATORS);
                 js.executeScript("arguments[0].style.display='block'; arguments[0].style.visibility='visible';", fileInput);
-                String fullPath = fileUploadBasePath + documentFile;
+                String fullPath = new File(fileUploadBasePath, documentFile).getAbsolutePath();
                 fileInput.sendKeys(fullPath);
                 sleep(2000);
             } else if ("Link".equalsIgnoreCase(documentType) && !documentUrl.isEmpty()) {
@@ -520,15 +566,7 @@ public class AlignTaskCreationTest {
 
         // --- Final Save ---
         log("Saving the task.");
-        WebElement saveButton = findElementWithFallbacks(FINAL_TASK_SAVE_BUTTON_LOCATORS);
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", saveButton);
-        sleep(500);
-        try {
-            saveButton.click();
-        } catch (Exception e) {
-            log("WARNING: Standard click failed. Retrying with JavaScript click.");
-            jsClick(saveButton);
-        }
+        clickElement(FINAL_TASK_SAVE_BUTTON_LOCATORS);
         
         waitForPageLoad();
         log("Task creation submitted. Verifying return to Manage Tasks page.");
