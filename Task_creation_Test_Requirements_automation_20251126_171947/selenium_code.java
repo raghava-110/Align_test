@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,10 @@ public class AlignTaskAutomation {
         "//input[@type='email']",
         "//input[contains(@placeholder, 'Email') or contains(@placeholder, 'Username')]",
         "//label[contains(normalize-space(),'Email')]/following-sibling::span//input",
-        "//input[contains(@data-bind,'value: username')]"
+        "//input[contains(@data-bind,'value: username')]",
+        "//input[@aria-label='Email']",
+        "//input[contains(@id, 'email_address')]",
+        "//form[contains(@id, 'login')]//input[@type='email']"
     };
 
     private static final String[] CONTINUE_BUTTON_LOCATORS = {
@@ -39,7 +43,10 @@ public class AlignTaskAutomation {
         "//input[@value='Continue']",
         "//button[@id='continueButton']",
         "//button[contains(., 'Continue')]",
-        "//div[@role='button' and contains(., 'Continue')]"
+        "//div[@role='button' and contains(., 'Continue')]",
+        "//button[@type='submit' and contains(., 'Continue')]",
+        "//a[@role='button' and contains(., 'Continue')]",
+        "//form//button[contains(., 'Continue')]"
     };
 
     private static final String[] PASSWORD_INPUT_LOCATORS = {
@@ -49,16 +56,23 @@ public class AlignTaskAutomation {
         "//input[@type='password']",
         "//input[contains(@placeholder, 'Password')]",
         "//label[contains(normalize-space(),'Password')]/following-sibling::span//input",
-        "//input[contains(@data-bind,'value: password')]"
+        "//input[contains(@data-bind,'value: password')]",
+        "//input[@aria-label='Password']",
+        "//input[contains(@id, 'password')]",
+        "//form[contains(@id, 'login')]//input[@type='password']"
     };
 
     private static final String[] LOGIN_BUTTON_LOCATORS = {
         "//button[normalize-space()='Login']",
         "//button[normalize-space()='Sign In']",
         "//input[@value='Login']",
+        "//input[@value='Sign In']",
         "//button[@id='loginButton']",
         "//button[@type='submit']",
-        "//div[@role='button' and (contains(., 'Login') or contains(., 'Sign In'))]"
+        "//div[@role='button' and (contains(., 'Login') or contains(., 'Sign In'))]",
+        "//button[contains(., 'Log in')]",
+        "//button[contains(., 'Sign in')]",
+        "//form//button[@type='submit']"
     };
 
     private static final String[] ACTION_ITEMS_MENU_LOCATORS = {
@@ -66,14 +80,21 @@ public class AlignTaskAutomation {
         "//span[contains(@class, 'k-dropdown-wrap')]//span[text()='Action Items']",
         "//a[normalize-space()='Action Items']",
         "//div[normalize-space()='Action Items']",
-        "//span[normalize-space()='Action Items']"
+        "//span[normalize-space()='Action Items']",
+        "//button[normalize-space()='Action Items']",
+        "//a[contains(@href, 'Tasks')]//span[normalize-space()='Action Items']",
+        "//div[contains(@class, 'nav')]//span[text()='Action Items']"
     };
 
     private static final String[] TASKS_SUBMENU_LOCATORS = {
         "//div[contains(@class, 'k-list-item-content') and normalize-space()='Tasks']",
         "//li[normalize-space()='Tasks']",
         "//a[normalize-space()='Tasks']",
-        "//span[normalize-space()='Tasks']"
+        "//span[normalize-space()='Tasks']",
+        "//div[normalize-space()='Tasks' and @role='option']",
+        "//li[contains(@class, 'k-item')]//span[text()='Tasks']",
+        "//a[contains(@href, 'Tasks') and normalize-space()='Tasks']",
+        "//div[contains(@class, 'popup')]//li[normalize-space()='Tasks']"
     };
 
     private static final String[] NEW_TASK_BUTTON_LOCATORS = {
@@ -81,7 +102,11 @@ public class AlignTaskAutomation {
         "//a[normalize-space()='New Task']",
         "//span[normalize-space()='New Task']/ancestor::button[1]",
         "//div[contains(@class, 'new-task-button')]",
-        "//button[contains(., 'New Task')]"
+        "//button[contains(., 'New Task')]",
+        "//button[contains(text(), 'New Task')]",
+        "//button[@data-testid='new-task-btn']",
+        "//a[@role='button' and contains(., 'New Task')]",
+        "//button[@aria-label='New Task']"
     };
 
     private static final String[] SHORT_TASK_NAME_INPUT_LOCATORS = {
@@ -89,85 +114,120 @@ public class AlignTaskAutomation {
         "//label[normalize-space()='Short Task Name']/following-sibling::input",
         "//input[contains(@id, 'taskName')]",
         "//input[@name='taskName']",
-        "//textarea[contains(@placeholder, 'Short Task Name')]"
+        "//textarea[contains(@placeholder, 'Short Task Name')]",
+        "//input[@aria-label='Short Task Name']",
+        "//div[label[text()='Short Task Name']]//input",
+        "//input[@data-bind='value: taskName']"
     };
 
     private static final String[] DUE_DATE_PICKER_LOCATORS = {
         "//input[@data-placeholder='Select Date']",
         "//label[normalize-space()='Due Date']/following-sibling::span//input",
         "//input[contains(@id, 'dueDate')]",
-        "//span[@aria-controls='taskDueDate_dateview']//input"
+        "//span[@aria-controls='taskDueDate_dateview']//input",
+        "//input[@name='dueDate']",
+        "//input[@placeholder='Due Date']",
+        "//label[text()='Due Date']/..//input",
+        "//input[contains(@class, 'date-picker')]"
     };
 
     private static final String[] SEARCH_TEAM_MEMBERS_INPUT_LOCATORS = {
         "//input[@placeholder='Search or Invite Team Members']",
         "//label[contains(., 'Assign To')]/following-sibling::div//input",
-        "//input[contains(@id, 'teamMembers') or contains(@id, 'assignee')]"
+        "//input[contains(@id, 'teamMembers') or contains(@id, 'assignee')]",
+        "//input[@aria-label='Assign To']",
+        "//div[contains(@class, 'assignee-selector')]//input",
+        "//input[@data-bind='value: assigneeSearch']"
     };
 
     private static final String[] ASSIGN_TO_ALL_USERS_CHECKBOX_LOCATORS = {
         "//label[normalize-space()='Assign to all Users']/preceding-sibling::input[@type='checkbox']",
         "//label[normalize-space()='Assign to all Users']",
-        "//input[@data-bind='checked: isAllUsersSelected']"
+        "//input[@data-bind='checked: isAllUsersSelected']",
+        "//input[@type='checkbox' and @name='assignAllUsers']",
+        "//div[contains(text(), 'Assign to all Users')]/..//input[@type='checkbox']"
     };
 
     private static final String[] ASSIGN_TO_ALL_ADMINS_CHECKBOX_LOCATORS = {
         "//label[normalize-space()='Assign to all Admins']/preceding-sibling::input[@type='checkbox']",
         "//label[normalize-space()='Assign to all Admins']",
-        "//input[@data-bind='checked: isAllAdminsSelected']"
+        "//input[@data-bind='checked: isAllAdminsSelected']",
+        "//input[@type='checkbox' and @name='assignAllAdmins']",
+        "//div[contains(text(), 'Assign to all Admins')]/..//input[@type='checkbox']"
     };
 
     private static final String[] PRIORITIES_INPUT_LOCATORS = {
         "//input[@placeholder='Start typing to search Priorities']",
-        "//label[contains(., 'Priorities')]/following-sibling::div//input"
+        "//label[contains(., 'Priorities')]/following-sibling::div//input",
+        "//div[contains(@class, 'priorities-field')]//input",
+        "//input[@aria-label='Priorities']",
+        "//input[contains(@id, 'priority-search')]"
     };
 
     private static final String[] HUDDLES_INPUT_LOCATORS = {
         "//input[@placeholder='Start typing to search Huddles']",
-        "//label[contains(., 'Huddles')]/following-sibling::div//input"
+        "//label[contains(., 'Huddles')]/following-sibling::div//input",
+        "//div[contains(@class, 'huddles-field')]//input",
+        "//input[@aria-label='Huddles']",
+        "//input[contains(@id, 'huddle-search')]"
     };
 
     private static final String[] DOCUMENTS_PLUS_ICON_LOCATORS = {
         "//h3[normalize-space()='Documents']/following-sibling::div//span[contains(@class, 'plus-circle')]",
         "//span[contains(@class, 'add-document-button')]",
-        "//div[contains(@class, 'documents-section')]//a[contains(@class, 'add')]"
+        "//div[contains(@class, 'documents-section')]//a[contains(@class, 'add')]",
+        "//button[@aria-label='Add Document']",
+        "//div[h3[text()='Documents']]//button[contains(@class, 'add')]"
     };
 
     private static final String[] DOCUMENT_NAME_INPUT_LOCATORS = {
         "//input[@placeholder='Enter document name']",
-        "//label[normalize-space()='Document Name']/following-sibling::input"
+        "//label[normalize-space()='Document Name']/following-sibling::input",
+        "//input[@name='documentName']",
+        "//div[contains(@class, 'document-dialog')]//input[@type='text'][1]"
     };
 
     private static final String[] DOCUMENT_DESCRIPTION_INPUT_LOCATORS = {
         "//textarea[@placeholder='Enter a description...']",
-        "//label[normalize-space()='Description']/following-sibling::textarea"
+        "//label[normalize-space()='Description']/following-sibling::textarea",
+        "//textarea[@name='documentDescription']"
     };
+
+
 
     private static final String[] DOCUMENT_TYPE_DROPDOWN_LOCATORS = {
         "//label[normalize-space()='Type']/following-sibling::span[contains(@class, 'k-dropdown')]",
-        "//input[@name='documentType_input']"
+        "//input[@name='documentType_input']/ancestor::span[contains(@class, 'k-dropdown')]",
+        "//div[label[text()='Type']]//div[@role='combobox']"
     };
 
     private static final String[] DOCUMENT_URL_INPUT_LOCATORS = {
         "//input[@placeholder='Enter Link...']",
-        "//label[normalize-space()='URL']/following-sibling::input"
+        "//label[normalize-space()='URL']/following-sibling::input",
+        "//input[@name='documentUrl']",
+        "//input[@type='url']"
     };
 
     private static final String[] HIDDEN_FILE_INPUT_LOCATORS = {
-        "//input[@type='file' and contains(@style, 'display: none')]",
+        "//input[@type='file' and (contains(@style, 'display: none') or contains(@class, 'hidden'))]",
         "//input[@type='file' and not(@class)]",
-        "//input[@type='file']"
+        "//input[@type='file']",
+        "//form[contains(@action, 'upload')]//input[@type='file']"
     };
 
     private static final String[] SAVE_DOCUMENT_BUTTON_LOCATORS = {
         "//div[contains(@class, 'document-dialog')]//button[normalize-space()='Save']",
-        "//div[@aria-labelledby='documentUploadDialog_wnd_title']//button[normalize-space()='Save']"
+        "//div[@aria-labelledby='documentUploadDialog_wnd_title']//button[normalize-space()='Save']",
+        "//div[contains(@class, 'modal-footer')]//button[text()='Save']",
+        "//button[@form='documentForm' and @type='submit']"
     };
 
     private static final String[] SAVE_TASK_BUTTON_LOCATORS = {
         "//div[@class='task-form-footer']//button[normalize-space()='Save']",
         "//button[@id='saveTaskButton']",
-        "//form[contains(@class, 'task-form')]//button[@type='submit' and contains(., 'Save')]"
+        "//form[contains(@class, 'task-form')]//button[@type='submit' and (contains(., 'Save') or contains(., 'Create'))]",
+        "//button[normalize-space()='Save Task']",
+        "//button[normalize-space()='Create Task']"
     };
 
     // ========== CONFIGURATION - CHANGE THIS ==========
@@ -241,7 +301,6 @@ public class AlignTaskAutomation {
                     try {
                         return cell.getStringCellValue().trim();
                     } catch (IllegalStateException e) {
-                        // Fallback for formula resulting in numeric
                         try {
                             return String.valueOf(cell.getNumericCellValue());
                         } catch (Exception ex) {
@@ -277,32 +336,72 @@ public class AlignTaskAutomation {
                 // Ignore and try next locator
             }
         }
-        throw new NoSuchElementException("Element not found with any of the provided locators. First locator tried: " + locators[0]);
+        throw new NoSuchElementException("Element not found with any of the provided locators. Locators tried: " + Arrays.toString(locators));
     }
 
     private WebElement waitVisible(String[] locators) {
-        return wait.until(driver -> findElementWithFallbacks(locators));
+        try {
+            return wait.until(driver -> findElementWithFallbacks(locators));
+        } catch (TimeoutException e) {
+            throw new TimeoutException("Timed out after " + EXPLICIT_WAIT_SEC + " seconds waiting for element to be visible. Locators tried: " + Arrays.toString(locators), e);
+        }
     }
 
     private WebElement waitClickable(String[] locators) {
-        WebElement element = waitVisible(locators);
-        return wait.until(ExpectedConditions.elementToBeClickable(element));
+        try {
+            WebElement element = waitVisible(locators);
+            return wait.until(ExpectedConditions.elementToBeClickable(element));
+        } catch (TimeoutException e) {
+            throw new TimeoutException("Timed out after " + EXPLICIT_WAIT_SEC + " seconds waiting for element to be clickable. Locators tried: " + Arrays.toString(locators), e);
+        }
     }
 
     private void sendKeysToElement(String[] locators, String text) {
         if (text == null || text.isEmpty()) return;
         WebElement element = waitVisible(locators);
-        element.clear();
-        element.sendKeys(text);
+        try {
+            element.clear();
+            element.sendKeys(text);
+            // Verification step for reactive frameworks
+            String value = element.getAttribute("value");
+            if (value == null || !value.contains(text)) {
+                 log("WARNING: Initial sendKeys failed verification. Retrying with JS.");
+                 js.executeScript("arguments[0].value = '';", element); // JS clear
+                 js.executeScript("arguments[0].value = arguments[1];", element, text);
+                 js.executeScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", element);
+            }
+        } catch (Exception e) {
+            log("ERROR: sendKeys failed for locator '" + locators[0] + "'. Retrying with JS. Reason: " + e.getMessage());
+            try {
+                js.executeScript("arguments[0].value = arguments[1];", element, text);
+                js.executeScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", element);
+            } catch (Exception jsEx) {
+                log("FATAL: Both standard sendKeys and JS value setting failed for locator '" + locators[0] + "'.");
+                throw new RuntimeException(jsEx);
+            }
+        }
     }
 
     private void clickElement(String[] locators) {
         WebElement element = waitClickable(locators);
-        element.click();
+        try {
+            element.click();
+        } catch (ElementClickInterceptedException | StaleElementException e) {
+            log("WARNING: Standard click failed for locator '" + locators[0] + "'. Retrying with JavaScript click. Reason: " + e.getMessage());
+            jsClick(element);
+        } catch (Exception e) {
+            log("ERROR: An unexpected error occurred during click for locator '" + locators[0] + "'. Trying JS click as a last resort.");
+            jsClick(element);
+        }
     }
 
     private void jsClick(WebElement element) {
-        js.executeScript("arguments[0].click();", element);
+        try {
+            js.executeScript("arguments[0].click();", element);
+        } catch (Exception e) {
+            log("FATAL: JavaScript click also failed. Error: " + e.getMessage());
+            throw new RuntimeException("JavaScript click failed", e);
+        }
     }
 
     private void waitForPageLoad() {
@@ -321,12 +420,11 @@ public class AlignTaskAutomation {
         }
         log("Attempting to select company: " + companyName);
         try {
-            sleep(2000); // Wait for company list to render
+            sleep(3000); // Wait for company list to render
             String companySpanXpath = String.format("//span[normalize-space()='%s']", companyName);
             WebElement companySpan = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(companySpanXpath)));
             
             try {
-                // Try to find a clickable parent card/container
                 WebElement parentCard = companySpan.findElement(By.xpath("./ancestor::div[contains(@class, 'company-card') or contains(@class, 'list-item') or @role='button'][1]"));
                 log("Found clickable parent container for company. Clicking it.");
                 parentCard.click();
@@ -344,13 +442,13 @@ public class AlignTaskAutomation {
         List<Map<String, String>> testData = ExcelReader.readExcel(EXCEL_FILE_PATH);
         log("Found " + testData.size() + " records in the Excel file.");
         for (int i = 0; i < testData.size(); i++) {
-            log("==================================================");
-            log("Executing record #" + (i + 1));
+            log("\n==================================================");
+            log("Executing record #" + (i + 1) + " of " + testData.size());
             log("==================================================");
             try {
                 executeWorkflow(testData.get(i));
             } catch (Exception e) {
-                log("ERROR processing record #" + (i + 1) + ": " + e.getMessage());
+                log("CRITICAL ERROR processing record #" + (i + 1) + ": " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 isFirstRecord = false;
@@ -381,60 +479,28 @@ public class AlignTaskAutomation {
             driver.get(BASE_URL);
             waitForPageLoad();
 
-            // Enter Email
-            try {
-                log("Entering email: " + email);
-                WebElement emailInput = waitVisible(EMAIL_INPUT_LOCATORS);
-                emailInput.clear();
-                sleep(500);
-                emailInput.sendKeys(email);
-                sleep(1000);
-                String enteredValue = emailInput.getAttribute("value");
-                if (!enteredValue.equals(email)) {
-                    log("WARNING: Email not entered correctly, retrying character by character...");
-                    emailInput.clear();
-                    sleep(500);
-                    for (char c : email.toCharArray()) {
-                        emailInput.sendKeys(String.valueOf(c));
-                        sleep(50);
-                    }
-                }
-            } catch (Exception e) {
-                log("FATAL: Could not enter email. Page URL: " + driver.getCurrentUrl() + ", Title: " + driver.getTitle());
-                throw e;
-            }
+            log("Entering email: " + email);
+            sendKeysToElement(EMAIL_INPUT_LOCATORS, email);
+            sleep(ACTION_PAUSE_MS);
 
-            // Click Continue
             try {
-                log("Clicking 'Continue' button.");
-                WebElement continueButton = findElementWithFallbacks(CONTINUE_BUTTON_LOCATORS);
-                js.executeScript("arguments[0].scrollIntoView({block: 'center'});", continueButton);
-                sleep(500);
-                try {
-                    continueButton.click();
-                } catch (Exception e) {
-                    log("Click failed, trying JS click for 'Continue' button.");
-                    jsClick(continueButton);
-                }
-                sleep(3000);
-            } catch (NoSuchElementException e) {
+                log("Clicking 'Continue' button if it exists.");
+                clickElement(CONTINUE_BUTTON_LOCATORS);
+                sleep(2000);
+            } catch (NoSuchElementException | TimeoutException e) {
                 log("INFO: 'Continue' button not found, assuming single-page login.");
             }
 
-            // Enter Password
             log("Entering password.");
             sendKeysToElement(PASSWORD_INPUT_LOCATORS, password);
             sleep(ACTION_PAUSE_MS);
 
-            // Click Login
             log("Clicking 'Login' button.");
             clickElement(LOGIN_BUTTON_LOCATORS);
             waitForPageLoad();
 
-            // Select Company
             selectCompanyByName(companyName);
 
-            // Navigate to Tasks Page
             log("Navigating to Tasks page.");
             clickElement(ACTION_ITEMS_MENU_LOCATORS);
             sleep(ACTION_PAUSE_MS);
@@ -479,10 +545,10 @@ public class AlignTaskAutomation {
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", assignmentSection);
         sleep(500);
 
-        if (assignedTo.equalsIgnoreCase("Assign to all Users")) {
+        if ("Assign to all Users".equalsIgnoreCase(assignedTo)) {
             log("Assigning to all users.");
             clickElement(ASSIGN_TO_ALL_USERS_CHECKBOX_LOCATORS);
-        } else if (assignedTo.equalsIgnoreCase("Assign to all Admins")) {
+        } else if ("Assign to all Admins".equalsIgnoreCase(assignedTo)) {
             log("Assigning to all admins.");
             clickElement(ASSIGN_TO_ALL_ADMINS_CHECKBOX_LOCATORS);
         } else if (!assignedTo.isEmpty()) {
@@ -493,17 +559,17 @@ public class AlignTaskAutomation {
                 log("Assigning to user: " + userEmail);
                 WebElement searchInput = waitClickable(SEARCH_TEAM_MEMBERS_INPUT_LOCATORS);
                 searchInput.sendKeys(userEmail);
-                sleep(2000); // Wait for autocomplete
+                sleep(2500); // Wait for autocomplete
                 try {
                     String userOptionXpath = String.format("//li[contains(., '%s')]", userEmail);
-                    WebElement userOption = driver.findElement(By.xpath(userOptionXpath));
-                    userOption.click();
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(userOptionXpath))).click();
                     log("Selected user from dropdown.");
                 } catch (Exception e) {
-                    log("WARNING: User '" + userEmail + "' not found in dropdown. Leaving as typed text.");
+                    log("WARNING: User '" + userEmail + "' not found in dropdown. Trying to press ENTER.");
+                    searchInput.sendKeys(Keys.ENTER);
                 }
+                sleep(1000);
                 searchInput.clear();
-                sleep(500);
             }
         }
 
@@ -515,10 +581,11 @@ public class AlignTaskAutomation {
             sleep(2500);
             try {
                 String priorityOptionXpath = String.format("//li[normalize-space()='%s']", alignPriority);
-                driver.findElement(By.xpath(priorityOptionXpath)).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(priorityOptionXpath))).click();
                 log("Selected priority from dropdown.");
             } catch (Exception e) {
                 log("WARNING: Priority '" + alignPriority + "' not found in dropdown.");
+                priorityInput.sendKeys(Keys.ENTER);
             }
         }
 
@@ -530,10 +597,11 @@ public class AlignTaskAutomation {
             sleep(2500);
             try {
                 String huddleOptionXpath = String.format("//li[normalize-space()='%s']", alignHuddle);
-                driver.findElement(By.xpath(huddleOptionXpath)).click();
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(huddleOptionXpath))).click();
                 log("Selected huddle from dropdown.");
             } catch (Exception e) {
                 log("WARNING: Huddle '" + alignHuddle + "' not found in dropdown.");
+                huddleInput.sendKeys(Keys.ENTER);
             }
         }
 
@@ -548,30 +616,31 @@ public class AlignTaskAutomation {
 
             if (!documentDescription.isEmpty()) {
                 log("Adding document description.");
-                WebElement descInput = waitVisible(DOCUMENT_DESCRIPTION_INPUT_LOCATORS);
-                js.executeScript("arguments[0].value = arguments[1];", descInput, documentDescription);
+                sendKeysToElement(DOCUMENT_DESCRIPTION_INPUT_LOCATORS, documentDescription);
             }
 
-            if (documentType.equalsIgnoreCase("Link") && !documentUrl.isEmpty()) {
+            if ("Link".equalsIgnoreCase(documentType) && !documentUrl.isEmpty()) {
                 log("Attaching a link: " + documentUrl);
                 clickElement(DOCUMENT_TYPE_DROPDOWN_LOCATORS);
-                sleep(500);
+                sleep(1000);
                 String linkOptionXpath = "//li[normalize-space()='Link']";
-                driver.findElement(By.xpath(linkOptionXpath)).click();
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath(linkOptionXpath))).click();
                 sendKeysToElement(DOCUMENT_URL_INPUT_LOCATORS, documentUrl);
-            } else if (documentType.equalsIgnoreCase("File") && !documentFile.isEmpty()) {
+            } else if ("File".equalsIgnoreCase(documentType) && !documentFile.isEmpty()) {
                 log("Uploading a file: " + documentFile);
                 String fullPath = fileUploadBasePath + documentFile;
-                WebElement fileInput = findElementWithFallbacks(HIDDEN_FILE_INPUT_LOCATORS);
-                js.executeScript("arguments[0].style.display = 'block'; arguments[0].style.visibility = 'visible';", fileInput);
-                fileInput.sendKeys(fullPath);
-                sleep(2000); // Wait for upload to process
+                if (!new File(fullPath).exists()) {
+                    log("ERROR: File not found at path: " + fullPath);
+                } else {
+                    WebElement fileInput = findElementWithFallbacks(HIDDEN_FILE_INPUT_LOCATORS);
+                    js.executeScript("arguments[0].style.display = 'block'; arguments[0].style.visibility = 'visible';", fileInput);
+                    fileInput.sendKeys(fullPath);
+                    sleep(3000); // Wait for upload to process
+                }
             }
 
             log("Saving document attachment.");
-            WebElement saveDocButton = waitClickable(SAVE_DOCUMENT_BUTTON_LOCATORS);
-            js.executeScript("arguments[0].scrollIntoView(true);", saveDocButton);
-            saveDocButton.click();
+            clickElement(SAVE_DOCUMENT_BUTTON_LOCATORS);
             sleep(3000); // Wait for dialog to close
         }
 
@@ -579,12 +648,7 @@ public class AlignTaskAutomation {
         WebElement saveTaskButton = findElementWithFallbacks(SAVE_TASK_BUTTON_LOCATORS);
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", saveTaskButton);
         sleep(500);
-        try {
-            saveTaskButton.click();
-        } catch (Exception e) {
-            log("Click failed, trying JS click for 'Save Task' button.");
-            jsClick(saveTaskButton);
-        }
+        clickElement(SAVE_TASK_BUTTON_LOCATORS);
         waitForPageLoad();
 
         log("Verifying return to 'Manage Tasks' page.");
