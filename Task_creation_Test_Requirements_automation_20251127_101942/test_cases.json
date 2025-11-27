@@ -1,0 +1,392 @@
+{
+  "test_cases": [
+    {
+      "id": "TC001",
+      "scenario_id": "TS001",
+      "name": "Successful Login and Creation of a Core Task",
+      "preconditions": [
+        "User has a valid Email and Password.",
+        "The user is associated with a valid Company_Name.",
+        "The application is accessible at the Base_URL."
+      ],
+      "test_data": {
+        "Base_URL": "https://alignwebdev.aligntoday.com/",
+        "Email": "valid_user@example.com",
+        "Password": "ValidPassword123",
+        "Company_Name": "Test Company",
+        "Task_Name": "Core Task Creation Test 01",
+        "Due_Date": "11/30/2025"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate to the application base URL and wait for the login page to load.",
+          "expected_result": "The login page is displayed successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid email address from the test data.",
+          "expected_result": "The email address is entered into the email field."
+        },
+        {
+          "step": 3,
+          "action": "Click the 'Continue' button.",
+          "expected_result": "The application proceeds to the password entry screen."
+        },
+        {
+          "step": 4,
+          "action": "Enter the corresponding valid password.",
+          "expected_result": "The password is entered into the password field."
+        },
+        {
+          "step": 5,
+          "action": "Click the 'Login' button.",
+          "expected_result": "User is successfully authenticated and the company selection page is displayed."
+        },
+        {
+          "step": 6,
+          "action": "Wait for the company selection page and click on the correct company name.",
+          "expected_result": "The company is selected and the user is navigated to the application dashboard."
+        },
+        {
+          "step": 7,
+          "action": "Click on the 'Action Items' menu item.",
+          "expected_result": "A submenu appears with a 'Tasks' option."
+        },
+        {
+          "step": 8,
+          "action": "Click on the 'Tasks' submenu option and wait for the Manage Tasks page to load.",
+          "expected_result": "The Manage Tasks page is displayed, showing a 'New Task' button."
+        },
+        {
+          "step": 9,
+          "action": "Click the 'New Task' button to open the task creation form.",
+          "expected_result": "The 'New Task' form opens successfully."
+        },
+        {
+          "step": 10,
+          "action": "Enter a valid 'Short Task Name' from the test data.",
+          "expected_result": "The task name is entered and accepted by the system."
+        },
+        {
+          "step": 11,
+          "action": "Click the date picker input field and enter a valid 'Due_Date' in MM/DD/YYYY format, then press ENTER.",
+          "expected_result": "The due date is entered and accepted by the system."
+        },
+        {
+          "step": 12,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The task is created successfully and the page begins to reload."
+        },
+        {
+          "step": 13,
+          "action": "Wait for the Manage Tasks page to reload.",
+          "expected_result": "The user is returned to the Manage Tasks page, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC002",
+      "scenario_id": "TS002",
+      "name": "Create Task with Individual Team Member Assignment",
+      "preconditions": [
+        "User is logged in and is on the Manage Tasks page.",
+        "Team members with the specified email addresses exist in the system."
+      ],
+      "test_data": {
+        "Task_Name": "Individual Assignment Task 02",
+        "Due_Date": "11/30/2025",
+        "Assigned_To": "user1@example.com, user2@example.com"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The task creation form opens successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "The task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Scroll down to the assignment section.",
+          "expected_result": "The assignment section with the 'Search or Invite Team Members' input field is visible."
+        },
+        {
+          "step": 4,
+          "action": "For the first email address in 'Assigned_To': click the 'Search or Invite Team Members' input field, enter the user email, wait for the autocomplete dropdown, and click the matching user option.",
+          "expected_result": "The autocomplete dropdown appears with the matching user, and the user is successfully selected and added to the assignment."
+        },
+        {
+          "step": 5,
+          "action": "For the second email address in 'Assigned_To': click the 'Search or Invite Team Members' input field, enter the user email, wait for the autocomplete dropdown, and click the matching user option.",
+          "expected_result": "The autocomplete dropdown appears with the matching user, and the second user is successfully selected and added to the assignment."
+        },
+        {
+          "step": 6,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The task is created successfully with the specified users assigned."
+        },
+        {
+          "step": 7,
+          "action": "Verify the user is returned to the Manage Tasks page.",
+          "expected_result": "The Manage Tasks page is displayed, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC003",
+      "scenario_id": "TS003",
+      "name": "Create Task with Bulk Assignment ('Assign to all Users') and Priority Alignment",
+      "preconditions": [
+        "User is logged in and is on the Manage Tasks page.",
+        "A Priority with the specified name already exists in the system."
+      ],
+      "test_data": {
+        "Task_Name": "Bulk Assign and Priority Task 03",
+        "Due_Date": "11/30/2025",
+        "Assigned_To": "Assign to all Users",
+        "Align_Priority": "Q4 Company Growth Initiative"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The task creation form opens successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "The task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Locate the 'Assign to all Users' checkbox and click it.",
+          "expected_result": "The 'Assign to all Users' checkbox is successfully selected."
+        },
+        {
+          "step": 4,
+          "action": "Scroll to the Priority alignment section and click the 'Start typing to search Priorities' input field.",
+          "expected_result": "The input field for Priority alignment is active."
+        },
+        {
+          "step": 5,
+          "action": "Enter the name of an existing priority from the test data.",
+          "expected_result": "A dropdown appears with matching priority options."
+        },
+        {
+          "step": 6,
+          "action": "Wait for the dropdown to populate and click the matching priority option to select it.",
+          "expected_result": "The specified Priority is successfully selected and aligned with the task."
+        },
+        {
+          "step": 7,
+          "action": "Scroll to the bottom of the form and click the 'Save' button.",
+          "expected_result": "The task is created successfully with bulk assignment and priority alignment."
+        },
+        {
+          "step": 8,
+          "action": "Verify the user is returned to the Manage Tasks page.",
+          "expected_result": "The Manage Tasks page is displayed, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC004",
+      "scenario_id": "TS004",
+      "name": "Create Task with Huddle Alignment and File Document Upload",
+      "preconditions": [
+        "User is logged in and is on the Manage Tasks page.",
+        "A Huddle with the specified name already exists in the system.",
+        "The specified file exists at the configured 'File_Upload_Base_Path'."
+      ],
+      "test_data": {
+        "Task_Name": "Huddle Align and File Upload Task 04",
+        "Due_Date": "11/30/2025",
+        "Align_Huddle": "Weekly Leadership Sync",
+        "Document_Name": "Q4 Performance Report",
+        "Document_Description": "Detailed report on Q4 performance metrics.",
+        "Document_Type": "File",
+        "Document_File": "report.pdf",
+        "File_Upload_Base_Path": "C:\\Users\\sudhi\\Downloads\\"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The task creation form opens successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "The task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Scroll to the Huddle alignment section and click the 'Start typing to search Huddles' input field.",
+          "expected_result": "The input field for Huddle alignment is active."
+        },
+        {
+          "step": 4,
+          "action": "Enter the name of an existing huddle from the test data.",
+          "expected_result": "A dropdown appears with matching huddle options."
+        },
+        {
+          "step": 5,
+          "action": "Wait for the dropdown to populate and click the matching huddle option to select it.",
+          "expected_result": "The specified Huddle is successfully selected and aligned with the task."
+        },
+        {
+          "step": 6,
+          "action": "Scroll to the Documents section and click the '+' icon.",
+          "expected_result": "The document upload dialog opens successfully."
+        },
+        {
+          "step": 7,
+          "action": "In the document dialog, enter the 'Document_Name' and 'Document_Description'.",
+          "expected_result": "The document name and description are entered into their respective fields."
+        },
+        {
+          "step": 8,
+          "action": "Ensure the document type is 'File'.",
+          "expected_result": "The 'File' document type is selected by default."
+        },
+        {
+          "step": 9,
+          "action": "Locate the hidden file input, make it visible, and send the full file path to it.",
+          "expected_result": "The file path is sent to the input element and the file begins to upload."
+        },
+        {
+          "step": 10,
+          "action": "Wait for the file to upload and click the 'Save' button in the document dialog.",
+          "expected_result": "The file is successfully uploaded, the dialog closes, and the document is attached to the task form."
+        },
+        {
+          "step": 11,
+          "action": "Click the main 'Save' button to create the task.",
+          "expected_result": "The task is created successfully with the Huddle alignment and document attachment."
+        },
+        {
+          "step": 12,
+          "action": "Verify the user is returned to the Manage Tasks page.",
+          "expected_result": "The Manage Tasks page is displayed, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC005",
+      "scenario_id": "TS005",
+      "name": "Create Task with Link Document Attachment",
+      "preconditions": [
+        "User is logged in and is on the Manage Tasks page."
+      ],
+      "test_data": {
+        "Task_Name": "Link Document Attachment Task 05",
+        "Due_Date": "11/30/2025",
+        "Document_Name": "Project Brief Link",
+        "Document_Type": "Link",
+        "Document_URL": "https://example.com/doc"
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Click the 'New Task' button.",
+          "expected_result": "The task creation form opens successfully."
+        },
+        {
+          "step": 2,
+          "action": "Enter a valid 'Short Task Name' and 'Due_Date'.",
+          "expected_result": "The task name and due date are entered correctly."
+        },
+        {
+          "step": 3,
+          "action": "Scroll to the Documents section and click the '+' icon.",
+          "expected_result": "The document upload dialog opens successfully."
+        },
+        {
+          "step": 4,
+          "action": "In the document dialog, enter the 'Document_Name'.",
+          "expected_result": "The document name is entered into its field."
+        },
+        {
+          "step": 5,
+          "action": "Click the document type dropdown and select the 'Link' option.",
+          "expected_result": "The document type is successfully changed to 'Link', and a URL input field appears."
+        },
+        {
+          "step": 6,
+          "action": "Enter a valid URL in the 'Enter Link...' field.",
+          "expected_result": "The URL is entered into the link field."
+        },
+        {
+          "step": 7,
+          "action": "Click the 'Save' button in the document dialog.",
+          "expected_result": "The link document is saved, the dialog closes, and the document is attached to the task form."
+        },
+        {
+          "step": 8,
+          "action": "Click the main 'Save' button to create the task.",
+          "expected_result": "The task is created successfully with the link document attached."
+        },
+        {
+          "step": 9,
+          "action": "Verify the user is returned to the Manage Tasks page.",
+          "expected_result": "The Manage Tasks page is displayed, confirmed by the visibility of the 'New Task' button."
+        }
+      ]
+    },
+    {
+      "id": "TC006",
+      "scenario_id": "TS006",
+      "name": "Data-Driven Creation of Multiple Tasks in a Single Session",
+      "preconditions": [
+        "An external data file (e.g., Excel) exists with at least two rows of complete and valid test data.",
+        "The first row contains valid login credentials.",
+        "The user session can remain active for the duration of the test."
+      ],
+      "test_data": {
+        "Data_Source": "External file (e.g., Excel) with at least two valid task data rows.",
+        "Note": "The first row must contain valid login credentials; subsequent rows do not require them."
+      },
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Execute the login and navigation steps for the first task in the data source.",
+          "expected_result": "User is successfully logged in and navigated to the Manage Tasks page."
+        },
+        {
+          "step": 2,
+          "action": "Create the first task using the data from the first row of the external file.",
+          "expected_result": "The first task is created successfully, and the user is returned to the Manage Tasks page."
+        },
+        {
+          "step": 3,
+          "action": "Verify the system is on the Manage Tasks page by checking for the 'New Task' button.",
+          "expected_result": "The 'New Task' button is visible, confirming the user is on the correct page."
+        },
+        {
+          "step": 4,
+          "action": "For the second task in the data source, click the 'New Task' button directly without logging in again.",
+          "expected_result": "The 'New Task' form opens successfully."
+        },
+        {
+          "step": 5,
+          "action": "Create the second task using the data from the second row of the external file.",
+          "expected_result": "The second task is created successfully, and the user is returned to the Manage Tasks page."
+        },
+        {
+          "step": 6,
+          "action": "Repeat the task creation process for all subsequent tasks in the data source.",
+          "expected_result": "Each task from the external data source is created successfully in sequence within the same user session."
+        },
+        {
+          "step": 7,
+          "action": "After the last task is created, close the browser.",
+          "expected_result": "The test concludes successfully after creating all tasks."
+        }
+      ]
+    }
+  ]
+}
